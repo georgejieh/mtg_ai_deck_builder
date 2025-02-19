@@ -1,3 +1,4 @@
 .ipynb_checkpoints/
 *.csv
 !data/*.csv
+data/*.csv
