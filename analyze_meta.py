@@ -54,69 +54,103 @@ class DynamicCardMechanicsAnalyzer:
     """
     def __init__(self, card_db: pd.DataFrame):
         self.card_db = card_db
-        # Extract all unique keywords from the card pool
-        self.keywords = self._extract_all_keywords()
+        # Get all unique keywords from the keywords column
+        self.keywords_set = self._extract_keywords_from_dataset()
         # Define non-keyword mechanics patterns
         self.non_keyword_mechanics = self._define_non_keyword_mechanics()
-        
-    def _extract_all_keywords(self) -> Set[str]:
-        """Extract all unique keywords from the card pool, case-insensitive"""
+        logger.info(f"Card Mechanics Analyzer initialized with {len(self.keywords_set)} keywords")
+    
+    def _extract_keywords_from_dataset(self) -> Set[str]:
+        """Extract all unique keywords directly from the dataset's keywords column"""
         unique_keywords = set()
         for keywords in self.card_db['keywords']:
             if isinstance(keywords, list):
                 unique_keywords.update(kw.lower() for kw in keywords)
+        logger.info(f"Extracted {len(unique_keywords)} unique keywords from dataset")
         return unique_keywords
     
     def _define_non_keyword_mechanics(self) -> Dict[str, str]:
         """
-        Define patterns for identifying non-keyword mechanics
-        Focuses on historically significant mechanics without keywords
+        Define patterns for identifying non-keyword mechanics that are not already keywords
         """
-        return {
+        # These are mechanics that might not have keywords but are significant gameplay patterns
+        mechanics_patterns = {
             'graveyard_recursion': r'return.*from.*graveyard to.*(?:hand|battlefield)',
             'self_mill': r'put.*(?:cards?|top).*library.*graveyard',
             'opponent_mill': r'target.*(?:player|opponent).*puts?.*library.*graveyard',
-            'ramp': r'search.*library.*basic land.*battlefield',
-            'tutor': r'search.*library.*(?!basic land)',
+            'tutor_creature': r'search.*library.*creature.*card',
+            'tutor_land': r'search.*library.*land card',
+            'tutor_any': r'search.*library.*card',
             'card_draw': r'draw (?:a|[0-9]+) cards?',
+            'card_filtering': r'look at the top.*cards?.*library',
             'looting': r'draw.*cards?.*discard.*cards?',
-            'burn': r'deals? [0-9]+ damage to (?:any|target)',
-            'board_wipe': r'destroy all|deals? [0-9]+ damage to (each|all) creatures?',
-            'counter_spell': r'counter target spell',
-            'token_generation': r'create.*token',
-            'sacrifice_effect': r'sacrifice a',
-            'tap_effect': r'tap target',
-            'bounce': r'return target.*to.*owners? hand',
-            'anthem_effect': r'creatures you control get',
             'mana_generation': r'add \{[WUBRGC]\}',
             'life_gain': r'gain [0-9]+ life',
             'life_loss': r'lose [0-9]+ life',
-            'scry_effect': r'scry [0-9]+',
-            'surveil': r'surveil [0-9]+'
+            'token_generation': r'create.*token',
+            'sacrifice_outlet': r'sacrifice.*creature.*:|sacrifice.*permanent.*:',
+            'etb_trigger': r'when.*enters the battlefield',
+            'dies_trigger': r'when.*dies',
+            'cast_trigger': r'when.*cast',
+            'counter_target': r'counter target',
+            'bounce': r'return target.*to.*owners? hand',
+            'tap_effect': r'tap target',
+            'untap_effect': r'untap target'
         }
+        
+        # Remove any patterns that overlap with existing keywords
+        return {name: pattern for name, pattern in mechanics_patterns.items() 
+                if name.lower() not in self.keywords_set}
     
     def extract_mechanics_and_abilities(self) -> Dict[str, int]:
-        """Extract all mechanics, combining keywords and non-keyword effects"""
+        """Extract all mechanics and abilities, combining keywords and non-keyword effects"""
         mechanics = Counter()
         
-        # First count keywords (case-insensitive)
+        # First, count all keywords from the keywords column
         for keywords in self.card_db['keywords']:
             if isinstance(keywords, list):
                 mechanics.update(kw.lower() for kw in keywords)
         
-        # Then identify non-keyword mechanics from oracle text
+        # Then add non-keyword mechanics that don't overlap with keywords
         for _, card in self.card_db.iterrows():
             oracle_text = str(card['oracle_text']).lower() if pd.notna(card['oracle_text']) else ''
             
             for mechanic_name, pattern in self.non_keyword_mechanics.items():
-                # Only add if not already a keyword
-                if mechanic_name not in self.keywords and re.search(pattern, oracle_text, re.IGNORECASE):
+                if re.search(pattern, oracle_text, re.IGNORECASE):
                     mechanics[mechanic_name] += 1
         
-        # Filter out rare mechanics (less than 1% of cards)
+        # Filter out very rare mechanics (less than 1% of cards)
         min_threshold = len(self.card_db) * 0.01
-        return {k: v for k, v in mechanics.items() if v >= min_threshold}
+        significant_mechanics = {
+            k: v for k, v in mechanics.items() 
+            if v >= min_threshold
+        }
         
+        logger.info(f"Found {len(significant_mechanics)} significant mechanics "
+                   f"out of {len(mechanics)} total mechanics")
+        
+        return significant_mechanics
+    
+    def get_card_mechanics(self, card_name: str) -> Set[str]:
+        """Get all mechanics for a specific card"""
+        card = self.card_db[self.card_db['name'] == card_name]
+        if card.empty:
+            return set()
+        
+        mechanics = set()
+        
+        # Add keywords
+        if isinstance(card.iloc[0]['keywords'], list):
+            mechanics.update(kw.lower() for kw in card.iloc[0]['keywords'])
+        
+        # Add non-keyword mechanics
+        oracle_text = str(card.iloc[0]['oracle_text']).lower() if pd.notna(card.iloc[0]['oracle_text']) else ''
+        for mechanic_name, pattern in self.non_keyword_mechanics.items():
+            if re.search(pattern, oracle_text, re.IGNORECASE):
+                mechanics.add(mechanic_name)
+        
+        return mechanics
+
 class DynamicSynergyDetector:
     """
     Advanced synergy detector that identifies meaningful card interactions
@@ -124,195 +158,264 @@ class DynamicSynergyDetector:
     """
     def __init__(self, card_db: pd.DataFrame):
         self.card_db = card_db
-        # Create indices for faster lookups
-        self._create_indices()
-        # Extract all subtypes from the card pool
-        self.subtypes = self._extract_subtypes()
-        
-    def _create_indices(self):
-        """Create indices for efficient card lookups"""
-        self.card_index = {
-            name: card for name, card in 
-            self.card_db[['name', 'type_line', 'oracle_text', 'keywords']].iterrows()
-        }
-        
-    def _extract_subtypes(self) -> Dict[str, Set[str]]:
+        self.keywords_set = self._extract_keywords_from_dataset()
+        # Extract subtypes from the dataset
+        self.spell_subtypes = self._extract_subtypes_from_dataset()
+        logger.info(f"Synergy Detector initialized with {len(self.keywords_set)} keywords "
+                   f"and {len(self.spell_subtypes)} main types")
+    
+    def _extract_keywords_from_dataset(self) -> Set[str]:
+        """Extract all unique keywords from the dataset"""
+        unique_keywords = set()
+        for keywords in self.card_db['keywords']:
+            if isinstance(keywords, list):
+                unique_keywords.update(kw.lower() for kw in keywords)
+        return unique_keywords
+    
+    def _extract_subtypes_from_dataset(self) -> Dict[str, Set[str]]:
         """
-        Extract all subtypes from the card pool, organized by card type
+        Extract all subtypes from the dataset, organized by main card type
+        Returns a dictionary mapping main types to their subtypes
         """
-        subtypes = {
-            'Creature': set(),
-            'Artifact': set(),
-            'Enchantment': set(),
-            'Instant': set(),
-            'Sorcery': set(),
-            'Planeswalker': set()
-        }
+        subtypes = defaultdict(set)
         
         for _, card in self.card_db.iterrows():
             type_line = str(card['type_line'])
-            # Split on em dash to separate types from subtypes
-            parts = type_line.split('—')
-            
-            if len(parts) > 1:
-                main_types = set(parts[0].strip().split())
-                sub_types = set(parts[1].strip().split())
+            if '—' in type_line:  # Contains subtypes
+                main_types, sub_types = type_line.split('—', 1)
                 
-                # Assign subtypes to appropriate categories
+                # Get main types
+                main_types = set(main_types.strip().split())
+                # Get subtypes
+                sub_types = set(sub_types.strip().split())
+                
+                # Categorize subtypes by main type
                 for main_type in main_types:
-                    if main_type in subtypes:
+                    if main_type not in ['Basic', 'Legendary', 'Snow', 'Token']:  # Skip supertypes
                         subtypes[main_type].update(sub_types)
         
-        return subtypes
+        logger.info(f"Extracted subtypes for {len(subtypes)} main card types")
+        for main_type, sub_types in subtypes.items():
+            logger.debug(f"{main_type}: {len(sub_types)} subtypes")
+        
+        return dict(subtypes)
     
     def detect_synergies(self, meta_decks: Dict[str, List[str]]) -> Dict[str, List[str]]:
-        """
-        Detect synergies focusing on what's actually played in the meta
-        """
-        synergies = {}
-        
+        """Detect synergies in meta decks"""
         # Get all cards being played in the meta
         meta_cards = set(card for deck in meta_decks.values() for card in deck)
         meta_cards_df = self.card_db[self.card_db['name'].isin(meta_cards)]
         
-        # Detect various types of synergies
-        keyword_synergies = self._detect_keyword_synergies(meta_cards_df)
-        subtype_synergies = self._detect_subtype_synergies(meta_cards_df)
-        mechanical_synergies = self._detect_mechanical_synergies(meta_cards_df)
+        synergies = {}
         
-        # Combine all synergies
+        # 1. Detect keyword-based synergies
+        keyword_synergies = self._detect_keyword_synergies(meta_cards_df)
         synergies.update(keyword_synergies)
-        synergies.update(subtype_synergies)
+        
+        # 2. Detect creature type synergies
+        creature_synergies = self._detect_creature_type_synergies(meta_cards_df)
+        synergies.update(creature_synergies)
+        
+        # 3. Detect spell type synergies
+        spell_synergies = self._detect_spell_type_synergies(meta_cards_df)
+        synergies.update(spell_synergies)
+        
+        # 4. Detect mechanical synergies
+        mechanical_synergies = self._detect_mechanical_synergies(meta_cards_df)
         synergies.update(mechanical_synergies)
+        
+        logger.info(f"Detected synergies: Keyword={len(keyword_synergies)}, "
+                   f"Creature={len(creature_synergies)}, Spell={len(spell_synergies)}, "
+                   f"Mechanical={len(mechanical_synergies)}")
         
         return synergies
     
     def _detect_keyword_synergies(self, meta_cards_df: pd.DataFrame) -> Dict[str, List[str]]:
-        """
-        Detect synergies based on keywords that appear frequently in meta decks
-        """
+        """Detect synergies based on keywords"""
         synergies = {}
-        keyword_counts = Counter()
         keyword_cards = defaultdict(list)
+        keyword_payoffs = defaultdict(list)
         
+        # First pass: collect cards with keywords
         for _, card in meta_cards_df.iterrows():
             if isinstance(card['keywords'], list):
                 for keyword in card['keywords']:
                     keyword_lower = keyword.lower()
-                    keyword_counts[keyword_lower] += 1
                     keyword_cards[keyword_lower].append(card['name'])
                     
-                    # Also check for cards that care about this keyword
-                    if keyword_lower in str(card['oracle_text']).lower():
-                        keyword_cards[f"{keyword_lower}_payoff"].append(card['name'])
+                    # Check if card cares about its own keyword
+                    oracle_text = str(card['oracle_text']).lower()
+                    if keyword_lower in oracle_text:
+                        keyword_payoffs[keyword_lower].append(card['name'])
         
-        # Only include significant keyword synergies
-        min_count = len(meta_cards_df) * 0.1  # At least 10% of meta cards
-        for keyword, count in keyword_counts.items():
-            if count >= min_count:
-                cards = list(set(keyword_cards[keyword]))
-                payoff_cards = list(set(keyword_cards.get(f"{keyword}_payoff", [])))
-                
-                if len(cards) >= 3:
-                    synergies[f"{keyword}_synergy"] = cards
-                if len(payoff_cards) >= 2:
-                    synergies[f"{keyword}_payoff_synergy"] = payoff_cards
+        # Second pass: find payoff cards
+        for _, card in meta_cards_df.iterrows():
+            oracle_text = str(card['oracle_text']).lower()
+            for keyword in self.keywords_set:
+                if keyword in oracle_text and card['name'] not in keyword_payoffs[keyword]:
+                    keyword_payoffs[keyword].append(card['name'])
+        
+        # Include significant synergies
+        for keyword, cards in keyword_cards.items():
+            if len(cards) >= 3:  # At least 3 enablers
+                synergies[f"{keyword}_enablers"] = list(set(cards))
+            
+            payoffs = keyword_payoffs[keyword]
+            if len(payoffs) >= 2:  # At least 2 payoffs
+                synergies[f"{keyword}_payoffs"] = list(set(payoffs))
+            
+            if len(cards) >= 3 and len(payoffs) >= 2:
+                synergies[f"{keyword}_synergy"] = {
+                    'enablers': list(set(cards)),
+                    'payoffs': list(set(payoffs))
+                }
         
         return synergies
     
-    def _detect_subtype_synergies(self, meta_cards_df: pd.DataFrame) -> Dict[str, List[str]]:
-        """
-        Detect synergies based on card subtypes present in meta decks
-        """
+    def _detect_creature_type_synergies(self, meta_cards_df: pd.DataFrame) -> Dict[str, List[str]]:
+        """Detect tribal synergies"""
+        synergies = {}
+        creature_types = defaultdict(list)
+        tribal_payoffs = defaultdict(list)
+        
+        # First pass: collect creatures and their types
+        for _, card in meta_cards_df.iterrows():
+            type_line = str(card['type_line'])
+            if 'Creature' in type_line and '—' in type_line:
+                _, subtypes = type_line.split('—', 1)
+                for creature_type in subtypes.strip().split():
+                    creature_type_lower = creature_type.lower()
+                    creature_types[creature_type_lower].append(card['name'])
+                    
+                    # Check if creature cares about its own type
+                    oracle_text = str(card['oracle_text']).lower()
+                    if creature_type_lower in oracle_text:
+                        tribal_payoffs[creature_type_lower].append(card['name'])
+        
+        # Second pass: find tribal payoff cards
+        for _, card in meta_cards_df.iterrows():
+            oracle_text = str(card['oracle_text']).lower()
+            for creature_type in creature_types:
+                if creature_type in oracle_text:
+                    tribal_payoffs[creature_type].append(card['name'])
+        
+        # Include significant tribal synergies
+        for creature_type, cards in creature_types.items():
+            if len(cards) >= 3:  # At least 3 creatures
+                synergies[f"{creature_type}_creatures"] = list(set(cards))
+            
+            payoffs = tribal_payoffs[creature_type]
+            if len(payoffs) >= 2:  # At least 2 payoffs
+                synergies[f"{creature_type}_payoffs"] = list(set(payoffs))
+            
+            if len(cards) >= 3 and len(payoffs) >= 2:
+                synergies[f"{creature_type}_tribal"] = {
+                    'enablers': list(set(cards)),
+                    'payoffs': list(set(payoffs))
+                }
+        
+        return synergies
+
+    def _detect_spell_type_synergies(self, meta_cards_df: pd.DataFrame) -> Dict[str, List[str]]:
+        """Detect synergies based on spell subtypes"""
         synergies = {}
         
-        for card_type, possible_subtypes in self.subtypes.items():
-            # Filter cards of this type
-            type_cards = meta_cards_df[
-                meta_cards_df['type_line'].str.contains(card_type, case=False, na=False)
-            ]
-            
-            if type_cards.empty:
+        # Process each main type and its subtypes
+        for main_type, subtypes in self.spell_subtypes.items():
+            if main_type == 'Creature':  # Skip creatures (handled by creature type synergies)
                 continue
                 
-            subtype_counts = Counter()
-            subtype_cards = defaultdict(list)
-            payoff_cards = defaultdict(list)
-            
-            for _, card in type_cards.iterrows():
-                type_line = str(card['type_line'])
-                oracle_text = str(card['oracle_text']).lower()
+            for subtype in subtypes:
+                subtype_lower = subtype.lower()
                 
-                # Extract subtypes for this card
-                if '—' in type_line:
-                    subtypes = set(type_line.split('—')[1].strip().split())
-                    for subtype in subtypes:
-                        subtype_lower = subtype.lower()
-                        subtype_counts[subtype_lower] += 1
-                        subtype_cards[subtype_lower].append(card['name'])
+                # Find cards with this subtype
+                subtype_cards = []
+                subtype_payoffs = []
                 
-                # Check for payoff cards
-                for subtype in possible_subtypes:
-                    subtype_lower = subtype.lower()
-                    if subtype_lower in oracle_text:
-                        payoff_cards[subtype_lower].append(card['name'])
-            
-            # Add significant subtype synergies
-            min_count = len(type_cards) * 0.1  # At least 10% of cards of this type
-            for subtype, count in subtype_counts.items():
-                if count >= min_count:
-                    cards = list(set(subtype_cards[subtype]))
-                    payoffs = list(set(payoff_cards[subtype]))
+                for _, card in meta_cards_df.iterrows():
+                    type_line = str(card['type_line'])
+                    oracle_text = str(card['oracle_text']).lower()
                     
-                    if len(cards) >= 3:
-                        synergies[f"{subtype}_{card_type.lower()}_synergy"] = cards
-                    if len(payoffs) >= 2:
-                        synergies[f"{subtype}_{card_type.lower()}_payoff_synergy"] = payoffs
+                    # Check if card has the subtype
+                    if '—' in type_line:
+                        _, card_subtypes = type_line.split('—', 1)
+                        if subtype in card_subtypes.strip().split():
+                            subtype_cards.append(card['name'])
+                            # Check if it also cares about its own type
+                            if subtype_lower in oracle_text:
+                                subtype_payoffs.append(card['name'])
+                    
+                    # Check for payoffs in other cards
+                    elif subtype_lower in oracle_text:
+                        subtype_payoffs.append(card['name'])
+                
+                # Include significant synergies
+                if len(subtype_cards) >= 3:  # At least 3 cards of the type
+                    synergies[f"{subtype_lower}_{main_type.lower()}_cards"] = list(set(subtype_cards))
+                
+                if len(subtype_payoffs) >= 2:  # At least 2 payoff cards
+                    synergies[f"{subtype_lower}_{main_type.lower()}_payoffs"] = list(set(subtype_payoffs))
+                
+                if len(subtype_cards) >= 3 and len(subtype_payoffs) >= 2:
+                    synergies[f"{subtype_lower}_{main_type.lower()}_synergy"] = {
+                        'enablers': list(set(subtype_cards)),
+                        'payoffs': list(set(subtype_payoffs))
+                    }
         
         return synergies
     
     def _detect_mechanical_synergies(self, meta_cards_df: pd.DataFrame) -> Dict[str, List[str]]:
-        """
-        Detect synergies based on mechanical interactions
-        """
+        """Detect synergies based on mechanical interactions"""
         synergies = {}
         
-        # Define mechanical patterns to look for
+        # Define meaningful mechanical patterns and their payoff patterns
         mechanical_patterns = {
-            'sacrifice': (r'sacrifice a', r'when.*sacrificed|whenever.*sacrifice'),
-            'graveyard': (r'from.*graveyard', r'whenever.*enters.*graveyard'),
-            'etb': (r'enters the battlefield', r'whenever.*enters'),
-            'spell_cast': (r'when you cast', r'whenever.*cast'),
-            'counter': (r'counter target', r'whenever.*countered'),
-            'tokens': (r'create.*token', r'whenever.*token.*enters'),
-            'lifegain': (r'gain.*life', r'whenever.*gain.*life'),
-            'discard': (r'discard.*card', r'whenever.*discard'),
-            'tap': (r'tap target', r'whenever.*becomes tapped'),
-            'attack': (r'attacks', r'whenever.*attacks')
+            'counters': (
+                r'\+1/\+1 counter',
+                r'creatures? with \+1/\+1 counters|creatures? you control with counters'
+            ),
+            'sacrifice': (
+                r'sacrifice a creature|sacrifice a permanent',
+                r'when.*sacrificed|whenever.*sacrifice'
+            ),
+            'graveyard': (
+                r'from.*graveyard',
+                r'whenever.*creature dies|whenever.*enters.*graveyard'
+            ),
+            'spellcast': (
+                r'when you cast|whenever you cast',
+                r'whenever.*cast.*spell|when.*cast.*spell'
+            )
         }
         
-        for mechanic, (trigger_pattern, payoff_pattern) in mechanical_patterns.items():
-            # Find cards with the mechanic
-            trigger_cards = meta_cards_df[
+        for mechanic, (enabler_pattern, payoff_pattern) in mechanical_patterns.items():
+            # Find enabler cards
+            enablers = meta_cards_df[
                 meta_cards_df['oracle_text'].str.contains(
-                    trigger_pattern, case=False, na=False
+                    enabler_pattern, case=False, na=False
                 )
             ]['name'].tolist()
             
             # Find payoff cards
-            payoff_cards = meta_cards_df[
+            payoffs = meta_cards_df[
                 meta_cards_df['oracle_text'].str.contains(
                     payoff_pattern, case=False, na=False
                 )
             ]['name'].tolist()
             
-            if len(trigger_cards) >= 3:
-                synergies[f"{mechanic}_synergy"] = trigger_cards
-            if len(payoff_cards) >= 2:
-                synergies[f"{mechanic}_payoff_synergy"] = payoff_cards
+            # Include if significant
+            if len(enablers) >= 3:
+                synergies[f"{mechanic}_enablers"] = list(set(enablers))
+            if len(payoffs) >= 2:
+                synergies[f"{mechanic}_payoffs"] = list(set(payoffs))
+            if len(enablers) >= 3 and len(payoffs) >= 2:
+                synergies[f"{mechanic}_synergy"] = {
+                    'enablers': list(set(enablers)),
+                    'payoffs': list(set(payoffs))
+                }
         
         return synergies
-
+        
 class DynamicArchetypeClassifier:
     """
     Advanced deck archetype classifier that considers meta speed and hybrid strategies
@@ -321,10 +424,11 @@ class DynamicArchetypeClassifier:
         self.card_db = card_db
         self.archetype_characteristics = self._define_archetype_characteristics()
         self.meta_speed_indicators = self._calculate_meta_speed_indicators()
-        
+        logger.info("Archetype Classifier initialized with meta speed analysis")
+    
     def _define_archetype_characteristics(self) -> Dict[str, Dict[str, Tuple[float, float]]]:
         """
-        Define core characteristics of each archetype
+        Define core characteristics of each archetype with fuzzy boundaries
         """
         return {
             'aggro': {
@@ -374,14 +478,24 @@ class DynamicArchetypeClassifier:
         early_plays = nonland_cards[nonland_cards['cmc'] <= 2]
         early_threats = early_plays[
             (early_plays['is_creature']) & 
-            (early_plays['power'].apply(lambda x: str(x).isdigit() and int(str(x)) >= 2))
+            (early_plays['power'].apply(
+                lambda x: str(x).replace('*', '').isdigit() and 
+                         int(str(x).replace('*', '')) >= 2 if pd.notna(x) else False
+            ))
         ]
         
         # Calculate interaction speed
+        interaction_patterns = [
+            r'counter target',
+            r'destroy target',
+            r'exile target',
+            r'deals? \d+ damage to target'
+        ]
+        
         interaction_spells = nonland_cards[
             nonland_cards['oracle_text'].str.contains(
-                'counter target|destroy target|exile target|deals? \d+ damage to target',
-                case=False, na=False
+                '|'.join(interaction_patterns),
+                case=False, na=False, regex=True
             )
         ]
         
@@ -394,7 +508,7 @@ class DynamicArchetypeClassifier:
     
     def classify_deck_archetype(self, deck_cards: pd.DataFrame) -> Dict[str, Any]:
         """
-        Classify deck archetype with consideration for hybrid strategies
+        Classify deck archetype with consideration for hybrid strategies and meta alignment
         """
         # Calculate deck statistics
         stats = self._calculate_deck_statistics(deck_cards)
@@ -431,19 +545,41 @@ class DynamicArchetypeClassifier:
         """
         Calculate comprehensive deck statistics
         """
+        if len(deck_cards) == 0:
+            return {
+                'creature_ratio': 0.0,
+                'avg_cmc': 0.0,
+                'early_threat_ratio': 0.0,
+                'interaction_ratio': 0.0,
+                'card_advantage_ratio': 0.0
+            }
+            
         nonland_cards = deck_cards[~deck_cards['is_land']]
         
-        # Early game threats
+        if len(nonland_cards) == 0:
+            return {
+                'creature_ratio': 0.0,
+                'avg_cmc': 0.0,
+                'early_threat_ratio': 0.0,
+                'interaction_ratio': 0.0,
+                'card_advantage_ratio': 0.0
+            }
+        
+        # Calculate early game threats
         early_cards = nonland_cards[nonland_cards['cmc'] <= 2]
         early_threats = early_cards[
             (early_cards['is_creature']) & 
-            (early_cards['power'].apply(lambda x: str(x).isdigit() and int(str(x)) >= 2))
+            (early_cards['power'].apply(
+                lambda x: str(x).replace('*', '').isdigit() and 
+                         int(str(x).replace('*', '')) >= 2 if pd.notna(x) else False
+            ))
         ]
         
+        # Calculate key ratios
         stats = {
             'creature_ratio': nonland_cards['is_creature'].mean(),
             'avg_cmc': nonland_cards['cmc'].mean(),
-            'early_threat_ratio': len(early_threats) / len(nonland_cards) if len(nonland_cards) > 0 else 0,
+            'early_threat_ratio': len(early_threats) / len(nonland_cards),
             'interaction_ratio': self._calculate_interaction_ratio(nonland_cards),
             'card_advantage_ratio': self._calculate_card_advantage_ratio(nonland_cards)
         }
@@ -555,6 +691,7 @@ class DynamicMetaAnalyzer:
         self.mechanics_analyzer = DynamicCardMechanicsAnalyzer(card_db)
         self.archetype_classifier = DynamicArchetypeClassifier(card_db)
         self.synergy_detector = DynamicSynergyDetector(card_db)
+        logger.info("Meta Analyzer initialized with all components")
     
     def _create_indices(self):
         """Create indices for efficient card lookups"""
@@ -577,9 +714,11 @@ class DynamicMetaAnalyzer:
             
             # Calculate meta speed and characteristics
             meta_speed = self._calculate_meta_speed(processed_decklists)
+            logger.info(f"Meta speed calculated as {meta_speed['speed']}")
             
             # Analyze format characteristics
             format_characteristics = self._analyze_format_characteristics(processed_decklists)
+            logger.info("Format characteristics analyzed")
             
             # Analyze individual decks
             deck_analyses = {}
@@ -615,6 +754,7 @@ class DynamicMetaAnalyzer:
                 deck_analyses, meta_speed, card_frequencies
             )
             
+            logger.info("Meta analysis completed successfully")
             return {
                 'meta_speed': meta_speed,
                 'format_characteristics': format_characteristics,
@@ -645,6 +785,10 @@ class DynamicMetaAnalyzer:
                 'cards_df': cards_df,
                 'missing_cards': set(card_counts.keys()) - set(cards_df['name'])
             }
+            
+            if processed[deck_name]['missing_cards']:
+                logger.warning(f"Deck {deck_name} has {len(processed[deck_name]['missing_cards'])} "
+                             f"unrecognized cards")
         
         return processed
     
@@ -700,6 +844,7 @@ class DynamicMetaAnalyzer:
             'early_game_ratio': early_game_ratio,
             'interaction_ratio': interaction_ratio
         }
+    
     def _is_interaction_card(self, card: pd.Series) -> bool:
         """Check if a card is an interaction card"""
         if pd.isna(card['oracle_text']):
@@ -716,7 +861,7 @@ class DynamicMetaAnalyzer:
         
         return any(re.search(pattern, str(card['oracle_text']), re.IGNORECASE) 
                   for pattern in interaction_patterns)
-    
+                  
     def _analyze_format_characteristics(self, 
                                      processed_decklists: Dict[str, Dict]) -> Dict[str, Any]:
         """
@@ -740,7 +885,6 @@ class DynamicMetaAnalyzer:
             'synergies': synergies,
             'archetypes': archetypes
         }
-    
     def _analyze_deck(self, deck_name: str, deck_info: Dict) -> Dict[str, Any]:
         """
         Analyze individual deck with comprehensive classification
@@ -755,10 +899,14 @@ class DynamicMetaAnalyzer:
             # Calculate color distribution
             colors = self._calculate_color_distribution(cards_df)
             
+            # Get deck's mechanics
+            deck_mechanics = self._get_deck_mechanics(deck_info)
+            
             return {
                 'name': deck_name,
                 'archetype': archetype,
                 'colors': colors,
+                'mechanics': deck_mechanics,
                 'card_count': len(cards_df),
                 'missing_cards': list(missing_cards),
                 'verified_cards': list(cards_df['name'])
@@ -770,6 +918,7 @@ class DynamicMetaAnalyzer:
                 'name': deck_name,
                 'archetype': {'primary_archetype': 'unknown'},
                 'colors': {},
+                'mechanics': {},
                 'card_count': 0,
                 'missing_cards': [],
                 'verified_cards': []
@@ -789,6 +938,26 @@ class DynamicMetaAnalyzer:
         total_colors = len(all_colors)
         
         return {color: count/total_colors for color, count in color_counts.items()}
+    
+    def _get_deck_mechanics(self, deck_info: Dict) -> Dict[str, int]:
+        """Get mechanics present in the deck with their frequencies"""
+        mechanics = Counter()
+        
+        for _, card in deck_info['cards_df'].iterrows():
+            count = deck_info['card_counts'][card['name']]
+            
+            # Add keywords
+            if isinstance(card['keywords'], list):
+                for keyword in card['keywords']:
+                    mechanics[keyword.lower()] += count
+            
+            # Add non-keyword mechanics from oracle text
+            oracle_text = str(card['oracle_text']).lower() if pd.notna(card['oracle_text']) else ''
+            for mechanic_name, pattern in self.mechanics_analyzer.non_keyword_mechanics.items():
+                if re.search(pattern, oracle_text, re.IGNORECASE):
+                    mechanics[mechanic_name] += count
+        
+        return dict(mechanics)
     
     def _calculate_meta_statistics(self, deck_analyses: Dict[str, Dict],
                                  meta_speed: Dict[str, float],
@@ -835,7 +1004,8 @@ class DynamicMetaAnalyzer:
                 for card, count in card_frequencies.most_common(15)
                 if card not in self.basic_lands
             ],
-            'key_cards': key_cards
+            'key_cards': key_cards,
+            'archetype_distribution': dict(archetype_counts)
         }
     
     def _calculate_entropy(self, counts, total: int) -> float:
@@ -905,8 +1075,7 @@ def load_and_preprocess_cards(csv_path: str) -> pd.DataFrame:
 
 def load_decklists(directory: str) -> Dict[str, List[str]]:
     """
-    Load decklists from text files in the specified directory
-    Uses more robust parsing to handle various deck list formats
+    Load decklists from text files with robust parsing
     """
     decklists = {}
     
@@ -931,12 +1100,18 @@ def load_decklists(directory: str) -> Dict[str, List[str]]:
                     # More flexible deck parsing
                     deck_name = os.path.splitext(filename)[0]
                     mainboard = []
+                    sideboard_marker_found = False
                     
                     for line in lines:
                         line = line.strip()
                         
-                        # Skip empty lines and comments
-                        if not line or line.startswith('#'):
+                        # Skip empty lines, comments, and sideboard
+                        if not line or line.startswith('#') or line.lower() == 'sideboard':
+                            if line.lower() == 'sideboard':
+                                sideboard_marker_found = True
+                            continue
+                        
+                        if sideboard_marker_found:
                             continue
                         
                         # Flexible parsing for card entries
@@ -968,7 +1143,6 @@ def load_decklists(directory: str) -> Dict[str, List[str]]:
                 logger.error(f"Error processing deck file {filename}: {e}")
                 continue
         
-        # Log summary of loaded decklists
         logger.info(f"Loaded {len(decklists)} decklists from {len(deck_files)} files")
         return decklists
         
@@ -976,9 +1150,12 @@ def load_decklists(directory: str) -> Dict[str, List[str]]:
         logger.error(f"Error loading decklists: {e}")
         return {}
 
-def print_meta_analysis_report(meta_analysis: Dict[str, Any]):
+def print_meta_analysis_report(meta_analysis: Dict[str, Any], meta_analyzer: 'DynamicMetaAnalyzer'):
     """
     Generate a comprehensive report of the meta analysis
+    Args:
+        meta_analysis: The meta analysis results dictionary
+        meta_analyzer: The analyzer instance containing keywords and subtypes
     """
     try:
         print("\n=== Magic Format Meta Analysis Report ===\n")
@@ -994,7 +1171,6 @@ def print_meta_analysis_report(meta_analysis: Dict[str, Any]):
         # 2. Format Mechanics (case-insensitive, deduplicated)
         print("\n2. Format Mechanics:")
         mechanics = meta_analysis.get('format_characteristics', {}).get('mechanics', {})
-        # Combine counts for same mechanic with different cases
         normalized_mechanics = {}
         for mechanic, count in mechanics.items():
             mechanic_lower = mechanic.lower()
@@ -1009,31 +1185,51 @@ def print_meta_analysis_report(meta_analysis: Dict[str, Any]):
         # 3. Meta-Relevant Synergies
         print("\n3. Meta-Relevant Synergies:")
         synergies = meta_analysis.get('format_characteristics', {}).get('synergies', {})
+        
         # Group synergies by type
         synergy_groups = {
+            'Keyword': [],
             'Tribal': [],
-            'Mechanical': [],
-            'Keyword': []
+            'Spell Type': [],
+            'Mechanical': []
         }
         
-        for synergy, cards in synergies.items():
-            if '_creature_type_synergy' in synergy:
-                synergy_groups['Tribal'].append((synergy, len(cards)))
-            elif '_keyword_synergy' in synergy:
-                synergy_groups['Keyword'].append((synergy, len(cards)))
-            else:
-                synergy_groups['Mechanical'].append((synergy, len(cards)))
+        keywords_set = meta_analyzer.mechanics_analyzer.keywords_set
+        spell_subtypes = meta_analyzer.synergy_detector.spell_subtypes
         
+        for synergy_name, data in synergies.items():
+            if '_tribal' in synergy_name:
+                synergy_groups['Tribal'].append((synergy_name, data))
+            elif any(kw in synergy_name for kw in keywords_set):
+                synergy_groups['Keyword'].append((synergy_name, data))
+            elif any(st in synergy_name.lower() for st_list in spell_subtypes.values() 
+                    for st in st_list):
+                synergy_groups['Spell Type'].append((synergy_name, data))
+            else:
+                synergy_groups['Mechanical'].append((synergy_name, data))
+        
+        # Print each synergy group
         for group_name, group_synergies in synergy_groups.items():
             if group_synergies:
                 print(f"\n   {group_name} Synergies:")
-                for synergy, card_count in sorted(group_synergies, 
-                                                key=lambda x: x[1], reverse=True)[:5]:
-                    # Clean up synergy name for display
-                    display_name = (synergy.replace('_synergy', '')
-                                         .replace('_', ' ')
-                                         .title())
-                    print(f"   - {display_name}: {card_count} cards")
+                sorted_synergies = sorted(
+                    group_synergies,
+                    key=lambda x: (
+                        len(x[1]['enablers']) if isinstance(x[1], dict) and 'enablers' in x[1]
+                        else len(x[1]) if isinstance(x[1], list)
+                        else 0
+                    ),
+                    reverse=True
+                )[:5]
+                
+                for synergy_name, data in sorted_synergies:
+                    display_name = synergy_name.replace('_', ' ').title()
+                    if isinstance(data, dict) and 'enablers' in data:
+                        print(f"   - {display_name}:")
+                        print(f"     Enablers: {len(data['enablers'])} cards")
+                        print(f"     Payoffs: {len(data['payoffs'])} cards")
+                    else:
+                        print(f"   - {display_name}: {len(data)} cards")
         
         # 4. Archetype Distribution
         print("\n4. Archetype Distribution:")
@@ -1089,7 +1285,15 @@ def print_meta_analysis_report(meta_analysis: Dict[str, Any]):
             print(f"   - Total Cards: {analysis['card_count']}")
             if analysis.get('missing_cards'):
                 print(f"   - Missing Cards: {len(analysis['missing_cards'])}")
-        
+            
+            # Print top mechanics
+            mechanics = analysis.get('mechanics', {})
+            if mechanics:
+                print("   - Top Mechanics:")
+                for mechanic, count in sorted(mechanics.items(), 
+                                            key=lambda x: x[1], reverse=True)[:5]:
+                    print(f"     * {mechanic.title()}: {count}")
+                    
     except Exception as e:
         logger.error(f"Error printing meta analysis report: {e}")
         print("\nError generating report. Please check the logs for details.")
@@ -1119,6 +1323,11 @@ def main():
             '--decks', 
             default='current_standard_decks', 
             help='Directory containing deck lists'
+        )
+        parser.add_argument(
+            '--output',
+            default='meta_analysis_results.json',
+            help='Path for output JSON file'
         )
         args = parser.parse_args()
         
@@ -1151,10 +1360,9 @@ def main():
         meta_analysis = meta_analyzer.analyze_meta(decklists)
         
         # Print analysis report
-        print_meta_analysis_report(meta_analysis)
+        print_meta_analysis_report(meta_analysis, meta_analyzer)  # Updated to pass meta_analyzer
         
         # Save detailed analysis to JSON
-        output_file = 'meta_analysis_results.json'
         try:
             # Convert non-serializable objects to strings
             def json_serializable(obj):
@@ -1162,11 +1370,16 @@ def main():
                     return float(obj)
                 if isinstance(obj, set):
                     return list(obj)
+                if isinstance(obj, dict) and 'enablers' in obj and 'payoffs' in obj:
+                    return {
+                        'enablers': list(obj['enablers']),
+                        'payoffs': list(obj['payoffs'])
+                    }
                 return str(obj)
             
-            with open(output_file, 'w') as f:
+            with open(args.output, 'w') as f:
                 json.dump(meta_analysis, f, indent=2, default=json_serializable)
-            logger.info(f"Detailed analysis saved to {output_file}")
+            logger.info(f"Detailed analysis saved to {args.output}")
         except Exception as e:
             logger.error(f"Error saving analysis results to JSON: {e}")
     
@@ -1175,6 +1388,5 @@ def main():
         import traceback
         traceback.print_exc()
 
-# Script entry point
 if __name__ == "__main__":
     main()
