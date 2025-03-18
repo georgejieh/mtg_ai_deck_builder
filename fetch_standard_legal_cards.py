@@ -103,40 +103,72 @@ class ScryfallFetcher:
         processed_cards = []
         
         for card in cards:
-            # Handle split cards, adventures, and other special layouts
+            # Handle different layouts (split, adventure, transform, modal_dfc, etc.)
             card_name = card.get('name')
-            if '//' in card_name:
-                # For split cards, store both the full name and the front face name
-                front_name = card_name.split('//')[0].strip()
+            layout = card.get('layout', '')
+            
+            # For split cards and other multi-face cards
+            if '//' in card_name or layout in ['split', 'adventure', 'modal_dfc', 'transform']:
+                # Store both the full name and the front face name
+                if '//' in card_name:
+                    front_name = card_name.split('//')[0].strip()
+                else:
+                    front_name = card_name
+                
+                # Initialize variables for card faces
+                front_face_oracle = ""
+                back_face_oracle = ""
+                front_face_type = ""
+                back_face_type = ""
+                mana_cost = ""
+                colors = []
                 
                 # Get face-specific data from card_faces
                 if 'card_faces' in card and card['card_faces']:
                     front_face = card['card_faces'][0]
-                    mana_cost = front_face.get('mana_cost')
+                    mana_cost = front_face.get('mana_cost', card.get('mana_cost', ''))
                     colors = front_face.get('colors', card.get('colors', []))
-                    oracle_text = front_face.get('oracle_text')
-                    power = front_face.get('power')
-                    toughness = front_face.get('toughness')
+                    front_face_oracle = front_face.get('oracle_text', '')
+                    front_face_type = front_face.get('type_line', '')
+                    
+                    # Process back face if it exists
+                    if len(card['card_faces']) > 1:
+                        back_face = card['card_faces'][1]
+                        back_face_oracle = back_face.get('oracle_text', '')
+                        back_face_type = back_face.get('type_line', '')
+                        
+                        # For Room cards, we want to combine the oracle text to capture both abilities
+                        if "Room" in front_face_type and "Room" in back_face_type:
+                            combined_oracle = f"{front_face_oracle}\n\n{back_face_oracle}"
+                        else:
+                            combined_oracle = front_face_oracle
                 else:
-                    mana_cost = card.get('mana_cost')
+                    # Fallback if card_faces is not available
+                    mana_cost = card.get('mana_cost', '')
                     colors = card.get('colors', [])
-                    oracle_text = card.get('oracle_text')
-                    power = card.get('power')
-                    toughness = card.get('toughness')
+                    front_face_oracle = card.get('oracle_text', '')
+                    front_face_type = card.get('type_line', '')
+                    combined_oracle = front_face_oracle
+                
+                # For type_line, we want to capture both sides for split cards
+                if back_face_type and front_face_type:
+                    combined_type_line = f"{front_face_type} // {back_face_type}"
+                else:
+                    combined_type_line = card.get('type_line', '')
                 
                 # Store both names for reference
                 processed_card = {
                     'name': front_name,  # Store front face name as primary name
                     'full_name': card_name,  # Store full split name
-                    'layout': card.get('layout'),
+                    'layout': layout,
                     'mana_cost': mana_cost,
                     'cmc': card.get('cmc'),
-                    'type_line': card.get('type_line'),
-                    'oracle_text': oracle_text,
+                    'type_line': combined_type_line,
+                    'oracle_text': combined_oracle,
                     'colors': colors,
                     'color_identity': card.get('color_identity', []),
-                    'power': power,
-                    'toughness': toughness,
+                    'power': front_face.get('power', card.get('power', '')),
+                    'toughness': front_face.get('toughness', card.get('toughness', '')),
                     'rarity': card.get('rarity'),
                     'set': card.get('set'),
                     'collector_number': card.get('collector_number'),
@@ -149,7 +181,7 @@ class ScryfallFetcher:
                 processed_card = {
                     'name': card_name,
                     'full_name': card_name,
-                    'layout': card.get('layout'),
+                    'layout': layout,
                     'mana_cost': card.get('mana_cost'),
                     'cmc': card.get('cmc'),
                     'type_line': card.get('type_line'),
@@ -168,14 +200,14 @@ class ScryfallFetcher:
             
             # Add derived features
             processed_card.update({
-                'is_creature': 'Creature' in card.get('type_line', ''),
-                'is_land': 'Land' in card.get('type_line', ''),
-                'is_instant_sorcery': any(t in card.get('type_line', '') 
+                'is_creature': 'Creature' in processed_card['type_line'],
+                'is_land': 'Land' in processed_card['type_line'],
+                'is_instant_sorcery': any(t in processed_card['type_line'] 
                                         for t in ['Instant', 'Sorcery']),
                 'is_multicolored': len(processed_card['colors']) > 1,
                 'color_count': len(processed_card['colors']),
                 'has_etb_effect': 'enters the battlefield' in (processed_card['oracle_text'] or '').lower(),
-                'is_legendary': 'Legendary' in card.get('type_line', '')
+                'is_legendary': 'Legendary' in processed_card['type_line']
             })
             
             processed_cards.append(processed_card)
@@ -228,6 +260,13 @@ def main():
         color_counts = df['color_count'].value_counts().sort_index()
         for count, num_cards in color_counts.items():
             print(f"{count} color(s): {num_cards} cards")
+        
+        # Print a few special layout types to verify
+        print("\nSpecial layouts:")
+        room_cards = df[df['type_line'].str.contains('Room', na=False)]
+        split_cards = df[df['full_name'].str.contains(' // ', na=False)]
+        print(f"Room cards: {len(room_cards)}")
+        print(f"Split cards: {len(split_cards)}")
         
     except Exception as e:
         print(f"An error occurred: {str(e)}")

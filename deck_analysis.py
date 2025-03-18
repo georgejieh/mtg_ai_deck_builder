@@ -62,6 +62,39 @@ class DeckArchetype(Enum):
             }
         }
 
+def safe_eval_list(val):
+    """Safely convert string representation of list to actual list"""
+    if pd.isna(val) or val is None:
+        return []
+        
+    if isinstance(val, list):
+        return val
+        
+    if isinstance(val, str):
+        try:
+            if val.startswith('[') and val.endswith(']'):
+                # Parse string representation of list manually to avoid unsafe eval
+                # Remove brackets and split by commas
+                inner = val[1:-1].strip()
+                if not inner:
+                    return []
+                    
+                items = []
+                for item in inner.split(','):
+                    clean_item = item.strip().strip('\'"')
+                    if clean_item:
+                        items.append(clean_item)
+                return items
+            else:
+                # Not a list representation, return as single item list
+                return [val]
+        except Exception as e:
+            logger.warning(f"Error parsing list from string: {val}. Error: {e}")
+            return []
+    
+    # For any other type, return empty list
+    return []
+
 class AdvancedDeckAnalyzer:
     """
     A comprehensive deck analysis system with dynamic archetype detection
@@ -93,7 +126,7 @@ class AdvancedDeckAnalyzer:
         }
         
         # Check card type mechanics
-        if card['is_creature']:
+        if card['is_creature'] == True:
             mechanics['creature'] += 1
             
             # Power-based mechanics
@@ -107,6 +140,16 @@ class AdvancedDeckAnalyzer:
                     mechanics['big_creature'] += 1
             except (ValueError, TypeError):
                 pass
+        
+        # Special handling for Room cards
+        if 'Room' in str(card['type_line']):
+            mechanics['room'] += 1
+            
+            if 'unlock' in oracle_text:
+                mechanics['unlock_mechanic'] += 1
+                
+            if 'door' in oracle_text:
+                mechanics['door_mechanic'] += 1
         
         # Check keyword mechanics
         if isinstance(card['keywords'], list):
@@ -128,8 +171,8 @@ class AdvancedDeckAnalyzer:
             # Store the original decklist for later use in mana curve calculation
             self.decklist = decklist
             
-            # Verify cards in database
-            deck_cards = self.card_db[self.card_db['name'].isin(decklist)]
+            # Verify cards in database - enhanced to handle split cards
+            deck_cards = self._match_cards_in_database(decklist)
             verified_cards = deck_cards['name'].tolist()
             
             # Basic deck statistics
@@ -154,21 +197,95 @@ class AdvancedDeckAnalyzer:
             return analysis
         
         except Exception as e:
-            logger.error("Error in deck analysis: {}".format(str(e)))
+            logger.error(f"Error in deck analysis: {str(e)}")
             raise
+    
+    def _match_cards_in_database(self, decklist: List[str]) -> pd.DataFrame:
+        """
+        Enhanced card matching to handle split cards and variations
+        with improved handling of different separator formats
+        """
+        # Create a set of unique cards for faster lookup
+        unique_cards = set(decklist)
+        matched_cards = pd.DataFrame()
+        unmatched_cards = set(unique_cards)
+        
+        # First try exact name match
+        exact_matches = self.card_db[self.card_db['name'].isin(unique_cards)]
+        matched_cards = pd.concat([matched_cards, exact_matches])
+        
+        # Track which cards were matched
+        matched_names = set()
+        for name in matched_cards['name']:
+            # Ensure we're adding a hashable type (string) to the set
+            if isinstance(name, str):
+                matched_names.add(name)
+            elif isinstance(name, list):
+                # If for some reason a name is a list, convert it to a string
+                matched_names.add(str(name))
+        
+        # Find remaining unmatched cards
+        unmatched_cards = {card for card in unique_cards if card not in matched_names}
+        
+        # For remaining cards, try matching against the full_name field
+        if unmatched_cards:
+            # Look for cards that might be split cards with different separators
+            for card_name in list(unmatched_cards):  # Use list to allow modification during iteration
+                # Try variations of split card separators
+                if isinstance(card_name, str) and '/' in card_name:
+                    # Convert "Name1/Name2" to possible database formats
+                    parts = card_name.split('/')
+                    if len(parts) == 2:
+                        name1, name2 = [p.strip() for p in parts]
+                        
+                        # Try different separator formats
+                        alt_formats = [
+                            f"{name1} // {name2}",  # Standard format with double slash
+                            f"{name1}/{name2}",     # Single slash no spaces
+                            f"{name1} / {name2}"    # Single slash with spaces
+                        ]
+                        
+                        found = False
+                        # Check for matches in full_name
+                        for alt_format in alt_formats:
+                            format_matches = self.card_db[self.card_db['full_name'] == alt_format]
+                            if not format_matches.empty:
+                                matched_cards = pd.concat([matched_cards, format_matches])
+                                if card_name in unmatched_cards:
+                                    unmatched_cards.remove(card_name)
+                                found = True
+                                break
+                                
+                        if found:
+                            continue
+                
+                # Also try matching against just the front face
+                if isinstance(card_name, str):
+                    front_face_matches = self.card_db[
+                        self.card_db['full_name'].str.split(' // ').str[0] == card_name
+                    ]
+                    
+                    if not front_face_matches.empty:
+                        matched_cards = pd.concat([matched_cards, front_face_matches])
+                        if card_name in unmatched_cards:
+                            unmatched_cards.remove(card_name)
+        
+        # Remove duplicates that might have been added
+        return matched_cards.drop_duplicates()
     
     def _calculate_deck_statistics(self, deck_cards: pd.DataFrame, decklist: List[str]) -> Dict[str, float]:
         """
         Calculate comprehensive deck statistics
         """
-        nonland_cards = deck_cards[~deck_cards['is_land']]
+        # Improved boolean filtering
+        nonland_cards = deck_cards[deck_cards['is_land'] != True]
         
         # Calculate various ratios and statistics
         deck_stats = {
-            'land_ratio': len(deck_cards[deck_cards['is_land']]) / len(decklist),
-            'creature_ratio': len(nonland_cards[nonland_cards['is_creature']]) / len(nonland_cards),
-            'avg_cmc': nonland_cards['cmc'].mean(),
-            'median_cmc': nonland_cards['cmc'].median(),
+            'land_ratio': len(deck_cards[deck_cards['is_land'] == True]) / len(decklist) if len(decklist) > 0 else 0,
+            'creature_ratio': len(nonland_cards[nonland_cards['is_creature'] == True]) / len(nonland_cards) if len(nonland_cards) > 0 else 0,
+            'avg_cmc': nonland_cards['cmc'].mean() if len(nonland_cards) > 0 else 0,
+            'median_cmc': nonland_cards['cmc'].median() if len(nonland_cards) > 0 else 0,
             'color_diversity': self._calculate_color_diversity(deck_cards),
             'curve': self._calculate_mana_curve(nonland_cards)
         }
@@ -188,6 +305,37 @@ class AdvancedDeckAnalyzer:
             # Count the number of copies in the original decklist
             count = self.decklist.count(card_name)
             
+            # Also check if this is a split card front face
+            if count == 0:
+                # This might be a split card, check if the name appears in any full_name
+                full_names = nonland_cards[nonland_cards['name'] == card_name]['full_name']
+                if not full_names.empty:
+                    for full_name in full_names:
+                        if isinstance(full_name, str) and ' // ' in full_name:
+                            front_face = full_name.split(' // ')[0]
+                            count = self.decklist.count(front_face)
+                            
+                            # Also check for alternate separator format
+                            if count == 0 and '/' in front_face:
+                                # This is unlikely but let's be thorough
+                                name1, name2 = front_face.split('/')[0], full_name.split(' // ')[1]
+                                alt_format = f"{name1}/{name2}"
+                                count = self.decklist.count(alt_format)
+            
+            # If we still have no count, try checking for variations with slash
+            if count == 0:
+                # Try to find corresponding split card in decklist
+                for deck_card in self.decklist:
+                    if isinstance(deck_card, str) and '/' in deck_card:
+                        front_face = deck_card.split('/')[0].strip()
+                        if front_face == card_name:
+                            count = self.decklist.count(deck_card)
+                            break
+            
+            # If we still have no count, skip this card
+            if count == 0:
+                continue
+            
             # Get the CMC for this card
             card_cmc = nonland_cards[nonland_cards['name'] == card_name]['cmc'].iloc[0]
             
@@ -205,6 +353,14 @@ class AdvancedDeckAnalyzer:
         """
         advanced_ratios = {}
         
+        # Prevent division by zero
+        if len(nonland_cards) == 0:
+            return {
+                'interaction_ratio': 0,
+                'removal_ratio': 0,
+                'card_advantage_ratio': 0
+            }
+        
         # Interaction ratio
         interaction_patterns = [
             r'counter target', r'destroy target', r'exile target', 
@@ -213,6 +369,7 @@ class AdvancedDeckAnalyzer:
         interaction_cards = nonland_cards[
             nonland_cards['oracle_text'].apply(
                 lambda x: any(re.search(pattern, str(x).lower()) for pattern in interaction_patterns)
+                if pd.notna(x) else False
             )
         ]
         advanced_ratios['interaction_ratio'] = len(interaction_cards) / len(nonland_cards)
@@ -225,6 +382,7 @@ class AdvancedDeckAnalyzer:
         removal_cards = nonland_cards[
             nonland_cards['oracle_text'].apply(
                 lambda x: any(re.search(pattern, str(x).lower()) for pattern in removal_patterns)
+                if pd.notna(x) else False
             )
         ]
         advanced_ratios['removal_ratio'] = len(removal_cards) / len(nonland_cards)
@@ -237,6 +395,7 @@ class AdvancedDeckAnalyzer:
         card_advantage_cards = nonland_cards[
             nonland_cards['oracle_text'].apply(
                 lambda x: any(re.search(pattern, str(x).lower()) for pattern in card_advantage_patterns)
+                if pd.notna(x) else False
             )
         ]
         advanced_ratios['card_advantage_ratio'] = len(card_advantage_cards) / len(nonland_cards)
@@ -258,8 +417,10 @@ class AdvancedDeckAnalyzer:
         
         color_counts = Counter(all_colors)
         total_colors = len(all_colors)
+        
+        # Prevent log(0) issues
         entropy = -sum((count/total_colors) * np.log(count/total_colors) 
-                       for count in color_counts.values())
+                      for count in color_counts.values() if count > 0)
         
         return entropy
     
@@ -307,30 +468,44 @@ class AdvancedDeckAnalyzer:
 def load_decklist(filepath: str) -> Tuple[List[str], List[str]]:
     """
     Load decklist from a file, separating mainboard and sideboard
+    Enhanced to better handle different file formats and split cards
     """
-    with open(filepath, 'r') as f:
-        contents = f.read().strip().split('\n\n')
+    with open(filepath, 'r', encoding='utf-8') as f:
+        lines = f.readlines()
     
-    # If no double newline, assume all cards are mainboard
-    if len(contents) == 1:
-        mainboard = contents[0].split('\n')
-        sideboard = []
-    else:
-        mainboard = contents[0].split('\n')
-        sideboard = contents[1].split('\n')
+    mainboard = []
+    sideboard = []
+    in_sideboard = False
     
-    # Process card names, removing count
-    def process_cards(card_list):
-        processed_cards = []
-        for card_line in card_list:
-            # Split into count and card name, take the card name
-            card_name = ' '.join(card_line.split()[1:])
-            # Repeat the card name by its count
-            count = int(card_line.split()[0])
-            processed_cards.extend([card_name] * count)
-        return processed_cards
+    for line in lines:
+        line = line.strip()
+        
+        # Skip empty lines and comments
+        if not line or line.startswith('#'):
+            continue
+            
+        # Check for sideboard marker
+        if line.lower() == 'sideboard':
+            in_sideboard = True
+            continue
+        
+        # Parse card entry
+        try:
+            # Handle various formats like "4 Card Name" or "Card Name x4"
+            match = re.match(r'^(?:(\d+)[x]?\s+)?(.+?)(?:\s+[x]?(\d+))?$', line, re.IGNORECASE)
+            if match:
+                count = int(match.group(1) or match.group(3) or '1')
+                card_name = match.group(2).strip()
+                
+                # Add card to appropriate list
+                if in_sideboard:
+                    sideboard.extend([card_name] * count)
+                else:
+                    mainboard.extend([card_name] * count)
+        except Exception as e:
+            logger.warning(f"Could not parse line: {line}. Error: {e}")
     
-    return process_cards(mainboard), process_cards(sideboard)
+    return mainboard, sideboard
 
 def analyze_deck(cards_df: pd.DataFrame, decklist_path: str):
     """
@@ -367,6 +542,11 @@ def analyze_deck(cards_df: pd.DataFrame, decklist_path: str):
     print("- Lands: {:.0f}%".format(analysis['statistics']['land_ratio'] * 100))
     print("- Creatures: {:.0f}%".format(analysis['statistics']['creature_ratio'] * 100))
     
+    # Room cards detection
+    if 'room' in analysis['mechanics']:
+        room_count = analysis['mechanics']['room']
+        print("- Room Cards: {}".format(room_count))
+    
     # Archetype Analysis
     print("\nArchetype Analysis:")
     archetype_descriptions = {
@@ -399,7 +579,7 @@ def analyze_deck(cards_df: pd.DataFrame, decklist_path: str):
     
     print("Spell Distribution by Mana Cost:")
     for cmc, count in sorted(curve.items()):
-        bar = '█' * count
+        bar = '█' * min(count, 30)  # Limit bar length for display purposes
         print("{} CMC: {} {} cards".format(cmc, bar, count))
     
     # Deck Composition Analysis
@@ -411,7 +591,7 @@ def analyze_deck(cards_df: pd.DataFrame, decklist_path: str):
     # Mechanics Breakdown
     print("\nKey Deck Mechanics:")
     sorted_mechanics = sorted(analysis['mechanics'].items(), key=lambda x: x[1], reverse=True)
-    top_mechanics = sorted_mechanics[:5]  # Top 5 mechanics
+    top_mechanics = sorted_mechanics[:8]  # Top 8 mechanics
     
     mechanic_descriptions = {
         'card_draw': "Ability to draw additional cards",
@@ -421,7 +601,10 @@ def analyze_deck(cards_df: pd.DataFrame, decklist_path: str):
         'token_generation': "Create additional creature tokens",
         'big_creature': "Powerful, high-impact creatures",
         'threat': "Creatures that demand an immediate answer",
-        'life_gain': "Ability to restore life points"
+        'life_gain': "Ability to restore life points",
+        'room': "Room enchantments that provide utility",
+        'unlock_mechanic': "Ability to unlock room doors for additional effects",
+        'door_mechanic': "Mechanics involving door unlocking and room transitions"
     }
     
     for mechanic, count in top_mechanics:
@@ -433,7 +616,15 @@ def analyze_deck(cards_df: pd.DataFrame, decklist_path: str):
     if missing_cards:
         print("\nWarning - Cards not found in database:")
         for card in missing_cards:
-            print("- {}".format(card))
+            # Check if this might be a split card with wrong separator
+            if isinstance(card, str) and '/' in card:
+                parts = card.split('/')
+                if len(parts) == 2:
+                    name1, name2 = [p.strip() for p in parts]
+                    alt_format = f"{name1} // {name2}"
+                    print(f"- {card} (might be '{alt_format}' in database)")
+            else:
+                print(f"- {card}")
 
 def main():
     # Ensure a deck file is provided
@@ -444,8 +635,25 @@ def main():
     # Load card database
     try:
         cards_df = pd.read_csv('data/standard_cards.csv')
+        
+        # Convert boolean columns to actual booleans if they are strings
+        bool_columns = ['is_creature', 'is_land', 'is_instant_sorcery', 
+                        'is_multicolored', 'has_etb_effect', 'is_legendary']
+        for col in bool_columns:
+            if col in cards_df.columns:
+                cards_df[col] = cards_df[col].map({'True': True, 'False': False, True: True, False: False})
+        
+        # Convert lists stored as strings to actual lists using safe parsing
+        list_columns = ['colors', 'color_identity', 'keywords', 'produced_mana']
+        for col in list_columns:
+            if col in cards_df.columns:
+                cards_df[col] = cards_df[col].apply(safe_eval_list)
+        
     except FileNotFoundError:
         print("Error: Card database file not found. Please ensure 'data/standard_cards.csv' exists.")
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error loading card database: {e}")
         sys.exit(1)
     
     # Analyze the specified deck
