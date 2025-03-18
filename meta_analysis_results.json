@@ -1,9 +1,9 @@
 {
   "meta_speed": {
     "speed": "fast",
-    "avg_cmc": 2.3556485355648538,
-    "early_game_ratio": 0.6711297071129707,
-    "interaction_ratio": 0.29707112970711297
+    "avg_cmc": 2.365609348914858,
+    "early_game_ratio": 0.669449081803005,
+    "interaction_ratio": 0.29716193656093487
   },
   "format_characteristics": {
     "mechanics": {
@@ -135,6 +135,7 @@
             "Obliterating Bolt",
             "Overlord of the Boilerbilges",
             "Pyroclasm",
+            "Roaring Furnace",
             "Scorching Shot",
             "Screaming Nemesis",
             "Shivan Reef",
@@ -157,6 +158,7 @@
             "Heartfire Hero",
             "Hired Claw",
             "Overlord of the Boilerbilges",
+            "Roaring Furnace",
             "Screaming Nemesis",
             "Sunspine Lynx",
             "Sword of Once and Future",
@@ -228,12 +230,26 @@
         }
       },
       "room": {
+        "unlock_payoffs": [
+          "Defiled Crypt",
+          "Roaring Furnace"
+        ],
+        "graveyard_room_synergy": [
+          "Defiled Crypt"
+        ],
+        "token_generating_rooms": [
+          "Defiled Crypt"
+        ],
         "room_unlock_synergy": {
           "enablers": [
-            "Optimistic Scavenger"
+            "Defiled Crypt",
+            "Optimistic Scavenger",
+            "Roaring Furnace"
           ],
           "payoffs": [
-            "Optimistic Scavenger"
+            "Defiled Crypt",
+            "Optimistic Scavenger",
+            "Roaring Furnace"
           ]
         }
       }
@@ -1128,31 +1144,27 @@
     "Deck - Esper Pixie ": {
       "name": "Deck - Esper Pixie ",
       "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "control",
-          "tempo"
-        ],
+        "primary_archetype": "control",
         "scores": {
-          "aggro": 0.13333333333333336,
-          "midrange": 0.021052631578947257,
-          "control": 0.4614035087719298,
-          "combo": 0.1631578947368421,
-          "tempo": 0.34736842105263166
+          "aggro": 0.09333333333333335,
+          "midrange": 0.09999999999999991,
+          "control": 0.5,
+          "combo": 0.18,
+          "tempo": 0.27333333333333326
         },
-        "meta_speed_alignment": 0.13445425724637683,
+        "meta_speed_alignment": 0.14453832653985507,
         "statistics": {
-          "creature_ratio": 0.2631578947368421,
-          "avg_cmc": 2.0,
-          "early_threat_ratio": 0.05263157894736842,
-          "interaction_ratio": 0.47368421052631576,
-          "card_advantage_ratio": 0.21052631578947367
+          "creature_ratio": 0.25,
+          "avg_cmc": 2.15,
+          "early_threat_ratio": 0.05,
+          "interaction_ratio": 0.5,
+          "card_advantage_ratio": 0.25
         }
       },
       "colors": {
-        "W": 0.36363636363636365,
-        "U": 0.3181818181818182,
-        "B": 0.3181818181818182
+        "W": 0.34782608695652173,
+        "U": 0.30434782608695654,
+        "B": 0.34782608695652173
       },
       "mechanics": {
         "damage": 8,
@@ -1169,15 +1181,16 @@
         "eerie": 4,
         "cycling": 2,
         "board_wipe": 4,
-        "token_generation": 7,
+        "token_generation": 8,
         "role token": 1,
         "food": 1,
-        "life_gain": 1
+        "life_gain": 1,
+        "room": 1,
+        "unlock_mechanic": 1,
+        "door_mechanic": 1
       },
-      "card_count": 27,
-      "missing_cards": [
-        "Defiled Crypt/Cadaver Lab"
-      ],
+      "card_count": 28,
+      "missing_cards": [],
       "verified_cards": [
         "Adarkar Wastes",
         "Caves of Koilos",
@@ -1205,7 +1218,8 @@
         "Temporary Lockdown",
         "The Witch's Vanity",
         "This Town Ain't Big Enough",
-        "Underground River"
+        "Underground River",
+        "Defiled Crypt"
       ]
     },
     "Deck - Golgari Midrange": {
@@ -1981,25 +1995,25 @@
       "archetype": {
         "primary_archetype": "tempo",
         "scores": {
-          "aggro": 0.20606060606060614,
-          "midrange": 0.13939393939393935,
-          "control": 0.1393939393939394,
-          "combo": 0.2363636363636362,
-          "tempo": 0.5212121212121211
+          "aggro": 0.17971014492753623,
+          "midrange": 0.09855072463768111,
+          "control": 0.15652173913043482,
+          "combo": 0.27391304347826084,
+          "tempo": 0.417391304347826
         },
-        "meta_speed_alignment": 0.14973315011528326,
+        "meta_speed_alignment": 0.16368344360428483,
         "statistics": {
-          "creature_ratio": 0.36363636363636365,
-          "avg_cmc": 2.227272727272727,
-          "early_threat_ratio": 0.045454545454545456,
-          "interaction_ratio": 0.22727272727272727,
-          "card_advantage_ratio": 0.18181818181818182
+          "creature_ratio": 0.34782608695652173,
+          "avg_cmc": 2.4347826086956523,
+          "early_threat_ratio": 0.043478260869565216,
+          "interaction_ratio": 0.21739130434782608,
+          "card_advantage_ratio": 0.17391304347826086
         }
       },
       "colors": {
-        "U": 0.3181818181818182,
-        "G": 0.36363636363636365,
-        "R": 0.3181818181818182
+        "U": 0.3333333333333333,
+        "G": 0.3333333333333333,
+        "R": 0.3333333333333333
       },
       "mechanics": {
         "collect evidence": 3,
@@ -2019,17 +2033,18 @@
         "vigilance": 4,
         "dies_trigger": 4,
         "removal": 3,
-        "card_draw": 3,
+        "card_draw": 5,
         "token_generation": 14,
         "offspring": 4,
         "bargain": 4,
         "scry": 8,
-        "flash": 4
+        "flash": 4,
+        "room": 2,
+        "unlock_mechanic": 2,
+        "door_mechanic": 2
       },
-      "card_count": 31,
-      "missing_cards": [
-        "Roaring Furnace/Steaming Sauna"
-      ],
+      "card_count": 32,
+      "missing_cards": [],
       "verified_cards": [
         "Aegis Turtle",
         "Analyze the Pollen",
@@ -2061,7 +2076,8 @@
         "Up the Beanstalk",
         "Valley Floodcaller",
         "Willowrush Verge",
-        "Yavimaya Coast"
+        "Yavimaya Coast",
+        "Roaring Furnace"
       ]
     },
     "Deck - Zur Overlords": {
@@ -2155,9 +2171,9 @@
     "total_decks": 23,
     "meta_speed": {
       "speed": "fast",
-      "avg_cmc": 2.3556485355648538,
-      "early_game_ratio": 0.6711297071129707,
-      "interaction_ratio": 0.29707112970711297
+      "avg_cmc": 2.365609348914858,
+      "early_game_ratio": 0.669449081803005,
+      "interaction_ratio": 0.29716193656093487
     },
     "most_played_cards": [
       {
@@ -2340,8 +2356,8 @@
   "archetype_distribution": {
     "aggro": 4.5,
     "combo": 5.5,
-    "control": 4.5,
-    "tempo": 7.0,
+    "control": 5.0,
+    "tempo": 6.5,
     "midrange": 1.5
   },
   "card_frequencies": {
@@ -2488,7 +2504,7 @@
     "Feed the Swarm": 2,
     "The Filigree Sylex": 2,
     "Withering Torment": 1,
-    "Defiled Crypt/Cadaver Lab": 1,
+    "Defiled Crypt // Cadaver Lab": 1,
     "Nurturing Pixie": 4,
     "Optimistic Scavenger": 4,
     "Grim Bauble": 2,
@@ -2584,7 +2600,7 @@
     "Bushwhack": 3,
     "Enduring Vitality": 4,
     "Ral, Crackling Wit": 1,
-    "Roaring Furnace/Steaming Sauna": 2,
+    "Roaring Furnace // Steaming Sauna": 2,
     "Song of Totentanz": 2,
     "Thundertrap Trainer": 4,
     "Up the Beanstalk": 5,

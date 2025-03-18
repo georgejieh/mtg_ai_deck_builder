@@ -62,39 +62,6 @@ class DeckArchetype(Enum):
             }
         }
 
-def safe_eval_list(val):
-    """Safely convert string representation of list to actual list"""
-    if pd.isna(val) or val is None:
-        return []
-        
-    if isinstance(val, list):
-        return val
-        
-    if isinstance(val, str):
-        try:
-            if val.startswith('[') and val.endswith(']'):
-                # Parse string representation of list manually to avoid unsafe eval
-                # Remove brackets and split by commas
-                inner = val[1:-1].strip()
-                if not inner:
-                    return []
-                    
-                items = []
-                for item in inner.split(','):
-                    clean_item = item.strip().strip('\'"')
-                    if clean_item:
-                        items.append(clean_item)
-                return items
-            else:
-                # Not a list representation, return as single item list
-                return [val]
-        except Exception as e:
-            logger.warning(f"Error parsing list from string: {val}. Error: {e}")
-            return []
-    
-    # For any other type, return empty list
-    return []
-
 class AdvancedDeckAnalyzer:
     """
     A comprehensive deck analysis system with dynamic archetype detection
@@ -104,12 +71,50 @@ class AdvancedDeckAnalyzer:
         self.archetype_characteristics = DeckArchetype.get_characteristics()
         self.decklist = []
         
+    def _normalize_card_name(self, card_name: str) -> str:
+        """
+        Normalize card name by standardizing single slash to double slash format
+        """
+        # Check if the card name contains a single slash but not double slash
+        if '/' in card_name and '//' not in card_name:
+            # Split by the single slash and rejoin with proper format
+            parts = card_name.split('/')
+            if len(parts) == 2:
+                return f"{parts[0].strip()} // {parts[1].strip()}"
+        return card_name
+        
     def _extract_card_mechanics(self, card: pd.Series) -> Dict[str, int]:
         """
-        Extract detailed mechanics from a card
+        Extract detailed mechanics from a card, handling both sides of dual-faced cards
         """
         mechanics = defaultdict(int)
-        oracle_text = str(card['oracle_text']).lower() if pd.notna(card['oracle_text']) else ''
+        
+        # Process oracle text for the card (combining both sides for dual-faced cards)
+        oracle_texts = []
+        
+        # Handle the primary oracle text
+        if pd.notna(card['oracle_text']):
+            oracle_texts.append(str(card['oracle_text']).lower())
+        
+        # Check if this is a split/dual-faced card by looking at the full_name
+        if pd.notna(card['full_name']) and ' // ' in card['full_name']:
+            # This is a split card - we need to find the back face oracle text
+            card_name = card['name']
+            full_name = card['full_name']
+            
+            # Extract the back face name
+            if ' // ' in full_name:
+                front_face, back_face = full_name.split(' // ', 1)
+                
+                # Look for the back face in the card database
+                back_face_data = self.card_db[self.card_db['name'] == back_face]
+                if not back_face_data.empty:
+                    back_oracle = back_face_data['oracle_text'].iloc[0]
+                    if pd.notna(back_oracle):
+                        oracle_texts.append(str(back_oracle).lower())
+        
+        # Combine all oracle texts for analysis
+        combined_oracle_text = ' '.join(oracle_texts)
         
         # Comprehensive mechanic patterns
         mechanic_patterns = {
@@ -145,10 +150,10 @@ class AdvancedDeckAnalyzer:
         if 'Room' in str(card['type_line']):
             mechanics['room'] += 1
             
-            if 'unlock' in oracle_text:
+            if 'unlock' in combined_oracle_text:
                 mechanics['unlock_mechanic'] += 1
                 
-            if 'door' in oracle_text:
+            if 'door' in combined_oracle_text:
                 mechanics['door_mechanic'] += 1
         
         # Check keyword mechanics
@@ -158,7 +163,7 @@ class AdvancedDeckAnalyzer:
         
         # Check text-based mechanics
         for mechanic, patterns in mechanic_patterns.items():
-            if any(re.search(pattern, oracle_text) for pattern in patterns):
+            if any(re.search(pattern, combined_oracle_text) for pattern in patterns):
                 mechanics[mechanic] += 1
         
         return dict(mechanics)
@@ -168,15 +173,18 @@ class AdvancedDeckAnalyzer:
         Comprehensive deck analysis with dynamic archetype detection
         """
         try:
+            # Normalize card names in the decklist (convert single slash to double slash)
+            normalized_decklist = [self._normalize_card_name(card) for card in decklist]
+            
             # Store the original decklist for later use in mana curve calculation
-            self.decklist = decklist
+            self.decklist = normalized_decklist
             
             # Verify cards in database - enhanced to handle split cards
-            deck_cards = self._match_cards_in_database(decklist)
+            deck_cards = self._match_cards_in_database(normalized_decklist)
             verified_cards = deck_cards['name'].tolist()
             
             # Basic deck statistics
-            stats = self._calculate_deck_statistics(deck_cards, decklist)
+            stats = self._calculate_deck_statistics(deck_cards, normalized_decklist)
             
             # Card mechanics analysis
             mechanics_breakdown = self._analyze_deck_mechanics(deck_cards)
@@ -197,81 +205,62 @@ class AdvancedDeckAnalyzer:
             return analysis
         
         except Exception as e:
-            logger.error(f"Error in deck analysis: {str(e)}")
+            logger.error("Error in deck analysis: {}".format(str(e)))
             raise
-    
+            
     def _match_cards_in_database(self, decklist: List[str]) -> pd.DataFrame:
         """
         Enhanced card matching to handle split cards and variations
-        with improved handling of different separator formats
         """
         # Create a set of unique cards for faster lookup
         unique_cards = set(decklist)
         matched_cards = pd.DataFrame()
-        unmatched_cards = set(unique_cards)
+        remaining_cards = unique_cards.copy()
         
         # First try exact name match
         exact_matches = self.card_db[self.card_db['name'].isin(unique_cards)]
         matched_cards = pd.concat([matched_cards, exact_matches])
         
-        # Track which cards were matched
-        matched_names = set()
-        for name in matched_cards['name']:
-            # Ensure we're adding a hashable type (string) to the set
-            if isinstance(name, str):
-                matched_names.add(name)
-            elif isinstance(name, list):
-                # If for some reason a name is a list, convert it to a string
-                matched_names.add(str(name))
+        # Remove matched cards from the remaining set
+        remaining_cards -= set(exact_matches['name'])
         
-        # Find remaining unmatched cards
-        unmatched_cards = {card for card in unique_cards if card not in matched_names}
-        
-        # For remaining cards, try matching against the full_name field
-        if unmatched_cards:
-            # Look for cards that might be split cards with different separators
-            for card_name in list(unmatched_cards):  # Use list to allow modification during iteration
-                # Try variations of split card separators
-                if isinstance(card_name, str) and '/' in card_name:
-                    # Convert "Name1/Name2" to possible database formats
-                    parts = card_name.split('/')
-                    if len(parts) == 2:
-                        name1, name2 = [p.strip() for p in parts]
-                        
-                        # Try different separator formats
-                        alt_formats = [
-                            f"{name1} // {name2}",  # Standard format with double slash
-                            f"{name1}/{name2}",     # Single slash no spaces
-                            f"{name1} / {name2}"    # Single slash with spaces
-                        ]
-                        
-                        found = False
-                        # Check for matches in full_name
-                        for alt_format in alt_formats:
-                            format_matches = self.card_db[self.card_db['full_name'] == alt_format]
-                            if not format_matches.empty:
-                                matched_cards = pd.concat([matched_cards, format_matches])
-                                if card_name in unmatched_cards:
-                                    unmatched_cards.remove(card_name)
-                                found = True
-                                break
-                                
-                        if found:
-                            continue
+        # For remaining cards, try matching against full_name column
+        if remaining_cards:
+            for card_name in list(remaining_cards):
+                # Check if this card name appears in any full_name field
+                full_name_matches = self.card_db[self.card_db['full_name'] == card_name]
                 
-                # Also try matching against just the front face
-                if isinstance(card_name, str):
-                    front_face_matches = self.card_db[
-                        self.card_db['full_name'].str.split(' // ').str[0] == card_name
-                    ]
+                if not full_name_matches.empty:
+                    matched_cards = pd.concat([matched_cards, full_name_matches])
+                    remaining_cards.remove(card_name)
+                    continue
+                
+                # Check if this is a normalized name (with //) that matches a full_name
+                if '//' in card_name:
+                    full_name_matches = self.card_db[self.card_db['full_name'] == card_name]
+                    if not full_name_matches.empty:
+                        matched_cards = pd.concat([matched_cards, full_name_matches])
+                        remaining_cards.remove(card_name)
+                        continue
                     
-                    if not front_face_matches.empty:
-                        matched_cards = pd.concat([matched_cards, front_face_matches])
-                        if card_name in unmatched_cards:
-                            unmatched_cards.remove(card_name)
-        
-        # Remove duplicates that might have been added
-        return matched_cards.drop_duplicates()
+                    # Also check if it's one face of a split card in the full_name
+                    front_face, back_face = card_name.split(' // ', 1)
+                    
+                    # Try to match just the front face
+                    front_matches = self.card_db[self.card_db['name'] == front_face]
+                    if not front_matches.empty:
+                        matched_cards = pd.concat([matched_cards, front_matches])
+                        remaining_cards.remove(card_name)
+                        continue
+                        
+                    # Try to match using the front face in a full_name
+                    front_full_matches = self.card_db[self.card_db['full_name'].str.startswith(front_face + ' //', na=False)]
+                    if not front_full_matches.empty:
+                        matched_cards = pd.concat([matched_cards, front_full_matches])
+                        remaining_cards.remove(card_name)
+                        continue
+                
+        return matched_cards
     
     def _calculate_deck_statistics(self, deck_cards: pd.DataFrame, decklist: List[str]) -> Dict[str, float]:
         """
@@ -303,34 +292,14 @@ class AdvancedDeckAnalyzer:
         card_counts = {}
         for card_name in nonland_cards['name']:
             # Count the number of copies in the original decklist
-            count = self.decklist.count(card_name)
+            count = sum(1 for name in self.decklist if name == card_name)
             
             # Also check if this is a split card front face
             if count == 0:
-                # This might be a split card, check if the name appears in any full_name
-                full_names = nonland_cards[nonland_cards['name'] == card_name]['full_name']
-                if not full_names.empty:
-                    for full_name in full_names:
-                        if isinstance(full_name, str) and ' // ' in full_name:
-                            front_face = full_name.split(' // ')[0]
-                            count = self.decklist.count(front_face)
-                            
-                            # Also check for alternate separator format
-                            if count == 0 and '/' in front_face:
-                                # This is unlikely but let's be thorough
-                                name1, name2 = front_face.split('/')[0], full_name.split(' // ')[1]
-                                alt_format = f"{name1}/{name2}"
-                                count = self.decklist.count(alt_format)
-            
-            # If we still have no count, try checking for variations with slash
-            if count == 0:
-                # Try to find corresponding split card in decklist
+                # Check if the name appears as part of a split card in the original decklist
                 for deck_card in self.decklist:
-                    if isinstance(deck_card, str) and '/' in deck_card:
-                        front_face = deck_card.split('/')[0].strip()
-                        if front_face == card_name:
-                            count = self.decklist.count(deck_card)
-                            break
+                    if ' // ' in deck_card and card_name in deck_card.split(' // '):
+                        count += 1
             
             # If we still have no count, skip this card
             if count == 0:
@@ -468,7 +437,7 @@ class AdvancedDeckAnalyzer:
 def load_decklist(filepath: str) -> Tuple[List[str], List[str]]:
     """
     Load decklist from a file, separating mainboard and sideboard
-    Enhanced to better handle different file formats and split cards
+    Enhanced to better handle different file formats and normalize card names
     """
     with open(filepath, 'r', encoding='utf-8') as f:
         lines = f.readlines()
@@ -497,6 +466,9 @@ def load_decklist(filepath: str) -> Tuple[List[str], List[str]]:
                 count = int(match.group(1) or match.group(3) or '1')
                 card_name = match.group(2).strip()
                 
+                # Normalize card name (handling single slash format)
+                card_name = normalize_card_name(card_name)
+                
                 # Add card to appropriate list
                 if in_sideboard:
                     sideboard.extend([card_name] * count)
@@ -506,6 +478,18 @@ def load_decklist(filepath: str) -> Tuple[List[str], List[str]]:
             logger.warning(f"Could not parse line: {line}. Error: {e}")
     
     return mainboard, sideboard
+
+def normalize_card_name(card_name: str) -> str:
+    """
+    Normalize card name by standardizing single slash to double slash format
+    """
+    # Check if the card name contains a single slash not followed by another slash
+    if '/' in card_name and '//' not in card_name:
+        # Replace single slash with double slash, being careful with spacing
+        parts = card_name.split('/')
+        if len(parts) == 2:
+            return f"{parts[0].strip()} // {parts[1].strip()}"
+    return card_name
 
 def analyze_deck(cards_df: pd.DataFrame, decklist_path: str):
     """
@@ -611,20 +595,34 @@ def analyze_deck(cards_df: pd.DataFrame, decklist_path: str):
         desc = mechanic_descriptions.get(mechanic, "Unique mechanical interaction")
         print("- {}: {} ({})".format(mechanic.replace('_', ' ').title(), count, desc))
     
-    # Missing Cards Warning
-    missing_cards = set(mainboard) - set(analysis['verified_cards'])
+    # Find cards in decklist that weren't matched
+    normalized_mainboard = [normalize_card_name(card) for card in mainboard]
+    verified_names = set(analysis['verified_cards'])
+    
+    # Also check full_names in card_db for potential matches
+    all_names_in_db = set(cards_df['name'])
+    all_full_names_in_db = set(cards_df['full_name'].dropna())
+    
+    missing_cards = []
+    for card in normalized_mainboard:
+        # Skip if already found in verified cards
+        if card in verified_names:
+            continue
+            
+        # Check if found in database names or full names
+        if card not in all_names_in_db and card not in all_full_names_in_db:
+            # For split cards, also check if front face exists
+            if '//' in card:
+                front_face = card.split(' // ')[0].strip()
+                if front_face not in all_names_in_db:
+                    missing_cards.append(card)
+            else:
+                missing_cards.append(card)
+    
     if missing_cards:
         print("\nWarning - Cards not found in database:")
         for card in missing_cards:
-            # Check if this might be a split card with wrong separator
-            if isinstance(card, str) and '/' in card:
-                parts = card.split('/')
-                if len(parts) == 2:
-                    name1, name2 = [p.strip() for p in parts]
-                    alt_format = f"{name1} // {name2}"
-                    print(f"- {card} (might be '{alt_format}' in database)")
-            else:
-                print(f"- {card}")
+            print("- {}".format(card))
 
 def main():
     # Ensure a deck file is provided
@@ -643,11 +641,11 @@ def main():
             if col in cards_df.columns:
                 cards_df[col] = cards_df[col].map({'True': True, 'False': False, True: True, False: False})
         
-        # Convert lists stored as strings to actual lists using safe parsing
+        # Convert lists stored as strings to actual lists
         list_columns = ['colors', 'color_identity', 'keywords', 'produced_mana']
         for col in list_columns:
             if col in cards_df.columns:
-                cards_df[col] = cards_df[col].apply(safe_eval_list)
+                cards_df[col] = cards_df[col].apply(lambda x: eval(x) if isinstance(x, str) and x.startswith('[') else x)
         
     except FileNotFoundError:
         print("Error: Card database file not found. Please ensure 'data/standard_cards.csv' exists.")

@@ -34,6 +34,18 @@ def normalize_keyword(keyword: str) -> str:
     # Convert to lowercase
     return keyword.lower()
 
+def normalize_card_name(card_name: str) -> str:
+    """
+    Normalize card name by standardizing single slash to double slash format
+    """
+    # Check if the card name contains a single slash but not double slash
+    if '/' in card_name and '//' not in card_name:
+        # Split by the single slash and rejoin with proper format
+        parts = card_name.split('/')
+        if len(parts) == 2:
+            return f"{parts[0].strip()} // {parts[1].strip()}"
+    return card_name
+
 class DynamicArchetypeClassifier:
     """Advanced deck archetype classifier that considers meta speed and hybrid strategies"""
     def __init__(self, card_db: pd.DataFrame):
@@ -399,6 +411,18 @@ class DynamicCardMechanicsAnalyzer:
 
         # Check oracle text for mechanical patterns
         oracle_text = str(card['oracle_text']).lower() if pd.notna(card['oracle_text']) else ''
+        
+        # For split cards, try to get the back face oracle text
+        if pd.notna(card['full_name']) and ' // ' in card['full_name']:
+            front_face, back_face = card['full_name'].split(' // ', 1)
+            # If this card is the front face, try to find the back face oracle text
+            if card['name'] == front_face:
+                back_face_data = self.card_db[self.card_db['name'] == back_face]
+                if not back_face_data.empty:
+                    back_oracle = back_face_data['oracle_text'].iloc[0]
+                    if pd.notna(back_oracle):
+                        oracle_text += ' ' + str(back_oracle).lower()
+        
         for mechanic_name, pattern in self.non_keyword_mechanics.items():
             if re.search(pattern, oracle_text, re.IGNORECASE):
                 mechanics[mechanic_name] = True
@@ -415,6 +439,16 @@ class DynamicCardMechanicsAnalyzer:
                     mechanics['small_creature'] = True
             except (ValueError, TypeError):
                 pass
+        
+        # Special handling for Room cards
+        if pd.notna(card['type_line']) and 'Room' in card['type_line']:
+            mechanics['room'] = True
+            
+            if 'unlock' in oracle_text:
+                mechanics['unlock_mechanic'] = True
+            
+            if 'door' in oracle_text:
+                mechanics['door_mechanic'] = True
 
         return mechanics
 
@@ -552,7 +586,7 @@ class DynamicSynergyDetector:
         # Special handling for Room cards
         if synergy_type == 'room':
             # Check if it's a Room card
-            if 'Room' in str(card['type_line']):
+            if pd.notna(card['type_line']) and 'Room' in card['type_line']:
                 return True
                 
         # Check if card naturally has the mechanic/keyword
@@ -702,6 +736,19 @@ class DynamicMetaAnalyzer:
         
         # Create basic land set for filtering
         self.basic_lands = {'Plains', 'Island', 'Swamp', 'Mountain', 'Forest'}
+        
+        # Create index for full_name to help with dual-faced cards
+        self.full_name_to_card = {}
+        for _, card in self.card_db.iterrows():
+            if pd.notna(card['full_name']):
+                self.full_name_to_card[card['full_name']] = card.to_dict()
+        
+        # Create mapping from front faces to full_names for split cards
+        self.front_face_to_full_name = {}
+        for full_name, card in self.full_name_to_card.items():
+            if ' // ' in full_name:
+                front_face = full_name.split(' // ')[0]
+                self.front_face_to_full_name[front_face] = full_name
     
     def analyze_meta(self, decklists: Dict[str, List[str]]) -> Dict[str, Any]:
         """Perform comprehensive meta analysis"""
@@ -766,26 +813,100 @@ class DynamicMetaAnalyzer:
             raise
     
     def _process_decklists(self, decklists: Dict[str, List[str]]) -> Dict[str, Dict]:
-        """Process decklists into a more efficient format"""
+        """Process decklists into a more efficient format with improved handling of dual-faced cards"""
         processed = {}
         for deck_name, card_list in decklists.items():
-            # Count cards
-            card_counts = Counter(card_list)
+            # Normalize card names in the decklist (convert single slash to double slash)
+            normalized_card_list = [normalize_card_name(card) for card in card_list]
             
-            # Get card objects
-            cards_df = self.card_db[self.card_db['name'].isin(card_counts.keys())]
+            # Count cards
+            card_counts = Counter(normalized_card_list)
+            
+            # Match cards in database
+            matched_cards_df = self._match_cards_in_database(card_counts.keys())
+            
+            # Calculate missing cards by comparing matched card names, full names, and front faces
+            missing_cards = set()
+            matched_names = set(matched_cards_df['name'])
+            matched_full_names = set()
+            
+            for _, card in matched_cards_df.iterrows():
+                if pd.notna(card['full_name']):
+                    matched_full_names.add(card['full_name'])
+            
+            for card_name in card_counts.keys():
+                # Check if the card is matched by name, full name, or front face
+                if (card_name not in matched_names and 
+                    card_name not in matched_full_names and
+                    not any(card_name.startswith(name + ' // ') for name in matched_names)):
+                    missing_cards.add(card_name)
             
             processed[deck_name] = {
                 'card_counts': card_counts,
-                'cards_df': cards_df,
-                'missing_cards': set(card_counts.keys()) - set(cards_df['name'])
+                'cards_df': matched_cards_df,
+                'missing_cards': missing_cards
             }
             
-            if processed[deck_name]['missing_cards']:
-                logger.warning(f"Deck {deck_name} has {len(processed[deck_name]['missing_cards'])} "
-                             f"unrecognized cards")
+            if missing_cards:
+                logger.warning(f"Deck {deck_name} has {len(missing_cards)} unrecognized cards: {missing_cards}")
         
         return processed
+    
+    def _match_cards_in_database(self, card_names: set) -> pd.DataFrame:
+        """Match card names to database entries with improved handling of dual-faced cards"""
+        # Create an empty DataFrame to store matched cards
+        matched_cards = pd.DataFrame()
+        remaining_cards = set(card_names)
+        
+        # First try exact name match
+        exact_matches = self.card_db[self.card_db['name'].isin(remaining_cards)]
+        if not exact_matches.empty:
+            matched_cards = pd.concat([matched_cards, exact_matches])
+            remaining_cards -= set(exact_matches['name'])
+            
+        # For each remaining card, try to match with full_name
+        if remaining_cards:
+            full_name_matches = self.card_db[self.card_db['full_name'].isin(remaining_cards)]
+            if not full_name_matches.empty:
+                matched_cards = pd.concat([matched_cards, full_name_matches])
+                remaining_cards -= set(full_name_matches['full_name'])
+                
+        # For each remaining card, check if it might be a room card with front face in the db
+        if remaining_cards:
+            for card_name in list(remaining_cards):
+                # Check if this is a room/split card with '//' format
+                if '//' in card_name:
+                    front_face = card_name.split(' // ')[0].strip()
+                    
+                    # Try to find the front face in the database
+                    front_face_matches = self.card_db[self.card_db['name'] == front_face]
+                    if not front_face_matches.empty:
+                        # For each matched front face, check if it has a matching full_name
+                        for _, card in front_face_matches.iterrows():
+                            if pd.notna(card['full_name']) and '//' in card['full_name']:
+                                matched_cards = pd.concat([matched_cards, front_face_matches])
+                                remaining_cards.remove(card_name)
+                                break
+                                
+                    # If still not matched, try to find any full_name that starts with the front face
+                    if card_name in remaining_cards:
+                        front_in_full_matches = self.card_db[
+                            self.card_db['full_name'].str.startswith(front_face + ' //', na=False)
+                        ]
+                        if not front_in_full_matches.empty:
+                            matched_cards = pd.concat([matched_cards, front_in_full_matches])
+                            remaining_cards.remove(card_name)
+                
+                # Check if this might be a single-faced version of a split card
+                elif card_name in self.front_face_to_full_name:
+                    full_name = self.front_face_to_full_name[card_name]
+                    full_card_matches = self.card_db[self.card_db['full_name'] == full_name]
+                    if not full_card_matches.empty:
+                        matched_cards = pd.concat([matched_cards, full_card_matches])
+                        remaining_cards.remove(card_name)
+        
+        # Return all matched cards
+        return matched_cards
     
     def _calculate_meta_speed(self, processed_decklists: Dict[str, Dict]) -> Dict[str, float]:
         """Calculate meta speed characteristics"""
@@ -802,17 +923,35 @@ class DynamicMetaAnalyzer:
             nonland_cards = cards_df[cards_df['is_land'] != True]
             
             for _, card in nonland_cards.iterrows():
-                count = card_counts[card['name']]
-                total_nonland_cards += count
-                cmc_sum += card['cmc'] * count
+                # Get the count based on the card name, handling split cards
+                count = 0
+                card_name = card['name']
                 
-                # Early play analysis
-                if card['cmc'] <= 2:
-                    early_plays += count
+                # Try to match by name or full_name
+                if card_name in card_counts:
+                    count = card_counts[card_name]
+                elif pd.notna(card['full_name']) and card['full_name'] in card_counts:
+                    count = card_counts[card['full_name']]
+                elif pd.notna(card['full_name']) and '//' in card['full_name']:
+                    # Check if this is a split card's front face
+                    front_face, back_face = card['full_name'].split(' // ', 1)
+                    if front_face == card_name and normalize_card_name(front_face) in card_counts:
+                        count = card_counts[normalize_card_name(front_face)]
+                    # Or check for the full normalized name
+                    elif normalize_card_name(card['full_name']) in card_counts:
+                        count = card_counts[normalize_card_name(card['full_name'])]
                 
-                # Interaction analysis
-                if self._is_interaction_card(card):
-                    interaction_count += count
+                if count > 0:
+                    total_nonland_cards += count
+                    cmc_sum += card['cmc'] * count
+                    
+                    # Early play analysis
+                    if card['cmc'] <= 2:
+                        early_plays += count
+                    
+                    # Interaction analysis
+                    if self._is_interaction_card(card):
+                        interaction_count += count
         
         if total_nonland_cards == 0:
             return {
@@ -855,7 +994,17 @@ class DynamicMetaAnalyzer:
             r'-\d+/-\d+'
         ]
         
-        return any(re.search(pattern, str(card['oracle_text']), re.IGNORECASE) 
+        oracle_text = str(card['oracle_text']).lower()
+        
+        # For split cards, check the back face as well
+        if pd.notna(card['full_name']) and ' // ' in card['full_name']:
+            front_face, back_face = card['full_name'].split(' // ', 1)
+            if card['name'] == front_face:
+                back_card = self.card_db[self.card_db['name'] == back_face]
+                if not back_card.empty and pd.notna(back_card['oracle_text'].iloc[0]):
+                    oracle_text += ' ' + str(back_card['oracle_text'].iloc[0]).lower()
+        
+        return any(re.search(pattern, oracle_text, re.IGNORECASE) 
                   for pattern in interaction_patterns)
 
     def _analyze_format_characteristics(self, processed_decklists: Dict[str, Dict]) -> Dict[str, Any]:
@@ -943,7 +1092,26 @@ class DynamicMetaAnalyzer:
         mechanics = Counter()
         
         for _, card in deck_info['cards_df'].iterrows():
-            count = deck_info['card_counts'][card['name']]
+            # Get the correct count for the card, handling split cards
+            count = 0
+            card_name = card['name']
+            
+            # Try different ways to match the card name
+            if card_name in deck_info['card_counts']:
+                count = deck_info['card_counts'][card_name]
+            elif pd.notna(card['full_name']) and card['full_name'] in deck_info['card_counts']:
+                count = deck_info['card_counts'][card['full_name']]
+            elif pd.notna(card['full_name']) and '//' in card['full_name']:
+                # Check if this is a split card's front face
+                front_face, back_face = card['full_name'].split(' // ', 1)
+                if front_face == card_name and normalize_card_name(front_face) in deck_info['card_counts']:
+                    count = deck_info['card_counts'][normalize_card_name(front_face)]
+                # Or check for the full normalized name
+                elif normalize_card_name(card['full_name']) in deck_info['card_counts']:
+                    count = deck_info['card_counts'][normalize_card_name(card['full_name'])]
+            
+            if count <= 0:
+                continue
             
             # Add keywords
             if isinstance(card['keywords'], list):
@@ -952,6 +1120,26 @@ class DynamicMetaAnalyzer:
             
             # Add non-keyword mechanics from oracle text
             oracle_text = str(card['oracle_text']).lower() if pd.notna(card['oracle_text']) else ''
+            
+            # For split cards, include oracle text from both sides
+            if pd.notna(card['full_name']) and ' // ' in card['full_name']:
+                front_face, back_face = card['full_name'].split(' // ', 1)
+                if card['name'] == front_face:
+                    back_card = self.card_db[self.card_db['name'] == back_face]
+                    if not back_card.empty and pd.notna(back_card['oracle_text'].iloc[0]):
+                        oracle_text += ' ' + str(back_card['oracle_text'].iloc[0]).lower()
+            
+            # Check for room mechanics
+            if pd.notna(card['type_line']) and 'Room' in card['type_line']:
+                mechanics['room'] += count
+                
+                if 'unlock' in oracle_text:
+                    mechanics['unlock_mechanic'] += count
+                
+                if 'door' in oracle_text:
+                    mechanics['door_mechanic'] += count
+            
+            # Check for other mechanics
             for mechanic_name, pattern in self.mechanics_analyzer.non_keyword_mechanics.items():
                 if re.search(pattern, oracle_text, re.IGNORECASE):
                     mechanics[mechanic_name] += count
@@ -1048,8 +1236,8 @@ def load_and_preprocess_cards(csv_path: str) -> pd.DataFrame:
         df['is_split'] = df['full_name'].str.contains(' // ', na=False)
         
         # Log counts of special card types
-        room_count = df['is_room'].sum()
-        split_count = df['is_split'].sum()
+        room_count = df['is_room'].sum() if 'is_room' in df.columns else 0
+        split_count = df['is_split'].sum() if 'is_split' in df.columns else 0
         logger.info(f"Successfully loaded {len(df)} cards including {room_count} Room cards and {split_count} split cards")
         
         return df
@@ -1092,7 +1280,7 @@ def safe_eval_list(val: Any) -> List:
         return []
 
 def load_decklists(directory: str) -> Dict[str, List[str]]:
-    """Load decklists with improved format handling"""
+    """Load decklists with improved format handling and dual-faced card support"""
     decklists = {}
     
     try:
@@ -1137,9 +1325,13 @@ def load_decklists(directory: str) -> Dict[str, List[str]]:
                             if match:
                                 count = int(match.group(1) or match.group(3) or '1')
                                 card_name = match.group(2).strip()
+                                
+                                # Do not normalize card names here - leave them in original form
+                                # The normalization will happen in the processing stage
+                                
                                 mainboard.extend([card_name] * count)
                         except Exception as e:
-                            logger.warning(f"Could not parse line in {filename}: {line}")
+                            logger.warning(f"Could not parse line in {filename}: {line}. Error: {e}")
                     
                     if mainboard:
                         decklists[deck_name] = mainboard
@@ -1176,11 +1368,31 @@ def print_meta_analysis_report(meta_analysis: Dict[str, Any]):
         if not any(char in mechanic for char in "'\"//—"):
             print(f"   {mechanic.replace('_', ' ').title()}: {count}")
     
+    # Print Room mechanics specifically
+    room_mechanics = [m for m in sorted_mechanics if m[0] in ('room', 'unlock_mechanic', 'door_mechanic')]
+    if room_mechanics:
+        print("\n   Room Mechanics:")
+        for mechanic, count in room_mechanics:
+            print(f"   {mechanic.replace('_', ' ').title()}: {count}")
+    
     # Meaningful Synergies
     print("\n3. Notable Synergies:")
     synergies = meta_analysis['format_characteristics']['synergies']
+    
+    # Print Room synergies first
+    if 'room' in synergies and synergies['room']:
+        print("\n   Room Synergies:")
+        for synergy_name, data in synergies['room'].items():
+            if isinstance(data, dict):
+                print(f"   {synergy_name.replace('_', ' ').title()}:")
+                print(f"      Enablers: {len(data['enablers'])} cards")
+                print(f"      Payoffs: {len(data['payoffs'])} cards")
+            else:
+                print(f"   {synergy_name.replace('_', ' ').title()}: {len(data)} cards")
+    
+    # Other synergies
     for category in ['Tribal', 'Keyword', 'Mechanical']:
-        if category.lower() in synergies:
+        if category.lower() in synergies and synergies[category.lower()]:
             print(f"\n   {category} Synergies:")
             for synergy_name, data in synergies[category.lower()].items():
                 if isinstance(data, dict):
@@ -1200,6 +1412,15 @@ def print_meta_analysis_report(meta_analysis: Dict[str, Any]):
     print("\n5. Most Played Cards:")
     for card_info in meta_analysis['meta_statistics']['most_played_cards'][:15]:
         print(f"   {card_info['card']}: {card_info['count']} copies")
+        
+    # Print any missing cards that were identified
+    missing_cards_count = 0
+    for deck_analysis in meta_analysis['deck_analyses'].values():
+        missing_cards_count += len(deck_analysis['missing_cards'])
+    
+    if missing_cards_count > 0:
+        print(f"\n6. Warning: {missing_cards_count} card(s) not found in the database")
+        print("   Check individual deck analyses for details")
 
 def main():
     """Main execution function"""
@@ -1222,7 +1443,16 @@ def main():
             default='meta_analysis_results.json',
             help='Output file for detailed results'
         )
+        parser.add_argument(
+            '--verbose',
+            action='store_true',
+            help='Enable verbose logging'
+        )
         args = parser.parse_args()
+        
+        # Set up verbose logging if requested
+        if args.verbose:
+            logging.basicConfig(level=logging.DEBUG)
         
         # Validate input paths
         if not os.path.exists(args.cards):
@@ -1254,7 +1484,13 @@ def main():
         
         # Save detailed results
         with open(args.output, 'w') as f:
-            json.dump(meta_analysis, f, indent=2, default=str)
+            # Use a custom JSON serializer to handle non-serializable objects
+            def json_serializer(obj):
+                if isinstance(obj, pd.DataFrame):
+                    return "DataFrame object (not serializable)"
+                return str(obj)
+                
+            json.dump(meta_analysis, f, indent=2, default=json_serializer)
         logger.info(f"Detailed analysis saved to {args.output}")
         
     except Exception as e:
