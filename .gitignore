@@ -2,3 +2,4 @@
 *.csv
 !data/*.csv
 data/*.csv
+mtg_env/
