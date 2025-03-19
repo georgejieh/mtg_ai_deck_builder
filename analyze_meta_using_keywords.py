@@ -2,6 +2,7 @@ import os
 import re
 import json
 import logging
+import sys
 import numpy as np
 import pandas as pd
 from typing import List, Dict, Any, Tuple, Set, Optional
@@ -295,9 +296,261 @@ class MetaCardAnalyzer:
             category: dict(counts) for category, counts in result.items()
         }
 
+class DynamicArchetypeClassifier:
+    """
+    Advanced deck archetype classifier that focuses on statistical patterns
+    rather than specific mechanic detection.
+    """
+    def __init__(self, card_db: pd.DataFrame):
+        self.card_db = card_db
+        # Limit to core archetypes that can be reliably detected
+        self.archetypes = ['aggro', 'midrange', 'control', 'ramp', 'tempo']
+        # Define archetype characteristics dynamically
+        self.archetype_characteristics = self._define_archetype_characteristics()
+        logger.info("Dynamic Archetype Classifier initialized")
+    
+    def _define_archetype_characteristics(self) -> Dict[str, Dict[str, Tuple[float, float]]]:
+        """
+        Define core characteristics of each archetype based on statistical patterns
+        rather than specific card functions.
+        """
+        return {
+            'aggro': {
+                'creature_ratio': (0.4, 0.8),
+                'avg_cmc': (1.0, 2.5),
+                'low_cmc_creature_ratio': (0.3, 1.0),
+                'high_cmc_creature_ratio': (0.0, 0.2)
+            },
+            'midrange': {
+                'creature_ratio': (0.3, 0.6),
+                'avg_cmc': (2.5, 3.5),
+                'low_cmc_creature_ratio': (0.1, 0.4),
+                'high_cmc_creature_ratio': (0.1, 0.3)
+            },
+            'control': {
+                'creature_ratio': (0.0, 0.4),
+                'avg_cmc': (2.5, 4.5),
+                'instant_sorcery_ratio': (0.3, 0.7),
+                'low_cmc_creature_ratio': (0.0, 0.2)
+            },
+            'tempo': {
+                'creature_ratio': (0.3, 0.5),
+                'avg_cmc': (1.5, 3.0),
+                'low_cmc_creature_ratio': (0.2, 0.5),
+                'instant_sorcery_ratio': (0.2, 0.5)
+            },
+            'ramp': {
+                'creature_ratio': (0.2, 0.5),
+                'avg_cmc': (2.5, 4.5),
+                'high_cmc_creature_ratio': (0.2, 0.5),
+                'land_ratio': (0.35, 0.5)
+            }
+        }
+    
+    def classify_deck(self, decklist: List[str]) -> Dict[str, float]:
+        """
+        Classify a deck into archetypes with confidence scores.
+        
+        Args:
+            decklist: List of card names in the deck
+            
+        Returns:
+            Dictionary mapping archetype names to confidence scores (0-1)
+        """
+        # Match cards in the decklist to the database
+        deck_cards = self._match_cards_to_database(decklist)
+        
+        if deck_cards.empty:
+            logger.warning("No cards from the decklist were found in the database")
+            return {archetype: 0.0 for archetype in self.archetypes}
+        
+        # Calculate deck statistics
+        deck_stats = self._calculate_deck_statistics(deck_cards, decklist)
+        
+        # Calculate archetype scores
+        archetype_scores = self._calculate_archetype_scores(deck_stats)
+        
+        # Detect hybrid archetypes
+        hybrid_scores = self._detect_hybrid_archetypes(archetype_scores)
+        
+        # Combine and normalize scores
+        combined_scores = {**archetype_scores, **hybrid_scores}
+        normalized_scores = self._normalize_scores(combined_scores)
+        
+        return normalized_scores
+    
+    def _match_cards_to_database(self, decklist: List[str]) -> pd.DataFrame:
+        """
+        Match cards in the decklist to entries in the database.
+        
+        Args:
+            decklist: List of card names
+            
+        Returns:
+            DataFrame containing matched cards
+        """
+        # Normalize card names
+        normalized_names = [normalize_card_name(name) for name in decklist]
+        
+        # Create a set of unique card names for faster lookup
+        unique_cards = set(normalized_names)
+        
+        # Match against database
+        matched_cards = self.card_db[self.card_db['name'].isin(unique_cards)]
+        
+        # If no cards were matched, try matching with case-insensitive comparison
+        if matched_cards.empty:
+            unique_cards_lower = {name.lower() for name in unique_cards}
+            matched_cards = self.card_db[self.card_db['name'].str.lower().isin(unique_cards_lower)]
+        
+        return matched_cards
+    
+    def _calculate_deck_statistics(self, deck_cards: pd.DataFrame, decklist: List[str]) -> Dict[str, float]:
+        """
+        Calculate various statistics for a deck, focusing on card distribution rather
+        than specific mechanics.
+        
+        Args:
+            deck_cards: DataFrame containing matched cards
+            decklist: Original decklist (to count copies)
+            
+        Returns:
+            Dictionary of deck statistics
+        """
+        # Count the number of cards matched from the decklist
+        card_counts = Counter(decklist)
+        total_cards = sum(card_counts.values())
+        
+        # Count lands
+        lands = deck_cards[deck_cards['is_land'] == True]
+        land_count = sum(card_counts[card] for card in lands['name'] if card in card_counts)
+        
+        # Non-land cards
+        nonland_cards = deck_cards[deck_cards['is_land'] != True]
+        nonland_count = sum(card_counts[card] for card in nonland_cards['name'] if card in card_counts)
+        
+        # Creature cards
+        creature_cards = deck_cards[deck_cards['is_creature'] == True]
+        creature_count = sum(card_counts[card] for card in creature_cards['name'] if card in card_counts)
+        
+        # Instant/sorcery cards
+        instant_sorcery_cards = deck_cards[deck_cards['is_instant_sorcery'] == True]
+        instant_sorcery_count = sum(card_counts[card] for card in instant_sorcery_cards['name'] if card in card_counts)
+        
+        # Low CMC creatures (CMC <= 2)
+        low_cmc_creatures = creature_cards[creature_cards['cmc'] <= 2]
+        low_cmc_creature_count = sum(card_counts[card] for card in low_cmc_creatures['name'] if card in card_counts)
+        
+        # High CMC creatures (CMC >= 4)
+        high_cmc_creatures = creature_cards[creature_cards['cmc'] >= 4]
+        high_cmc_creature_count = sum(card_counts[card] for card in high_cmc_creatures['name'] if card in card_counts)
+        
+        # Calculate ratios
+        stats = {
+            'land_ratio': land_count / total_cards if total_cards > 0 else 0,
+            'creature_ratio': creature_count / nonland_count if nonland_count > 0 else 0,
+            'instant_sorcery_ratio': instant_sorcery_count / nonland_count if nonland_count > 0 else 0,
+            'low_cmc_creature_ratio': low_cmc_creature_count / creature_count if creature_count > 0 else 0,
+            'high_cmc_creature_ratio': high_cmc_creature_count / creature_count if creature_count > 0 else 0,
+            'avg_cmc': nonland_cards['cmc'].mean() if not nonland_cards.empty else 0,
+            'median_cmc': nonland_cards['cmc'].median() if not nonland_cards.empty else 0
+        }
+        
+        return stats
+    
+    def _calculate_archetype_scores(self, deck_stats: Dict[str, float]) -> Dict[str, float]:
+        """
+        Calculate how well a deck matches each archetype.
+        
+        Args:
+            deck_stats: Dictionary of deck statistics
+            
+        Returns:
+            Dictionary mapping archetype names to confidence scores
+        """
+        archetype_scores = {}
+        
+        for archetype, characteristics in self.archetype_characteristics.items():
+            score = 0
+            total_factors = 0
+            
+            for characteristic, (min_val, max_val) in characteristics.items():
+                if characteristic in deck_stats:
+                    value = deck_stats[characteristic]
+                    
+                    # Calculate how well this characteristic matches the archetype
+                    if min_val <= value <= max_val:
+                        # Perfect match
+                        factor_score = 1.0
+                    elif value < min_val:
+                        # Below range, partial score based on how close to min
+                        factor_score = max(0, value / min_val)
+                    else:  # value > max_val
+                        # Above range, partial score based on how close to max
+                        factor_score = max(0, 1 - (value - max_val) / max_val)
+                    
+                    score += factor_score
+                    total_factors += 1
+            
+            # Calculate final score
+            archetype_scores[archetype] = score / total_factors if total_factors > 0 else 0
+        
+        return archetype_scores
+    
+    def _detect_hybrid_archetypes(self, archetype_scores: Dict[str, float]) -> Dict[str, float]:
+        """
+        Detect potential hybrid archetypes by combining scores.
+        
+        Args:
+            archetype_scores: Dictionary of base archetype scores
+            
+        Returns:
+            Dictionary of hybrid archetype scores
+        """
+        hybrid_scores = {}
+        
+        # Sort archetypes by score
+        sorted_archetypes = sorted(archetype_scores.items(), key=lambda x: x[1], reverse=True)
+        
+        # Look for potential combinations of top-scoring archetypes
+        for i in range(len(sorted_archetypes) - 1):
+            archetype1, score1 = sorted_archetypes[i]
+            
+            for j in range(i + 1, len(sorted_archetypes)):
+                archetype2, score2 = sorted_archetypes[j]
+                
+                # Only consider high-scoring archetypes
+                if score1 >= 0.3 and score2 >= 0.3:
+                    # The hybrid score is the average of the two, with a boost for synergy
+                    hybrid_name = f"{archetype1}-{archetype2}"
+                    hybrid_score = (score1 + score2) / 2 * 1.1  # Small boost for hybrid
+                    
+                    # Make sure the score doesn't exceed 1
+                    hybrid_scores[hybrid_name] = min(1.0, hybrid_score)
+        
+        return hybrid_scores
+    
+    def _normalize_scores(self, scores: Dict[str, float]) -> Dict[str, float]:
+        """
+        Normalize scores to sum to 1.
+        
+        Args:
+            scores: Dictionary of scores
+            
+        Returns:
+            Dictionary of normalized scores
+        """
+        total = sum(scores.values())
+        
+        if total > 0:
+            return {k: v / total for k, v in scores.items()}
+        
+        return scores
+
 class MetaAnalyzer:
     """
     Main meta analysis system that processes decklists and identifies card usage patterns.
+    Now includes deck archetype classification.
     """
     def __init__(self, card_db: pd.DataFrame):
         self.card_db = card_db
@@ -305,7 +558,9 @@ class MetaAnalyzer:
         self._create_indices()
         # Initialize card analyzer
         self.card_analyzer = MetaCardAnalyzer(card_db)
-        logger.info("Meta Analyzer initialized")
+        # Initialize archetype classifier
+        self.archetype_classifier = DynamicArchetypeClassifier(card_db)
+        logger.info("Meta Analyzer initialized with Card Analyzer and Archetype Classifier")
     
     def _create_indices(self):
         """Create indices for efficient card lookups"""
@@ -326,7 +581,7 @@ class MetaAnalyzer:
             meta_speed = self._calculate_meta_speed(processed_decklists)
             logger.info(f"Meta speed calculated as {meta_speed['speed']}")
             
-            # Analyze format characteristics (using our dynamic approach)
+            # Analyze format characteristics
             format_characteristics = self._analyze_format_characteristics(processed_decklists)
             logger.info("Format characteristics analyzed")
             
@@ -337,6 +592,10 @@ class MetaAnalyzer:
                     if card not in self.basic_lands:
                         card_frequencies[card] += count
             
+            # Classify deck archetypes
+            archetype_analysis = self._analyze_deck_archetypes(decklists)
+            logger.info("Deck archetypes analyzed")
+            
             # Calculate meta statistics
             meta_statistics = self._calculate_meta_statistics(meta_speed, card_frequencies, len(processed_decklists))
             
@@ -345,12 +604,58 @@ class MetaAnalyzer:
                 'meta_speed': meta_speed,
                 'format_characteristics': format_characteristics,
                 'meta_statistics': meta_statistics,
-                'card_frequencies': dict(card_frequencies)
+                'card_frequencies': dict(card_frequencies),
+                'archetype_analysis': archetype_analysis
             }
             
         except Exception as e:
             logger.error(f"Error in meta analysis: {str(e)}")
             raise
+    
+    def _analyze_deck_archetypes(self, decklists: Dict[str, List[str]]) -> Dict[str, Any]:
+        """
+        Analyze the archetypes of all decks in the meta.
+        
+        Args:
+            decklists: Dictionary mapping deck names to card lists
+            
+        Returns:
+            Dictionary containing archetype analysis results
+        """
+        deck_archetypes = {}
+        archetype_counts = Counter()
+        
+        # Classify each deck
+        for deck_name, card_list in decklists.items():
+            try:
+                # Get archetype scores for this deck
+                archetype_scores = self.archetype_classifier.classify_deck(card_list)
+                
+                # Store the result
+                deck_archetypes[deck_name] = archetype_scores
+                
+                # Determine the primary archetype for this deck
+                if archetype_scores:
+                    primary_archetype = max(archetype_scores.items(), key=lambda x: x[1])[0]
+                    archetype_counts[primary_archetype] += 1
+            except Exception as e:
+                logger.warning(f"Error classifying deck {deck_name}: {e}")
+                continue
+        
+        # Calculate the meta breakdown
+        total_decks = len(decklists)
+        meta_breakdown = {
+            archetype: {
+                'count': count,
+                'percentage': (count / total_decks) * 100 if total_decks > 0 else 0
+            }
+            for archetype, count in archetype_counts.items()
+        }
+        
+        return {
+            'deck_archetypes': deck_archetypes,
+            'meta_breakdown': meta_breakdown
+        }
     
     def _process_decklists(self, decklists: Dict[str, List[str]]) -> Dict[str, Dict]:
         """Process decklists into a more efficient format with improved handling of split cards"""
@@ -510,6 +815,89 @@ class MetaAnalyzer:
             'most_played_cards': most_played,
             'key_cards': key_cards
         }
+        
+def print_meta_analysis_report(meta_analysis: Dict[str, Any]):
+    """Print meta analysis report with enhanced archetype information"""
+    print("\n=== Magic Format Meta Analysis Report ===\n")
+    
+    # Meta Speed
+    speed_info = meta_analysis['meta_speed']
+    print("1. Meta Speed:")
+    print(f"   Speed: {speed_info['speed'].title()}")
+    print(f"   Average CMC: {speed_info['avg_cmc']:.2f}")
+    print(f"   Early Game Ratio: {speed_info['early_game_ratio']*100:.1f}%")
+    
+    # Archetype Breakdown
+    if 'archetype_analysis' in meta_analysis:
+        print("\n2. Meta Archetype Breakdown:")
+        sorted_archetypes = sorted(
+            meta_analysis['archetype_analysis']['meta_breakdown'].items(),
+            key=lambda x: x[1]['percentage'],
+            reverse=True
+        )
+        
+        for archetype, data in sorted_archetypes:
+            print(f"   {archetype.title()}: {data['count']} decks ({data['percentage']:.1f}%)")
+    
+    # Card Types
+    print("\n3. Card Types in Meta:")
+    for type_name, count in sorted(meta_analysis['format_characteristics']['types'].items(), key=lambda x: x[1], reverse=True):
+        print(f"   {type_name.title()}: {count}")
+    
+    # Supertypes
+    print("\n4. Supertypes in Meta:")
+    for supertype, count in sorted(meta_analysis['format_characteristics']['supertypes'].items(), key=lambda x: x[1], reverse=True):
+        print(f"   {supertype.title()}: {count}")
+    
+    # Keywords
+    print("\n5. Keywords in Meta:")
+    for keyword, count in sorted(meta_analysis['format_characteristics']['keywords'].items(), key=lambda x: x[1], reverse=True)[:15]:
+        print(f"   {keyword.title()}: {count}")
+    
+    # Subtypes
+    print("\n6. Most Common Subtypes:")
+    for subtype, count in sorted(meta_analysis['format_characteristics']['subtypes'].items(), key=lambda x: x[1], reverse=True)[:10]:
+        print(f"   {subtype.title()}: {count}")
+    
+    # References
+    print("\n7. Type References in Oracle Text:")
+    for ref, count in sorted(meta_analysis['format_characteristics']['references'].items(), key=lambda x: x[1], reverse=True)[:10]:
+        print(f"   {ref.replace('_reference', '').replace('_', ' ').title()}: {count}")
+    
+    # Most Played Cards
+    print("\n8. Most Played Cards:")
+    for card_info in meta_analysis['meta_statistics']['most_played_cards']:
+        print(f"   {card_info['card']}: {card_info['count']} copies")
+    
+    # Key Cards
+    print("\n9. Key Cards (found in multiple decks):")
+    key_cards = meta_analysis['meta_statistics']['key_cards']
+    for i, card in enumerate(key_cards[:20]):
+        print(f"   {card}")
+        if i > 0 and i % 10 == 0 and i < len(key_cards) - 1:
+            print("   ...")
+            break
+    
+    # Individual Deck Archetype Analysis (if requested)
+    if 'archetype_analysis' in meta_analysis and '--verbose' in sys.argv:
+        print("\n10. Individual Deck Archetype Analysis:")
+        for deck_name, archetype_scores in meta_analysis['archetype_analysis']['deck_archetypes'].items():
+            # Get the primary archetype
+            primary_archetype = max(archetype_scores.items(), key=lambda x: x[1])[0]
+            primary_score = archetype_scores[primary_archetype]
+            
+            print(f"   {deck_name}: {primary_archetype.title()} ({primary_score:.2f})")
+            
+            # Show secondary archetypes if they have significant scores
+            secondary_archetypes = [(arch, score) for arch, score in archetype_scores.items() 
+                                   if arch != primary_archetype and score > 0.25]
+            
+            if secondary_archetypes:
+                secondary_str = ", ".join([f"{arch.title()} ({score:.2f})" 
+                                          for arch, score in sorted(secondary_archetypes, 
+                                                                   key=lambda x: x[1], 
+                                                                   reverse=True)])
+                print(f"     Secondary: {secondary_str}")
 
 def load_and_preprocess_cards(csv_path: str) -> pd.DataFrame:
     """Load and preprocess card data"""
@@ -623,56 +1011,6 @@ def load_decklists(directory: str) -> Dict[str, List[str]]:
     except Exception as e:
         logger.error(f"Error loading decklists: {e}")
         return {}
-
-def print_meta_analysis_report(meta_analysis: Dict[str, Any]):
-    """Print meta analysis report"""
-    print("\n=== Magic Format Meta Analysis Report ===\n")
-    
-    # Meta Speed
-    speed_info = meta_analysis['meta_speed']
-    print("1. Meta Speed:")
-    print(f"   Speed: {speed_info['speed'].title()}")
-    print(f"   Average CMC: {speed_info['avg_cmc']:.2f}")
-    print(f"   Early Game Ratio: {speed_info['early_game_ratio']*100:.1f}%")
-    
-    # Card Types
-    print("\n2. Card Types in Meta:")
-    for type_name, count in sorted(meta_analysis['format_characteristics']['types'].items(), key=lambda x: x[1], reverse=True):
-        print(f"   {type_name.title()}: {count}")
-    
-    # Supertypes
-    print("\n3. Supertypes in Meta:")
-    for supertype, count in sorted(meta_analysis['format_characteristics']['supertypes'].items(), key=lambda x: x[1], reverse=True):
-        print(f"   {supertype.title()}: {count}")
-    
-    # Keywords
-    print("\n4. Keywords in Meta:")
-    for keyword, count in sorted(meta_analysis['format_characteristics']['keywords'].items(), key=lambda x: x[1], reverse=True)[:15]:
-        print(f"   {keyword.title()}: {count}")
-    
-    # Subtypes
-    print("\n5. Most Common Subtypes:")
-    for subtype, count in sorted(meta_analysis['format_characteristics']['subtypes'].items(), key=lambda x: x[1], reverse=True)[:10]:
-        print(f"   {subtype.title()}: {count}")
-    
-    # References
-    print("\n6. Type References in Oracle Text:")
-    for ref, count in sorted(meta_analysis['format_characteristics']['references'].items(), key=lambda x: x[1], reverse=True)[:10]:
-        print(f"   {ref.replace('_reference', '').replace('_', ' ').title()}: {count}")
-    
-    # Most Played Cards
-    print("\n7. Most Played Cards:")
-    for card_info in meta_analysis['meta_statistics']['most_played_cards']:
-        print(f"   {card_info['card']}: {card_info['count']} copies")
-    
-    # Key Cards
-    print("\n8. Key Cards (found in multiple decks):")
-    key_cards = meta_analysis['meta_statistics']['key_cards']
-    for i, card in enumerate(key_cards[:20]):
-        print(f"   {card}")
-        if i > 0 and i % 10 == 0:
-            print("   ...")
-            break
 
 def main():
     """Main execution function"""
