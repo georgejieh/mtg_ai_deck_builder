@@ -65,168 +65,235 @@ def safe_eval_list(val: Any) -> List:
 class MetaCardAnalyzer:
     """
     Analyzes card characteristics in the Magic: The Gathering meta.
-    Focuses on counting keywords, card types, subtypes, and references in oracle text.
+    Dynamically extracts all types, supertypes, and subtypes from the card database.
     """
     def __init__(self, card_db: pd.DataFrame):
         self.card_db = card_db
-        self.unique_keywords = self._extract_unique_keywords()
-        self.unique_subtypes = self._extract_unique_subtypes()
-        logger.info(f"Meta Card Analyzer initialized with {len(self.unique_keywords)} keywords and {len(self.unique_subtypes)} subtypes")
+        
+        # Extract all types, supertypes, and subtypes
+        self.all_types, self.all_supertypes, self.all_subtypes = self._extract_all_type_information()
+        
+        # Extract all keywords
+        self.all_keywords = self._extract_all_keywords()
+        
+        logger.info(f"Meta Card Analyzer initialized with:")
+        logger.info(f"- {len(self.all_types)} card types")
+        logger.info(f"- {len(self.all_supertypes)} supertypes")
+        logger.info(f"- {len(self.all_subtypes)} subtypes")
+        logger.info(f"- {len(self.all_keywords)} keywords")
     
-    def _extract_unique_keywords(self) -> Set[str]:
-        """Extract all unique keywords from the card database"""
-        unique_keywords = set()
+    def _extract_all_type_information(self) -> Tuple[Set[str], Set[str], Set[str]]:
+        """
+        Extract all card types, supertypes, and subtypes from the card database.
+        
+        Returns:
+            Tuple containing sets of all types, supertypes, and subtypes
+        """
+        # Standard main MTG card types (for reference)
+        standard_types = {
+            'artifact', 'creature', 'enchantment', 'instant', 
+            'land', 'planeswalker', 'sorcery', 'battle'
+        }
+        
+        # Known supertypes in MTG (for reference)
+        known_supertypes = {
+            'basic', 'legendary', 'ongoing', 'snow', 'world'
+        }
+        
+        # Initialize sets
+        all_types = set()
+        all_supertypes = set()
+        all_subtypes = set()
+        
+        # Process each card type line
+        for type_line in self.card_db['type_line'].dropna():
+            # Handle multiple faces
+            for face_type in type_line.split('//'):
+                face_type = face_type.strip()
+                
+                # Skip empty lines
+                if not face_type:
+                    continue
+                
+                # Split by the em dash to separate types from subtypes
+                type_subtype_parts = face_type.split('—', 1)
+                
+                # Process the left side (types and supertypes)
+                type_parts = type_subtype_parts[0].strip().split()
+                
+                # Last word before the dash is usually the card type
+                for word in type_parts:
+                    word = word.lower()
+                    
+                    # Skip empty strings
+                    if not word:
+                        continue
+                    
+                    # Add to appropriate set
+                    if word.lower() in standard_types:
+                        all_types.add(word.lower())
+                    elif word.lower() in known_supertypes:
+                        all_supertypes.add(word.lower())
+                    else:
+                        # If we're not sure, check its position
+                        if word == type_parts[-1]:
+                            # Last word is likely a type
+                            all_types.add(word.lower())
+                        else:
+                            # Words before the last are likely supertypes
+                            all_supertypes.add(word.lower())
+                
+                # Process subtypes if present
+                if len(type_subtype_parts) > 1:
+                    subtype_part = type_subtype_parts[1].strip()
+                    for subtype in subtype_part.split():
+                        # Clean up any punctuation
+                        subtype = re.sub(r'[^\w\s]', '', subtype).strip().lower()
+                        if subtype:
+                            all_subtypes.add(subtype)
+        
+        # Add any missing standard types (in case they weren't found)
+        all_types.update(standard_types)
+        all_supertypes.update(known_supertypes)
+        
+        return all_types, all_supertypes, all_subtypes
+    
+    def _extract_all_keywords(self) -> Set[str]:
+        """
+        Extract all unique keywords from the card database.
+        
+        Returns:
+            Set of all unique keywords
+        """
+        all_keywords = set()
         
         for keywords in self.card_db['keywords']:
             if isinstance(keywords, list):
                 for keyword in keywords:
-                    # Normalize keyword (lowercase)
-                    normalized = keyword.lower()
-                    if normalized:
-                        unique_keywords.add(normalized)
+                    all_keywords.add(keyword.lower())
+            elif isinstance(keywords, str) and keywords.startswith('['):
+                # Handle string representation of list
+                try:
+                    keyword_list = safe_eval_list(keywords)
+                    for keyword in keyword_list:
+                        all_keywords.add(keyword.lower())
+                except Exception as e:
+                    logger.warning(f"Error parsing keywords: {keywords}. Error: {e}")
         
-        return unique_keywords
+        return all_keywords
     
-    def _extract_unique_subtypes(self) -> Set[str]:
-        """Extract all unique subtypes from card type lines"""
-        unique_subtypes = set()
+    def analyze_card(self, card: pd.Series) -> Dict[str, Set[str]]:
+        """
+        Analyze a single card and extract all its characteristics.
         
-        for type_line in self.card_db['type_line']:
-            if not pd.isna(type_line) and '—' in type_line:
-                # Split by the em dash to get subtypes
-                parts = type_line.split('—', 1)
-                if len(parts) > 1:
-                    # Get subtypes (after the dash)
-                    subtypes_part = parts[1].strip()
-                    # Split by spaces and clean
-                    for subtype in subtypes_part.split():
-                        # Remove any punctuation and normalize
-                        subtype = re.sub(r'[^\w\s]', '', subtype).strip().lower()
-                        if subtype and subtype not in ['', '/']:  # Exclude empty strings and delimiters
-                            unique_subtypes.add(subtype)
+        Args:
+            card: DataFrame row representing a card
+            
+        Returns:
+            Dictionary with sets of types, supertypes, subtypes, and keywords
+        """
+        result = {
+            'types': set(),
+            'supertypes': set(),
+            'subtypes': set(),
+            'keywords': set(),
+            'references': set()
+        }
         
-        return unique_subtypes
+        # Process type line if present
+        if pd.notna(card['type_line']):
+            # Process each face of the card
+            for face_type in card['type_line'].split('//'):
+                face_type = face_type.strip()
+                
+                # Skip empty faces
+                if not face_type:
+                    continue
+                
+                # Split by dash to separate types from subtypes
+                type_parts = face_type.split('—', 1)
+                type_section = type_parts[0].strip().lower()
+                
+                # Extract types and supertypes
+                for word in type_section.split():
+                    if word in self.all_types:
+                        result['types'].add(word)
+                    elif word in self.all_supertypes:
+                        result['supertypes'].add(word)
+                
+                # Extract subtypes if present
+                if len(type_parts) > 1:
+                    subtype_section = type_parts[1].strip()
+                    for subtype in subtype_section.split():
+                        # Clean up any punctuation
+                        clean_subtype = re.sub(r'[^\w\s]', '', subtype).strip().lower()
+                        if clean_subtype and clean_subtype in self.all_subtypes:
+                            result['subtypes'].add(clean_subtype)
+        
+        # Process keywords if present
+        if isinstance(card['keywords'], list):
+            for keyword in card['keywords']:
+                result['keywords'].add(keyword.lower())
+        elif isinstance(card['keywords'], str) and card['keywords'].startswith('['):
+            # Handle string representation of list
+            try:
+                keyword_list = safe_eval_list(card['keywords'])
+                for keyword in keyword_list:
+                    result['keywords'].add(keyword.lower())
+            except Exception as e:
+                logger.warning(f"Error parsing keywords: {card['keywords']}. Error: {e}")
+        
+        # Extract references from oracle text
+        if pd.notna(card['oracle_text']):
+            oracle_text = card['oracle_text'].lower()
+            
+            # Check for references to types
+            for type_name in self.all_types:
+                if re.search(r'\b' + re.escape(type_name) + r'\b', oracle_text):
+                    result['references'].add(f"{type_name}_reference")
+            
+            # Check for references to subtypes
+            for subtype in self.all_subtypes:
+                if re.search(r'\b' + re.escape(subtype) + r'\b', oracle_text):
+                    result['references'].add(f"{subtype}_reference")
+        
+        return result
     
     def analyze_meta_cards(self, meta_cards_df: pd.DataFrame) -> Dict[str, Dict[str, int]]:
         """
         Analyze all cards in the meta and count various card characteristics.
         
+        Args:
+            meta_cards_df: DataFrame containing cards in the meta
+            
         Returns:
-            Dictionary with counts for keywords, card types, subtypes, and references
+            Dictionary with counts for types, supertypes, subtypes, keywords, and references
         """
         # Initialize result dictionaries
         result = {
-            'keywords': {},      # Count of cards with each keyword
-            'card_types': {},    # Count of each card type
-            'subtypes': {},      # Count of each subtype
-            'references': {}     # Count of cards referencing types/subtypes
+            'types': defaultdict(int),
+            'supertypes': defaultdict(int),
+            'subtypes': defaultdict(int),
+            'keywords': defaultdict(int),
+            'references': defaultdict(int)
         }
         
-        # Create a copy of the dataframe to avoid SettingWithCopyWarning
+        # Create a copy to avoid SettingWithCopyWarning
         meta_cards = meta_cards_df.copy()
         
-        # Ensure boolean columns are treated as actual booleans
-        for col in ['is_creature', 'is_land', 'is_instant_sorcery', 'is_multicolored', 'has_etb_effect', 'is_legendary']:
-            if col in meta_cards.columns:
-                # Convert string representations to actual boolean values
-                meta_cards.loc[:, col] = meta_cards[col].map({'True': True, 'False': False, True: True, False: False})
-        
-        # Count card types (using properly converted booleans)
-        result['card_types']['creature'] = meta_cards['is_creature'].sum()
-        result['card_types']['land'] = meta_cards['is_land'].sum()
-        result['card_types']['instant_sorcery'] = meta_cards['is_instant_sorcery'].sum()
-        result['card_types']['multicolored'] = meta_cards['is_multicolored'].sum()
-        result['card_types']['etb_effects'] = meta_cards['has_etb_effect'].sum()
-        result['card_types']['legendary'] = meta_cards['is_legendary'].sum()
-        
-        # Process each card for keywords and subtypes
+        # Process each card
         for _, card in meta_cards.iterrows():
-            self._process_card_keywords(card, result)
-            self._process_card_subtypes(card, result)
-            self._process_card_references(card, result)
-        
-        return result
-    
-    def _process_card_keywords(self, card: pd.Series, result: Dict[str, Dict[str, int]]):
-        """Count keywords for a single card (from both keywords column and oracle text)"""
-        card_keywords = set()
-        
-        # Get keywords from the keywords column
-        if isinstance(card['keywords'], list):
-            for keyword in card['keywords']:
-                card_keywords.add(keyword.lower())
-        
-        # Check oracle text for keywords
-        if pd.notna(card['oracle_text']):
-            oracle_text = card['oracle_text'].lower()
+            card_analysis = self.analyze_card(card)
             
-            # Check for each unique keyword in oracle text
-            for keyword in self.unique_keywords:
-                # Only count if the keyword is fully contained as a word (not part of another word)
-                if re.search(r'\b' + re.escape(keyword) + r'\b', oracle_text) and keyword not in card_keywords:
-                    card_keywords.add(keyword)
+            # Update counts for each category
+            for category in ['types', 'supertypes', 'subtypes', 'keywords', 'references']:
+                for item in card_analysis[category]:
+                    result[category][item] += 1
         
-        # Update counts
-        for keyword in card_keywords:
-            if keyword in result['keywords']:
-                result['keywords'][keyword] += 1
-            else:
-                result['keywords'][keyword] = 1
-    
-    def _process_card_subtypes(self, card: pd.Series, result: Dict[str, Dict[str, int]]):
-        """Count subtypes for a single card"""
-        if pd.isna(card['type_line']) or '—' not in card['type_line']:
-            return
-            
-        # Extract subtypes
-        parts = card['type_line'].split('—', 1)
-        if len(parts) > 1:
-            subtypes_part = parts[1].strip()
-            
-            # Split by spaces and clean each subtype
-            for subtype in subtypes_part.split():
-                # Remove any punctuation and normalize
-                subtype = re.sub(r'[^\w\s]', '', subtype).strip().lower()
-                if subtype and subtype not in ['', '/']: # Exclude empty strings and delimiters
-                    if subtype in result['subtypes']:
-                        result['subtypes'][subtype] += 1
-                    else:
-                        result['subtypes'][subtype] = 1
-    
-    def _process_card_references(self, card: pd.Series, result: Dict[str, Dict[str, int]]):
-        """Count references to card types and subtypes in oracle text"""
-        if pd.isna(card['oracle_text']):
-            return
-            
-        oracle_text = card['oracle_text'].lower()
-        
-        # Check for references to card types
-        type_references = {
-            'creature_reference': 'creature',
-            'land_reference': 'land',
-            'instant_reference': 'instant',
-            'sorcery_reference': 'sorcery',
-            'legendary_reference': 'legendary',
-            'etb_reference': 'enters the battlefield'
+        # Convert defaultdicts to regular dicts for cleaner output
+        return {
+            category: dict(counts) for category, counts in result.items()
         }
-        
-        for ref_key, text in type_references.items():
-            # Only count if the reference appears as a word boundary
-            if re.search(r'\b' + re.escape(text) + r'\b', oracle_text):
-                if ref_key in result['references']:
-                    result['references'][ref_key] += 1
-                else:
-                    result['references'][ref_key] = 1
-        
-        # Check for references to subtypes
-        for subtype in self.unique_subtypes:
-            # Only count if the subtype appears as a word boundary
-            if re.search(r'\b' + re.escape(subtype) + r'\b', oracle_text):
-                ref_key = f"{subtype}_reference"
-                if ref_key in result['references']:
-                    result['references'][ref_key] += 1
-                else:
-                    result['references'][ref_key] = 1
 
 class MetaAnalyzer:
     """
@@ -238,7 +305,7 @@ class MetaAnalyzer:
         self._create_indices()
         # Initialize card analyzer
         self.card_analyzer = MetaCardAnalyzer(card_db)
-        logger.info("Meta Analyzer initialized with Card Analyzer")
+        logger.info("Meta Analyzer initialized")
     
     def _create_indices(self):
         """Create indices for efficient card lookups"""
@@ -248,19 +315,6 @@ class MetaAnalyzer:
         
         # Create basic land set for filtering
         self.basic_lands = {'Plains', 'Island', 'Swamp', 'Mountain', 'Forest'}
-        
-        # Create index for full_name to help with dual-faced cards
-        self.full_name_to_card = {}
-        for _, card in self.card_db.iterrows():
-            if pd.notna(card['full_name']):
-                self.full_name_to_card[card['full_name']] = card.to_dict()
-        
-        # Create mapping from front faces to full_names for split cards
-        self.front_face_to_full_name = {}
-        for full_name, card in self.full_name_to_card.items():
-            if ' // ' in full_name:
-                front_face = full_name.split(' // ')[0]
-                self.front_face_to_full_name[front_face] = full_name
     
     def analyze_meta(self, decklists: Dict[str, List[str]]) -> Dict[str, Any]:
         """Perform meta analysis on a collection of decklists"""
@@ -272,7 +326,7 @@ class MetaAnalyzer:
             meta_speed = self._calculate_meta_speed(processed_decklists)
             logger.info(f"Meta speed calculated as {meta_speed['speed']}")
             
-            # Analyze format characteristics (using our new approach)
+            # Analyze format characteristics (using our dynamic approach)
             format_characteristics = self._analyze_format_characteristics(processed_decklists)
             logger.info("Format characteristics analyzed")
             
@@ -299,34 +353,48 @@ class MetaAnalyzer:
             raise
     
     def _process_decklists(self, decklists: Dict[str, List[str]]) -> Dict[str, Dict]:
-        """Process decklists into a more efficient format"""
+        """Process decklists into a more efficient format with improved handling of split cards"""
         processed = {}
         for deck_name, card_list in decklists.items():
             # Normalize card names in the decklist (convert single slash to double slash)
             normalized_card_list = [normalize_card_name(card) for card in card_list]
-            
+        
             # Count cards
             card_counts = Counter(normalized_card_list)
-            
+        
             # Match cards in database
             matched_cards_df = self._match_cards_in_database(card_counts.keys())
-            
-            # Calculate missing cards by comparing matched card names
-            missing_cards = set(card_counts.keys()) - set(matched_cards_df['name'])
-            
+        
+            # Better detection of missing cards by checking both name and full_name
+            found_names = set(matched_cards_df['name'])
+            found_full_names = set()
+        
+            # Extract valid full names from the matched cards
+            for _, card in matched_cards_df.iterrows():
+                if pd.notna(card['full_name']):
+                    found_full_names.add(card['full_name'])
+        
+            # A card is only missing if it's not in found_names AND not in found_full_names
+            missing_cards = set()
+            for card_name in card_counts.keys():
+                if card_name not in found_names and card_name not in found_full_names:
+                    missing_cards.add(card_name)
+        
             processed[deck_name] = {
                 'card_counts': card_counts,
                 'cards_df': matched_cards_df,
                 'missing_cards': missing_cards
             }
-            
+        
             if missing_cards:
                 logger.warning(f"Deck {deck_name} has {len(missing_cards)} unrecognized cards: {missing_cards}")
-        
+    
         return processed
     
     def _match_cards_in_database(self, card_names: set) -> pd.DataFrame:
-        """Match card names to database entries with handling of dual-faced cards"""
+        """
+        Match card names to database entries with improved handling of split cards
+        """
         # Create an empty DataFrame to store matched cards
         matched_cards = pd.DataFrame()
         remaining_cards = set(card_names)
@@ -336,26 +404,13 @@ class MetaAnalyzer:
         if not exact_matches.empty:
             matched_cards = pd.concat([matched_cards, exact_matches])
             remaining_cards -= set(exact_matches['name'])
-            
-        # For each remaining card, try to match with full_name
+        
+        # For remaining cards, check if they match anything in the full_name column
         if remaining_cards:
             full_name_matches = self.card_db[self.card_db['full_name'].isin(remaining_cards)]
             if not full_name_matches.empty:
                 matched_cards = pd.concat([matched_cards, full_name_matches])
                 remaining_cards -= set(full_name_matches['full_name'])
-                
-        # For each remaining card, check if it might be a split card
-        if remaining_cards:
-            for card_name in list(remaining_cards):
-                # Check if this is a split card with '//' format
-                if '//' in card_name:
-                    front_face = card_name.split(' // ')[0].strip()
-                    
-                    # Try to find the front face in the database
-                    front_face_matches = self.card_db[self.card_db['name'] == front_face]
-                    if not front_face_matches.empty:
-                        matched_cards = pd.concat([matched_cards, front_face_matches])
-                        remaining_cards.remove(card_name)
         
         # Return all matched cards
         return matched_cards
@@ -378,6 +433,10 @@ class MetaAnalyzer:
                 card_name = card['name']
                 count = deck_info['card_counts'].get(card_name, 0)
                 
+                # If count is 0, try checking if this card's full_name is in the card_counts
+                if count == 0 and pd.notna(card['full_name']):
+                    count = deck_info['card_counts'].get(card['full_name'], 0)
+                
                 if count > 0 and not card['is_land']:
                     total_cards += count
                     total_cmc += card['cmc'] * count
@@ -391,8 +450,7 @@ class MetaAnalyzer:
             return {
                 'speed': 'unknown',
                 'avg_cmc': 0.0,
-                'early_game_ratio': 0.0,
-                'interaction_ratio': 0.0  # Keeping this for compatibility
+                'early_game_ratio': 0.0
             }
         
         avg_cmc = total_cmc / total_cards
@@ -402,19 +460,18 @@ class MetaAnalyzer:
         if avg_cmc < 2.5 and early_game_ratio > 0.3:
             speed = 'fast'
         elif avg_cmc > 3.5 or early_game_ratio < 0.2:
-            speed = 'medium'
-        else:
             speed = 'slow'
+        else:
+            speed = 'medium'
         
         return {
             'speed': speed,
             'avg_cmc': avg_cmc,
-            'early_game_ratio': early_game_ratio,
-            'interaction_ratio': 0.0  # Placeholder value for compatibility
+            'early_game_ratio': early_game_ratio
         }
     
-    def _analyze_format_characteristics(self, processed_decklists: Dict[str, Dict]) -> Dict[str, Any]:
-        """Analyze format characteristics using our new approach"""
+    def _analyze_format_characteristics(self, processed_decklists: Dict[str, Dict]) -> Dict[str, Dict[str, int]]:
+        """Analyze format characteristics using our dynamic approach"""
         # Get all cards used in all decklists
         all_meta_cards = set()
         for deck_info in processed_decklists.values():
@@ -580,35 +637,36 @@ def print_meta_analysis_report(meta_analysis: Dict[str, Any]):
     
     # Card Types
     print("\n2. Card Types in Meta:")
-    card_types = meta_analysis['format_characteristics']['card_types']
-    for card_type, count in sorted(card_types.items(), key=lambda x: x[1], reverse=True):
-        print(f"   {card_type.replace('_', ' ').title()}: {count}")
+    for type_name, count in sorted(meta_analysis['format_characteristics']['types'].items(), key=lambda x: x[1], reverse=True):
+        print(f"   {type_name.title()}: {count}")
+    
+    # Supertypes
+    print("\n3. Supertypes in Meta:")
+    for supertype, count in sorted(meta_analysis['format_characteristics']['supertypes'].items(), key=lambda x: x[1], reverse=True):
+        print(f"   {supertype.title()}: {count}")
     
     # Keywords
-    print("\n3. Keywords in Meta:")
-    keywords = meta_analysis['format_characteristics']['keywords']
-    for keyword, count in sorted(keywords.items(), key=lambda x: x[1], reverse=True)[:15]:
+    print("\n4. Keywords in Meta:")
+    for keyword, count in sorted(meta_analysis['format_characteristics']['keywords'].items(), key=lambda x: x[1], reverse=True)[:15]:
         print(f"   {keyword.title()}: {count}")
     
     # Subtypes
-    print("\n4. Most Common Subtypes:")
-    subtypes = meta_analysis['format_characteristics']['subtypes']
-    for subtype, count in sorted(subtypes.items(), key=lambda x: x[1], reverse=True)[:10]:
+    print("\n5. Most Common Subtypes:")
+    for subtype, count in sorted(meta_analysis['format_characteristics']['subtypes'].items(), key=lambda x: x[1], reverse=True)[:10]:
         print(f"   {subtype.title()}: {count}")
     
     # References
-    print("\n5. Type References in Oracle Text:")
-    references = meta_analysis['format_characteristics']['references']
-    for ref, count in sorted(references.items(), key=lambda x: x[1], reverse=True)[:10]:
+    print("\n6. Type References in Oracle Text:")
+    for ref, count in sorted(meta_analysis['format_characteristics']['references'].items(), key=lambda x: x[1], reverse=True)[:10]:
         print(f"   {ref.replace('_reference', '').replace('_', ' ').title()}: {count}")
     
     # Most Played Cards
-    print("\n6. Most Played Cards:")
+    print("\n7. Most Played Cards:")
     for card_info in meta_analysis['meta_statistics']['most_played_cards']:
         print(f"   {card_info['card']}: {card_info['count']} copies")
     
     # Key Cards
-    print("\n7. Key Cards (found in multiple decks):")
+    print("\n8. Key Cards (found in multiple decks):")
     key_cards = meta_analysis['meta_statistics']['key_cards']
     for i, card in enumerate(key_cards[:20]):
         print(f"   {card}")
