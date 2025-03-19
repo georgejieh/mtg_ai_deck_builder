@@ -10,19 +10,23 @@ _Unleash the power of **Machine Learning** to forge next-level **Magic: The Gath
 
 ### Why This Project?
 - **Adaptive Metagame Analysis**: Stay ahead of format shifts by re-training on newly released sets or emergent archetypes.
-- **Unsupervised Creativity**: Rely on an unsupervised learning framework to find unexpected or “under-the-radar” combinations.
+- **Unsupervised Creativity**: Rely on an unsupervised learning framework to find unexpected or "under-the-radar" combinations.
 - **Data-Driven**: Harness card data from Scryfall, letting the model continuously refine deck lists as the meta evolves.
 - **Solo & Open-Source**: This is primarily a solo project, but feel free to fork and experiment on your own!
 
 ## Current Status
-> :warning: **Work in progress**: The current scripts provide only basic, “cookie-cutter” analyses.
+> :warning: **Work in progress**: The current scripts provide only basic, "cookie-cutter" analyses.
 
 - **[`fetch_standard_legal_cards.py`]**  
   Fetches all Standard-legal cards from the Scryfall API and outputs them as a CSV dataset.
 - **[`deck_analysis.py`]**  
   Analyzes an input deck list to produce baseline archetype insights. Uses very simplified guidelines, so suggestions may not be fully accurate yet.
-- **[`analyze_meta.py`]**  
-  Explores decks that have more than 0.5% play, applying a similarly basic outline to identify **interactions**, **keywords**, and **synergies**. Future enhancements will improve detection of newly introduced mechanics.
+- **[`analyze_meta_old_try_to_parse.py`]**  
+  The older meta analysis script that attempts to detect archetypes, synergies, and card mechanics. More sophisticated but may generate inaccurate results when the card pool changes.
+- **[`analyze_meta_using_keywords.py`]**  
+  An alternative meta analysis approach focused on analyzing the actual data without making assumptions. Less sophisticated but more reliable when the card pool changes.
+
+Both scripts are maintained in the repository as they provide complementary insights for different purposes.
 
 ## Key Features
 1. **Scryfall Integration**  
@@ -35,7 +39,7 @@ _Unleash the power of **Machine Learning** to forge next-level **Magic: The Gath
    Plans to integrate an AI model that **auto-generates** decklists—unconstrained by conventional archetype thinking.
 
 ## Installation
-Since this project is still under active development, an official list of dependencies (`requirements.txt`) isn’t available yet. You’ll likely need:
+Since this project is still under active development, an official list of dependencies (`requirements.txt`) isn't available yet. You'll likely need:
 - **Python 3.x**
 - Common data libraries like **pandas**, **numpy**, **requests**, etc.
 
@@ -58,6 +62,16 @@ python fetch_standard_legal_cards.py
 To analyze a single deck list, place your deck in a `.txt` file and run:
 ```bash
 python deck_analysis.py /path/to/decklist.txt
+```
+
+### 3. Analyze the Meta
+You can use either meta analysis script based on your needs:
+```bash
+# For more sophisticated (but potentially less reliable) analysis:
+python analyze_meta_old_try_to_parse.py --cards data/standard_cards.csv --decks current_standard_decks
+
+# For more reliable keyword-based analysis:
+python analyze_meta_using_keywords.py --cards data/standard_cards.csv --decks current_standard_decks
 ```
 
 #### Decklist Format
@@ -109,7 +123,7 @@ The **blank line** between `4 Underground River` and `4 Duress` indicates where 
 - **Neural Network Model**  
   Implement an unsupervised (possibly semi-supervised) approach to **auto-generate** innovative decklists.
 - **Self-Training**  
-  Continually retrain as new sets and meta changes arise, refining synergy detection beyond current “cookie-cutter” methods.
+  Continually retrain as new sets and meta changes arise, refining synergy detection beyond current "cookie-cutter" methods.
 - **User Interface**  
   Explore a simple web-based front-end for deck analysis and meta breakdown.
 
