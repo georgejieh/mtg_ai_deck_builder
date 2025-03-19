@@ -1,2179 +1,244 @@
 {
   "meta_speed": {
     "speed": "fast",
-    "avg_cmc": 2.365609348914858,
-    "early_game_ratio": 0.669449081803005,
-    "interaction_ratio": 0.29716193656093487
+    "avg_cmc": 2.3556485355648538,
+    "early_game_ratio": 0.6711297071129707,
+    "interaction_ratio": 0.0
   },
   "format_characteristics": {
-    "mechanics": {
-      "token_generation": 515,
-      "creature": 2009,
-      "flying": 369,
-      "big_creature": 517,
-      "removal": 213,
-      "damage": 195,
-      "life_gain": 214,
-      "dies_trigger": 115,
-      "ward": 67,
-      "small_creature": 1020,
-      "card_draw": 447,
-      "lifelink": 59,
-      "transform": 127,
-      "pump": 524,
-      "vigilance": 138,
-      "equip": 79,
-      "deathtouch": 55,
-      "mill": 86,
-      "start your engines!": 40,
-      "trample": 140,
-      "kicker": 55,
-      "discard": 39,
-      "cycling": 50,
-      "crew": 59,
-      "enchant": 78,
-      "flash": 99,
-      "tutor": 105,
-      "disguise": 36,
-      "plot": 37,
-      "investigate": 40,
-      "ramp": 40,
-      "treasure": 65,
-      "reach": 84,
-      "surveil": 79,
-      "scry": 93,
-      "menace": 81,
-      "haste": 88,
-      "food": 40
+    "keywords": {
+      "flying": 31,
+      "manifest": 3,
+      "manifest dread": 3,
+      "exhaust": 2,
+      "double strike": 4,
+      "collect evidence": 1,
+      "corrupted": 1,
+      "flash": 8,
+      "plot": 2,
+      "delirium": 5,
+      "trample": 17,
+      "haste": 19,
+      "role token": 3,
+      "treasure": 2,
+      "indestructible": 4,
+      "food": 4,
+      "mill": 9,
+      "kicker": 3,
+      "fight": 1,
+      "scry": 7,
+      "crew": 5,
+      "hideaway": 1,
+      "surveil": 13,
+      "lifelink": 12,
+      "equip": 3,
+      "deathtouch": 5,
+      "hexproof from": 1,
+      "menace": 3,
+      "hexproof": 6,
+      "valiant": 3,
+      "prowess": 5,
+      "vigilance": 13,
+      "offspring": 4,
+      "read ahead": 1,
+      "explore": 4,
+      "domain": 2,
+      "ward": 4,
+      "gift": 1,
+      "transform": 3,
+      "ninjutsu": 1,
+      "convoke": 1,
+      "toxic": 2,
+      "compleated": 2,
+      "max speed": 1,
+      "start your engines!": 1,
+      "investigate": 1,
+      "eerie": 1,
+      "impending": 3,
+      "cycling": 1,
+      "spree": 2,
+      "battle cry": 1,
+      "saddle": 1,
+      "first strike": 2,
+      "enchant": 2,
+      "prototype": 1,
+      "incubate": 1,
+      "protection": 1,
+      "bargain": 1,
+      "unearth": 1
     },
-    "synergies": {
-      "tribal": {
-        "_synergy": {
-          "enablers": [
-            "Ghost Vacuum",
-            "Unable to Scream"
-          ],
-          "payoffs": [
-            "Caretaker's Talent",
-            "Case of the Gateway Express",
-            "Flowerfoot Swordmaster",
-            "Heroic Reinforcements",
-            "Imodane's Recruiter",
-            "Kaito, Bane of Nightmares",
-            "Mabel, Heir to Cragflame",
-            "Nissa, Ascended Animist",
-            "Restless Prairie",
-            "Rockface Village",
-            "Valley Floodcaller",
-            "Vivien Reid",
-            "Warleader's Call",
-            "Wilt-Leaf Liege",
-            "Yotian Frontliner"
-          ]
-        }
-      },
-      "keyword": {},
-      "mechanical": {
-        "discard_synergy": {
-          "enablers": [
-            "Bitter Reunion",
-            "Case of the Crimson Pulse",
-            "Chandra, Spark Hunter",
-            "Chart a Course",
-            "Duress",
-            "Fear of Missing Out",
-            "Gastal Thrillroller",
-            "Gix, Yawgmoth Praetor",
-            "Harvester of Misery",
-            "Herd Migration",
-            "Hopeless Nightmare",
-            "Inti, Seneschal of the Sun",
-            "Obstinate Baloth",
-            "Oildeep Gearhulk",
-            "Oracle of Tragedy",
-            "Pest Control",
-            "Ral, Crackling Wit",
-            "Three Steps Ahead",
-            "Wilt-Leaf Liege"
-          ],
-          "payoffs": [
-            "Bitter Reunion",
-            "Case of the Crimson Pulse",
-            "Fear of Missing Out",
-            "Hopeless Nightmare",
-            "Inti, Seneschal of the Sun",
-            "Oildeep Gearhulk"
-          ]
-        },
-        "damage_synergy": {
-          "enablers": [
-            "Abrade",
-            "Adarkar Wastes",
-            "Arabella, Abandoned Doll",
-            "Battlefield Forge",
-            "Beastie Beatdown",
-            "Boltwave",
-            "Boros Charm",
-            "Brushland",
-            "Burst Lightning",
-            "Bushwhack",
-            "Case of the Gateway Express",
-            "Caves of Koilos",
-            "Chandra, Spark Hunter",
-            "Elspeth's Smite",
-            "Enduring Curiosity",
-            "Gix, Yawgmoth Praetor",
-            "Heartfire Hero",
-            "Hired Claw",
-            "Karplusan Forest",
-            "Lightning Helix",
-            "Lightning Strike",
-            "Lithomantic Barrage",
-            "Llanowar Wastes",
-            "Lukka, Bound to Ruin",
-            "Mirrex",
-            "Obliterating Bolt",
-            "Overlord of the Boilerbilges",
-            "Pyroclasm",
-            "Roaring Furnace",
-            "Scorching Shot",
-            "Screaming Nemesis",
-            "Shivan Reef",
-            "Shock",
-            "Sunspine Lynx",
-            "Sword of Once and Future",
-            "The Filigree Sylex",
-            "Torch the Tower",
-            "Underground River",
-            "Warleader's Call",
-            "Witchstalker Frenzy",
-            "Yavimaya Coast"
-          ],
-          "payoffs": [
-            "Arabella, Abandoned Doll",
-            "Case of the Gateway Express",
-            "Chandra, Spark Hunter",
-            "Enduring Curiosity",
-            "Gix, Yawgmoth Praetor",
-            "Heartfire Hero",
-            "Hired Claw",
-            "Overlord of the Boilerbilges",
-            "Roaring Furnace",
-            "Screaming Nemesis",
-            "Sunspine Lynx",
-            "Sword of Once and Future",
-            "Warleader's Call"
-          ]
-        },
-        "scry_synergy": {
-          "enablers": [
-            "Carrot Cake",
-            "Hopeless Nightmare",
-            "Kaya, Intangible Slayer",
-            "Ruin-Lurker Bat",
-            "Torch the Tower",
-            "Voyager Glidecar",
-            "Warden of the Inner Sky"
-          ],
-          "payoffs": [
-            "Carrot Cake",
-            "Hopeless Nightmare",
-            "Ruin-Lurker Bat",
-            "Voyager Glidecar"
-          ]
-        },
-        "surveil_synergy": {
-          "enablers": [
-            "Commercial District",
-            "Conduit Pylons",
-            "Elegant Parlor",
-            "Ephara's Dispersal",
-            "Grim Bauble",
-            "Kaito, Bane of Nightmares",
-            "Kaya, Spirits' Justice",
-            "Lush Portico",
-            "Meticulous Archive",
-            "Shadowy Backstreet",
-            "Sword of Once and Future",
-            "Undercity Sewers",
-            "Underground Mortuary"
-          ],
-          "payoffs": [
-            "Commercial District",
-            "Conduit Pylons",
-            "Elegant Parlor",
-            "Lush Portico",
-            "Meticulous Archive",
-            "Shadowy Backstreet",
-            "Sword of Once and Future",
-            "Undercity Sewers",
-            "Underground Mortuary"
-          ]
-        },
-        "mill_synergy": {
-          "enablers": [
-            "Bristlebud Farmer",
-            "Dredger's Insight",
-            "Fallaji Archaeologist",
-            "Founding the Third Path",
-            "Patchwork Beastie",
-            "Restless Reef",
-            "Seed of Hope",
-            "Wrenn and Realmbreaker"
-          ],
-          "payoffs": [
-            "Bristlebud Farmer",
-            "Dredger's Insight",
-            "Fallaji Archaeologist",
-            "Restless Reef"
-          ]
-        }
-      },
-      "room": {
-        "unlock_payoffs": [
-          "Defiled Crypt",
-          "Roaring Furnace"
-        ],
-        "graveyard_room_synergy": [
-          "Defiled Crypt"
-        ],
-        "token_generating_rooms": [
-          "Defiled Crypt"
-        ],
-        "room_unlock_synergy": {
-          "enablers": [
-            "Defiled Crypt",
-            "Optimistic Scavenger",
-            "Roaring Furnace"
-          ],
-          "payoffs": [
-            "Defiled Crypt",
-            "Optimistic Scavenger",
-            "Roaring Furnace"
-          ]
-        }
-      }
+    "card_types": {
+      "creature": "85",
+      "land": "54",
+      "instant_sorcery": "84",
+      "multicolored": "28",
+      "etb_effects": "0",
+      "legendary": "26"
     },
-    "archetypes": {
-      "aggro": {
-        "creature_ratio": [
-          0.4,
-          0.8
-        ],
-        "avg_cmc": [
-          1.0,
-          2.5
-        ],
-        "early_threat_ratio": [
-          0.3,
-          1.0
-        ],
-        "interaction_ratio": [
-          0.0,
-          0.3
-        ],
-        "card_advantage_ratio": [
-          0.0,
-          0.2
-        ]
-      },
-      "midrange": {
-        "creature_ratio": [
-          0.3,
-          0.6
-        ],
-        "avg_cmc": [
-          2.5,
-          3.5
-        ],
-        "early_threat_ratio": [
-          0.2,
-          0.4
-        ],
-        "interaction_ratio": [
-          0.2,
-          0.4
-        ],
-        "card_advantage_ratio": [
-          0.2,
-          0.4
-        ]
-      },
-      "control": {
-        "creature_ratio": [
-          0.1,
-          0.4
-        ],
-        "avg_cmc": [
-          2.5,
-          4.5
-        ],
-        "early_threat_ratio": [
-          0.0,
-          0.2
-        ],
-        "interaction_ratio": [
-          0.3,
-          0.7
-        ],
-        "card_advantage_ratio": [
-          0.3,
-          0.6
-        ]
-      },
-      "combo": {
-        "creature_ratio": [
-          0.1,
-          0.5
-        ],
-        "avg_cmc": [
-          2.0,
-          4.0
-        ],
-        "early_threat_ratio": [
-          0.1,
-          0.3
-        ],
-        "interaction_ratio": [
-          0.2,
-          0.4
-        ],
-        "card_advantage_ratio": [
-          0.3,
-          0.6
-        ]
-      },
-      "tempo": {
-        "creature_ratio": [
-          0.3,
-          0.5
-        ],
-        "avg_cmc": [
-          1.5,
-          3.0
-        ],
-        "early_threat_ratio": [
-          0.2,
-          0.5
-        ],
-        "interaction_ratio": [
-          0.2,
-          0.5
-        ],
-        "card_advantage_ratio": [
-          0.1,
-          0.3
-        ]
-      }
-    }
-  },
-  "deck_analyses": {
-    "Deck - Azorius Aggro": {
-      "name": "Deck - Azorius Aggro",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "aggro",
-          "combo"
-        ],
-        "scores": {
-          "aggro": 0.36078431372549014,
-          "midrange": 0.21568627450980368,
-          "control": 0.12352941176470585,
-          "combo": 0.2941176470588235,
-          "tempo": 0.2862745098039216
-        },
-        "meta_speed_alignment": 0.17004509004688834,
-        "statistics": {
-          "creature_ratio": 0.5882352941176471,
-          "avg_cmc": 2.5294117647058822,
-          "early_threat_ratio": 0.058823529411764705,
-          "interaction_ratio": 0.29411764705882354,
-          "card_advantage_ratio": 0.11764705882352941
-        }
-      },
-      "colors": {
-        "B": 0.55,
-        "W": 0.45
-      },
-      "mechanics": {
-        "corrupted": 4,
-        "removal": 18,
-        "damage": 4,
-        "board_wipe": 3,
-        "flying": 11,
-        "lifelink": 10,
-        "tutor": 2,
-        "ramp": 2,
-        "discard": 3,
-        "hexproof from": 2,
-        "hexproof": 2,
-        "pump": 5,
-        "dies_trigger": 6,
-        "explore": 3,
-        "card_draw": 5,
-        "token_generation": 6,
-        "life_gain": 7,
-        "scry": 8,
-        "battle cry": 3,
-        "deathtouch": 2,
-        "menace": 4,
-        "vigilance": 3
-      },
-      "card_count": 23,
-      "missing_cards": [],
-      "verified_cards": [
-        "Anoint with Affliction",
-        "Caves of Koilos",
-        "Concealed Courtyard",
-        "Day of Judgment",
-        "Deep-Cavern Bat",
-        "Demolition Field",
-        "Duress",
-        "Elenda, Saint of Dusk",
-        "Essence Channeler",
-        "Exorcise",
-        "Get Lost",
-        "Gix, Yawgmoth Praetor",
-        "Go for the Throat",
-        "Legions to Ashes",
-        "Lord Skitter, Sewer King",
-        "Plains",
-        "Restless Fortress",
-        "Ruin-Lurker Bat",
-        "Sanguine Evangelist",
-        "Sheoldred, the Apocalypse",
-        "Swamp",
-        "Valley Rotcaller",
-        "Zoraline, Cosmos Caller"
-      ]
+    "subtypes": {
+      "eye": 1,
+      "turtle": 1,
+      "goblin": 2,
+      "artificer": 4,
+      "ajani": 1,
+      "toy": 1,
+      "bird": 3,
+      "rogue": 3,
+      "elemental": 2,
+      "elk": 2,
+      "plant": 1,
+      "druid": 3,
+      "class": 3,
+      "food": 1,
+      "case": 2,
+      "chandra": 1,
+      "mouse": 6,
+      "sorcery": 3,
+      "adventure": 7,
+      "mountain": 3,
+      "forest": 4,
+      "desert": 1,
+      "bat": 4,
+      "room": 4,
+      "enchantment": 4,
+      "equipment": 2,
+      "plains": 5,
+      "vampire": 3,
+      "knight": 6,
+      "warrior": 3,
+      "cat": 2,
+      "glimmer": 3,
+      "sheep": 1,
+      "cleric": 5,
+      "human": 20,
+      "scout": 5,
+      "nightmare": 2,
+      "merfolk": 3,
+      "soldier": 7,
+      "saga": 2,
+      "vehicle": 4,
+      "phyrexian": 2,
+      "praetor": 2,
+      "spirit": 2,
+      "djinn": 1,
+      "insect": 1,
+      "lizard": 1,
+      "mercenary": 1,
+      "siege": 2,
+      "island": 3,
+      "kaito": 1,
+      "kaya": 2,
+      "raccoon": 1,
+      "elf": 2,
+      "rat": 1,
+      "noble": 1,
+      "lukka": 1,
+      "sphere": 1,
+      "bard": 1,
+      "monk": 3,
+      "robot": 1,
+      "nissa": 1,
+      "detective": 1,
+      "faerie": 2,
+      "beast": 2,
+      "construct": 1,
+      "wizard": 7,
+      "avatar": 3,
+      "horror": 3,
+      "rabbit": 2,
+      "instant": 2,
+      "ral": 1,
+      "unicorn": 2,
+      "ooze": 1,
+      "mount": 1,
+      "swamp": 4,
+      "aura": 2,
+      "siren": 1,
+      "pirate": 1,
+      "angel": 1,
+      "cave": 1,
+      "troll": 1,
+      "shaman": 1,
+      "otter": 2,
+      "dinosaur": 1,
+      "squirrel": 1,
+      "warlock": 1,
+      "vivien": 1,
+      "scarecrow": 1,
+      "wrenn": 1
     },
-    "Deck - Azorius Control": {
-      "name": "Deck - Azorius Control",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "combo",
-          "control"
-        ],
-        "scores": {
-          "aggro": 0.16666666666666669,
-          "midrange": 0.23999999999999994,
-          "control": 0.36333333333333334,
-          "combo": 0.36999999999999994,
-          "tempo": 0.16666666666666666
-        },
-        "meta_speed_alignment": 0.2117654551630435,
-        "statistics": {
-          "creature_ratio": 0.2,
-          "avg_cmc": 3.15,
-          "early_threat_ratio": 0.05,
-          "interaction_ratio": 0.25,
-          "card_advantage_ratio": 0.15
-        }
-      },
-      "colors": {
-        "W": 0.23809523809523808,
-        "U": 0.7142857142857143,
-        "R": 0.047619047619047616
-      },
-      "mechanics": {
-        "damage": 3,
-        "surveil": 20,
-        "counter_spell": 5,
-        "bounce": 6,
-        "tutor": 2,
-        "ramp": 2,
-        "mill": 12,
-        "pump": 1,
-        "gift": 2,
-        "token_generation": 3,
-        "transform": 5,
-        "card_draw": 3,
-        "dies_trigger": 2,
-        "flying": 4,
-        "vigilance": 4,
-        "incubate": 1,
-        "board_wipe": 1,
-        "enchant": 1,
-        "manifest": 1,
-        "manifest dread": 1
-      },
-      "card_count": 29,
-      "missing_cards": [],
-      "verified_cards": [
-        "Abuelo's Awakening",
-        "Adarkar Wastes",
-        "Blast Zone",
-        "Chart a Course",
-        "Conduit Pylons",
-        "Confounding Riddle",
-        "Ephara's Dispersal",
-        "Fabled Passage",
-        "Fallaji Archaeologist",
-        "Floodfarm Verge",
-        "Grand Abolisher",
-        "Heroic Reinforcements",
-        "Into the Flood Maw",
-        "Invasion of Arcavios",
-        "Island",
-        "Meticulous Archive",
-        "Minor Misstep",
-        "Moment of Truth",
-        "Negate",
-        "Omniscience",
-        "Oracle of Tragedy",
-        "Picklock Prankster",
-        "Plains",
-        "Seachrome Coast",
-        "Season of Weaving",
-        "Sunfall",
-        "Temporary Lockdown",
-        "Unable to Scream",
-        "Unnerving Grasp"
-      ]
-    },
-    "Deck - Azorius Convoke": {
-      "name": "Deck - Azorius Convoke",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "tempo",
-          "aggro"
-        ],
-        "scores": {
-          "aggro": 0.30666666666666653,
-          "midrange": 0.23333333333333317,
-          "control": 0.1,
-          "combo": 0.16999999999999993,
-          "tempo": 0.33999999999999997
-        },
-        "meta_speed_alignment": 0.1579837522644928,
-        "statistics": {
-          "creature_ratio": 0.5,
-          "avg_cmc": 2.35,
-          "early_threat_ratio": 0.05,
-          "interaction_ratio": 0.25,
-          "card_advantage_ratio": 0.15
-        }
-      },
-      "colors": {
-        "W": 0.631578947368421,
-        "U": 0.3684210526315789
-      },
-      "mechanics": {
-        "damage": 4,
-        "token_generation": 15,
-        "removal": 8,
-        "flash": 10,
-        "card_draw": 7,
-        "dies_trigger": 4,
-        "vigilance": 5,
-        "flying": 9,
-        "investigate": 4,
-        "kicker": 3,
-        "counter_spell": 3,
-        "board_wipe": 3,
-        "battle cry": 1,
-        "pump": 5,
-        "enchant": 4,
-        "explore": 6,
-        "prototype": 1,
-        "crew": 3,
-        "scry": 10
-      },
-      "card_count": 27,
-      "missing_cards": [],
-      "verified_cards": [
-        "Adarkar Wastes",
-        "Ajani, Caller of the Pride",
-        "Destroy Evil",
-        "Enduring Curiosity",
-        "Floodfarm Verge",
-        "Floodpits Drowner",
-        "Glass Casket",
-        "Island",
-        "Mockingbird",
-        "Novice Inspector",
-        "Plains",
-        "Protect the Negotiators",
-        "Raise the Past",
-        "Regal Bunnicorn",
-        "Rest in Peace",
-        "Restless Anchorage",
-        "Sanguine Evangelist",
-        "Seachrome Coast",
-        "Sheltered by Ghosts",
-        "Soulstone Sanctuary",
-        "Split Up",
-        "Spyglass Siren",
-        "Steel Seraph",
-        "Subterranean Schooner",
-        "Tishana's Tidebinder",
-        "Voyager Glidecar",
-        "Warden of the Inner Sky"
-      ]
-    },
-    "Deck - Azorius Oculus": {
-      "name": "Deck - Azorius Oculus",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "aggro",
-          "control"
-        ],
-        "scores": {
-          "aggro": 0.3368421052631579,
-          "midrange": 0.0,
-          "control": 0.32105263157894737,
-          "combo": 0.11052631578947367,
-          "tempo": 0.12982456140350873
-        },
-        "meta_speed_alignment": 0.1309159873188406,
-        "statistics": {
-          "creature_ratio": 0.21052631578947367,
-          "avg_cmc": 1.9473684210526316,
-          "early_threat_ratio": 0.0,
-          "interaction_ratio": 0.5263157894736842,
-          "card_advantage_ratio": 0.10526315789473684
-        }
-      },
-      "colors": {
-        "U": 0.5,
-        "W": 0.5
-      },
-      "mechanics": {
-        "flying": 12,
-        "manifest": 4,
-        "manifest dread": 4,
-        "damage": 6,
-        "bounce": 2,
-        "removal": 12,
-        "read ahead": 4,
-        "mill": 8,
-        "surveil": 10,
-        "prowess": 2,
-        "pump": 3,
-        "token_generation": 2,
-        "vigilance": 4,
-        "enchant": 1
-      },
-      "card_count": 26,
-      "missing_cards": [],
-      "verified_cards": [
-        "Abhorrent Oculus",
-        "Adarkar Wastes",
-        "Bounce Off",
-        "Chart a Course",
-        "Destroy Evil",
-        "Elspeth's Smite",
-        "Exorcise",
-        "Floodfarm Verge",
-        "Founding the Third Path",
-        "Ghost Vacuum",
-        "Haughty Djinn",
-        "Helping Hand",
-        "Island",
-        "Meticulous Archive",
-        "Moment of Truth",
-        "Monastery Mentor",
-        "Negate",
-        "Picklock Prankster",
-        "Plains",
-        "Recommission",
-        "Seachrome Coast",
-        "Sheltered by Ghosts",
-        "Soul Partition",
-        "Spell Pierce",
-        "Temporary Lockdown",
-        "Undercity Sewers"
-      ]
-    },
-    "Deck - Azorius Omniscience Combo": {
-      "name": "Deck - Azorius Omniscience Combo",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "control",
-          "combo"
-        ],
-        "scores": {
-          "aggro": 0.0666666666666667,
-          "midrange": 0.2222222222222224,
-          "control": 0.38888888888888884,
-          "combo": 0.34444444444444466,
-          "tempo": 0.31111111111111106
-        },
-        "meta_speed_alignment": 0.21446689679246014,
-        "statistics": {
-          "creature_ratio": 0.16666666666666666,
-          "avg_cmc": 3.2777777777777777,
-          "early_threat_ratio": 0.05555555555555555,
-          "interaction_ratio": 0.3333333333333333,
-          "card_advantage_ratio": 0.16666666666666666
-        }
-      },
-      "colors": {
-        "W": 0.2777777777777778,
-        "U": 0.7222222222222222
-      },
-      "mechanics": {
-        "damage": 4,
-        "surveil": 18,
-        "counter_spell": 6,
-        "removal": 2,
-        "bounce": 4,
-        "tutor": 2,
-        "ramp": 2,
-        "mill": 12,
-        "explore": 1,
-        "transform": 4,
-        "flying": 4,
-        "vigilance": 4,
-        "card_draw": 1,
-        "manifest": 1,
-        "manifest dread": 1
-      },
-      "card_count": 27,
-      "missing_cards": [],
-      "verified_cards": [
-        "Abuelo's Awakening",
-        "Adarkar Wastes",
-        "Blast Zone",
-        "Chart a Course",
-        "Conduit Pylons",
-        "Confounding Riddle",
-        "Disenchant",
-        "Ephara's Dispersal",
-        "Fabled Passage",
-        "Fallaji Archaeologist",
-        "Floodfarm Verge",
-        "Get Lost",
-        "Grand Abolisher",
-        "Invasion of Arcavios",
-        "Island",
-        "Meticulous Archive",
-        "Minor Misstep",
-        "Moment of Truth",
-        "Negate",
-        "Omniscience",
-        "Picklock Prankster",
-        "Plains",
-        "Seachrome Coast",
-        "Season of Weaving",
-        "Temporary Lockdown",
-        "This Town Ain't Big Enough",
-        "Unnerving Grasp"
-      ]
-    },
-    "Deck - Boros Aggro": {
-      "name": "Deck - Boros Aggro",
-      "archetype": {
-        "primary_archetype": "aggro",
-        "scores": {
-          "aggro": 0.425,
-          "midrange": 0.10000000000000005,
-          "control": 0.18333333333333335,
-          "combo": 0.17499999999999996,
-          "tempo": 0.2666666666666666
-        },
-        "meta_speed_alignment": 0.13025256170742755,
-        "statistics": {
-          "creature_ratio": 0.375,
-          "avg_cmc": 1.9375,
-          "early_threat_ratio": 0.125,
-          "interaction_ratio": 0.1875,
-          "card_advantage_ratio": 0.0625
-        }
-      },
-      "colors": {
-        "R": 0.5789473684210527,
-        "W": 0.42105263157894735
-      },
-      "mechanics": {
-        "damage": 17,
-        "role token": 5,
-        "pump": 20,
-        "token_generation": 16,
-        "kicker": 4,
-        "card_draw": 3,
-        "removal": 7,
-        "prowess": 4,
-        "valiant": 12,
-        "haste": 8,
-        "offspring": 8,
-        "crew": 4,
-        "trample": 4,
-        "dies_trigger": 4,
-        "life_gain": 2,
-        "board_wipe": 1,
-        "enchant": 4
-      },
-      "card_count": 22,
-      "missing_cards": [],
-      "verified_cards": [
-        "Battlefield Forge",
-        "Become Brutes",
-        "Boros Charm",
-        "Burst Lightning",
-        "Cavern of Souls",
-        "Chandra, Spark Hunter",
-        "Cheeky House-Mouse",
-        "Destroy Evil",
-        "Emberheart Challenger",
-        "Flowerfoot Swordmaster",
-        "Gastal Thrillroller",
-        "Heartfire Hero",
-        "Inspiring Vantage",
-        "Lightning Helix",
-        "Mabel, Heir to Cragflame",
-        "Manifold Mouse",
-        "Monstrous Rage",
-        "Mountain",
-        "Plains",
-        "Rest in Peace",
-        "Sheltered by Ghosts",
-        "Sunbillow Verge"
-      ]
-    },
-    "Deck - Boros Burn": {
-      "name": "Deck - Boros Burn",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "combo",
-          "tempo"
-        ],
-        "scores": {
-          "aggro": 0.2333333333333333,
-          "midrange": 0.19999999999999996,
-          "control": 0.18333333333333335,
-          "combo": 0.27499999999999986,
-          "tempo": 0.25
-        },
-        "meta_speed_alignment": 0.10924408401268118,
-        "statistics": {
-          "creature_ratio": 0.375,
-          "avg_cmc": 1.625,
-          "early_threat_ratio": 0.125,
-          "interaction_ratio": 0.25,
-          "card_advantage_ratio": 0.0
-        }
-      },
-      "colors": {
-        "R": 0.7222222222222222,
-        "W": 0.2777777777777778
-      },
-      "mechanics": {
-        "damage": 28,
-        "kicker": 4,
-        "removal": 4,
-        "prowess": 8,
-        "valiant": 4,
-        "haste": 16,
-        "pump": 16,
-        "life_gain": 4,
-        "role token": 4,
-        "token_generation": 4,
-        "board_wipe": 3,
-        "flying": 4,
-        "plot": 4
-      },
-      "card_count": 20,
-      "missing_cards": [],
-      "verified_cards": [
-        "Battlefield Forge",
-        "Boltwave",
-        "Boros Charm",
-        "Burst Lightning",
-        "Case of the Crimson Pulse",
-        "Cheeky House-Mouse",
-        "Destroy Evil",
-        "Emberheart Challenger",
-        "Hired Claw",
-        "Inspiring Vantage",
-        "Lightning Helix",
-        "Lithomantic Barrage",
-        "Monastery Swiftspear",
-        "Monstrous Rage",
-        "Mountain",
-        "Rest in Peace",
-        "Screaming Nemesis",
-        "Shock",
-        "Slickshot Show-Off",
-        "Sunbillow Verge"
-      ]
-    },
-    "Deck - Boros Tokens": {
-      "name": "Deck - Boros Tokens",
-      "archetype": {
-        "primary_archetype": "tempo",
-        "scores": {
-          "aggro": 0.2592592592592592,
-          "midrange": 0.32592592592592606,
-          "control": 0.033333333333333305,
-          "combo": 0.18888888888888905,
-          "tempo": 0.5407407407407409
-        },
-        "meta_speed_alignment": 0.1307194167673108,
-        "statistics": {
-          "creature_ratio": 0.4444444444444444,
-          "avg_cmc": 1.9444444444444444,
-          "early_threat_ratio": 0.0,
-          "interaction_ratio": 0.3333333333333333,
-          "card_advantage_ratio": 0.16666666666666666
-        }
-      },
-      "colors": {
-        "R": 0.3684210526315789,
-        "W": 0.631578947368421
-      },
-      "mechanics": {
-        "damage": 15,
-        "pump": 18,
-        "card_draw": 5,
-        "token_generation": 16,
-        "removal": 11,
-        "transform": 4,
-        "convoke": 4,
-        "max speed": 4,
-        "start your engines!": 4,
-        "dies_trigger": 4,
-        "investigate": 4,
-        "spree": 2,
-        "flash": 4,
-        "enchant": 3,
-        "bargain": 2,
-        "scry": 12,
-        "unearth": 1
-      },
-      "card_count": 24,
-      "missing_cards": [],
-      "verified_cards": [
-        "Arabella, Abandoned Doll",
-        "Battlefield Forge",
-        "Case of the Gateway Express",
-        "Chandra, Spark Hunter",
-        "Destroy Evil",
-        "Gleeful Demolition",
-        "Imodane's Recruiter",
-        "Inspiring Vantage",
-        "Invasion of Gobakhan",
-        "Knight-Errant of Eos",
-        "Lithomantic Barrage",
-        "Mirrex",
-        "Mountain",
-        "Nesting Bot",
-        "Novice Inspector",
-        "Plains",
-        "Requisition Raid",
-        "Resolute Reinforcements",
-        "Sheltered by Ghosts",
-        "Sunbillow Verge",
-        "Torch the Tower",
-        "Warden of the Inner Sky",
-        "Warleader's Call",
-        "Yotian Frontliner"
-      ]
-    },
-    "Deck - Dimir Enchantments": {
-      "name": "Deck - Dimir Enchantments",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "control",
-          "tempo"
-        ],
-        "scores": {
-          "aggro": 0.050793650793650835,
-          "midrange": 0.0,
-          "control": 0.47142857142857153,
-          "combo": 0.2619047619047619,
-          "tempo": 0.346031746031746
-        },
-        "meta_speed_alignment": 0.1600645919599724,
-        "statistics": {
-          "creature_ratio": 0.2857142857142857,
-          "avg_cmc": 2.380952380952381,
-          "early_threat_ratio": 0.09523809523809523,
-          "interaction_ratio": 0.5714285714285714,
-          "card_advantage_ratio": 0.19047619047619047
-        }
-      },
-      "colors": {
-        "B": 0.5,
-        "U": 0.5
-      },
-      "mechanics": {
-        "removal": 6,
-        "discard": 3,
-        "flash": 13,
-        "card_draw": 6,
-        "dies_trigger": 3,
-        "flying": 8,
-        "vigilance": 4,
-        "scry": 8,
-        "surveil": 6,
-        "ninjutsu": 3,
-        "pump": 3,
-        "lifelink": 2,
-        "ward": 2,
-        "mill": 3,
-        "explore": 4,
-        "token_generation": 9,
-        "role token": 1,
-        "food": 1,
-        "life_gain": 1,
-        "damage": 4
-      },
-      "card_count": 28,
-      "missing_cards": [],
-      "verified_cards": [
-        "Cut Down",
-        "Darkslick Shores",
-        "Duress",
-        "Enduring Curiosity",
-        "Fear of Isolation",
-        "Floodpits Drowner",
-        "Get Out",
-        "Ghost Vacuum",
-        "Gix's Command",
-        "Gloomlake Verge",
-        "Go for the Throat",
-        "Hopeless Nightmare",
-        "Island",
-        "Kaito, Bane of Nightmares",
-        "Malicious Eclipse",
-        "Negate",
-        "Nowhere to Run",
-        "Oildeep Gearhulk",
-        "Restless Reef",
-        "Shoot the Sheriff",
-        "Soulstone Sanctuary",
-        "Spyglass Siren",
-        "Stormchaser's Talent",
-        "Swamp",
-        "The Witch's Vanity",
-        "This Town Ain't Big Enough",
-        "Tishana's Tidebinder",
-        "Underground River"
-      ]
-    },
-    "Deck - Dimir Midrange": {
-      "name": "Deck - Dimir Midrange",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "control",
-          "tempo"
-        ],
-        "scores": {
-          "aggro": 0.22666666666666666,
-          "midrange": 0.0666666666666667,
-          "control": 0.3166666666666667,
-          "combo": 0.22999999999999998,
-          "tempo": 0.2599999999999999
-        },
-        "meta_speed_alignment": 0.1613451086956522,
-        "statistics": {
-          "creature_ratio": 0.35,
-          "avg_cmc": 2.4,
-          "early_threat_ratio": 0.05,
-          "interaction_ratio": 0.55,
-          "card_advantage_ratio": 0.1
-        }
-      },
-      "colors": {
-        "B": 0.65,
-        "U": 0.35
-      },
-      "mechanics": {
-        "corrupted": 2,
-        "removal": 13,
-        "flying": 8,
-        "lifelink": 8,
-        "discard": 8,
-        "flash": 9,
-        "card_draw": 11,
-        "dies_trigger": 3,
-        "vigilance": 4,
-        "treasure": 1,
-        "token_generation": 5,
-        "surveil": 6,
-        "ninjutsu": 3,
-        "pump": 3,
-        "ward": 4,
-        "deathtouch": 4,
-        "mill": 4,
-        "damage": 6,
-        "spree": 1,
-        "counter_spell": 1
-      },
-      "card_count": 27,
-      "missing_cards": [],
-      "verified_cards": [
-        "Anoint with Affliction",
-        "Cut Down",
-        "Darkslick Shores",
-        "Deep-Cavern Bat",
-        "Duress",
-        "Enduring Curiosity",
-        "Feed the Swarm",
-        "Floodpits Drowner",
-        "Fountainport",
-        "Ghost Vacuum",
-        "Gix's Command",
-        "Gloomlake Verge",
-        "Go for the Throat",
-        "Island",
-        "Kaito, Bane of Nightmares",
-        "Malicious Eclipse",
-        "Mockingbird",
-        "Oildeep Gearhulk",
-        "Preacher of the Schism",
-        "Restless Reef",
-        "Shoot the Sheriff",
-        "Swamp",
-        "The Filigree Sylex",
-        "Three Steps Ahead",
-        "Tishana's Tidebinder",
-        "Underground River",
-        "Withering Torment"
-      ]
-    },
-    "Deck - Esper Pixie ": {
-      "name": "Deck - Esper Pixie ",
-      "archetype": {
-        "primary_archetype": "control",
-        "scores": {
-          "aggro": 0.09333333333333335,
-          "midrange": 0.09999999999999991,
-          "control": 0.5,
-          "combo": 0.18,
-          "tempo": 0.27333333333333326
-        },
-        "meta_speed_alignment": 0.14453832653985507,
-        "statistics": {
-          "creature_ratio": 0.25,
-          "avg_cmc": 2.15,
-          "early_threat_ratio": 0.05,
-          "interaction_ratio": 0.5,
-          "card_advantage_ratio": 0.25
-        }
-      },
-      "colors": {
-        "W": 0.34782608695652173,
-        "U": 0.30434782608695654,
-        "B": 0.34782608695652173
-      },
-      "mechanics": {
-        "damage": 8,
-        "removal": 5,
-        "flying": 10,
-        "surveil": 10,
-        "scry": 8,
-        "ninjutsu": 3,
-        "card_draw": 6,
-        "pump": 3,
-        "vigilance": 1,
-        "counter_spell": 2,
-        "flash": 4,
-        "eerie": 4,
-        "cycling": 2,
-        "board_wipe": 4,
-        "token_generation": 8,
-        "role token": 1,
-        "food": 1,
-        "life_gain": 1,
-        "room": 1,
-        "unlock_mechanic": 1,
-        "door_mechanic": 1
-      },
-      "card_count": 28,
-      "missing_cards": [],
-      "verified_cards": [
-        "Adarkar Wastes",
-        "Caves of Koilos",
-        "Concealed Courtyard",
-        "Darkslick Shores",
-        "Destroy Evil",
-        "Fear of Isolation",
-        "Go for the Throat",
-        "Grim Bauble",
-        "Hopeless Nightmare",
-        "Kaito, Bane of Nightmares",
-        "Loran of the Third Path",
-        "Mockingbird",
-        "No More Lies",
-        "Nowhere to Run",
-        "Nurturing Pixie",
-        "Optimistic Scavenger",
-        "Pest Control",
-        "Rest in Peace",
-        "Restless Anchorage",
-        "Seachrome Coast",
-        "Spell Pierce",
-        "Stormchaser's Talent",
-        "Swamp",
-        "Temporary Lockdown",
-        "The Witch's Vanity",
-        "This Town Ain't Big Enough",
-        "Underground River",
-        "Defiled Crypt"
-      ]
-    },
-    "Deck - Golgari Midrange": {
-      "name": "Deck - Golgari Midrange",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "control",
-          "midrange"
-        ],
-        "scores": {
-          "aggro": 0.1789473684210525,
-          "midrange": 0.3473684210526315,
-          "control": 0.39999999999999997,
-          "combo": 0.22631578947368416,
-          "tempo": 0.0666666666666668
-        },
-        "meta_speed_alignment": 0.198143115942029,
-        "statistics": {
-          "creature_ratio": 0.47368421052631576,
-          "avg_cmc": 2.9473684210526314,
-          "early_threat_ratio": 0.10526315789473684,
-          "interaction_ratio": 0.5789473684210527,
-          "card_advantage_ratio": 0.05263157894736842
-        }
-      },
-      "colors": {
-        "B": 0.5263157894736842,
-        "G": 0.47368421052631576
-      },
-      "mechanics": {
-        "corrupted": 2,
-        "removal": 22,
-        "discard": 3,
-        "menace": 3,
-        "damage": 4,
-        "pump": 6,
-        "trample": 6,
-        "dies_trigger": 4,
-        "compleated": 2,
-        "token_generation": 14,
-        "deathtouch": 6,
-        "card_draw": 6,
-        "food": 4,
-        "life_gain": 5,
-        "vigilance": 4,
-        "explore": 4,
-        "kicker": 1
-      },
-      "card_count": 25,
-      "missing_cards": [],
-      "verified_cards": [
-        "Anoint with Affliction",
-        "Blooming Marsh",
-        "Cut Down",
-        "Duress",
-        "Forest",
-        "Ghost Vacuum",
-        "Gix's Command",
-        "Go for the Throat",
-        "Harvester of Misery",
-        "Llanowar Elves",
-        "Llanowar Wastes",
-        "Maelstrom Pulse",
-        "Mishra's Foundry",
-        "Mosswood Dreadknight",
-        "Nissa, Ascended Animist",
-        "Preacher of the Schism",
-        "Restless Cottage",
-        "Scavenging Ooze",
-        "Sentinel of the Nameless City",
-        "Sheoldred, the Apocalypse",
-        "Swamp",
-        "Tear Asunder",
-        "The End",
-        "Thrun, Breaker of Silence",
-        "Tranquil Frillback"
-      ]
-    },
-    "Deck - Gruul Aggro": {
-      "name": "Deck - Gruul Aggro",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "tempo",
-          "aggro"
-        ],
-        "scores": {
-          "aggro": 0.25925925925925924,
-          "midrange": 0.25185185185185205,
-          "control": 0.15925925925925924,
-          "combo": 0.24444444444444455,
-          "tempo": 0.37037037037037035
-        },
-        "meta_speed_alignment": 0.10457553341384865,
-        "statistics": {
-          "creature_ratio": 0.3888888888888889,
-          "avg_cmc": 1.5555555555555556,
-          "early_threat_ratio": 0.05555555555555555,
-          "interaction_ratio": 0.3333333333333333,
-          "card_advantage_ratio": 0.05555555555555555
-        }
-      },
-      "colors": {
-        "R": 0.8235294117647058,
-        "G": 0.17647058823529413
-      },
-      "mechanics": {
-        "kicker": 4,
-        "damage": 22,
-        "prowess": 6,
-        "valiant": 8,
-        "haste": 9,
-        "pump": 14,
-        "removal": 2,
-        "dies_trigger": 4,
-        "offspring": 4,
-        "token_generation": 11,
-        "role token": 4,
-        "bargain": 3,
-        "scry": 6
-      },
-      "card_count": 24,
-      "missing_cards": [],
-      "verified_cards": [
-        "Burst Lightning",
-        "Copperline Gorge",
-        "Emberheart Challenger",
-        "Ghost Vacuum",
-        "Heartfire Hero",
-        "Hired Claw",
-        "Innkeeper's Talent",
-        "Karplusan Forest",
-        "Lithomantic Barrage",
-        "Manifold Mouse",
-        "Monastery Swiftspear",
-        "Monstrous Rage",
-        "Mountain",
-        "Obliterating Bolt",
-        "Pick Your Poison",
-        "Questing Druid",
-        "Restless Ridgeline",
-        "Rockface Village",
-        "Scorching Shot",
-        "Screaming Nemesis",
-        "Shock",
-        "Thornspire Verge",
-        "Torch the Tower",
-        "Urabrask's Forge"
-      ]
-    },
-    "Deck - Gruul Delirium": {
-      "name": "Deck - Gruul Delirium",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "combo",
-          "tempo"
-        ],
-        "scores": {
-          "aggro": 0.22424242424242427,
-          "midrange": 0.15151515151515155,
-          "control": 0.17272727272727276,
-          "combo": 0.4000000000000002,
-          "tempo": 0.3878787878787878
-        },
-        "meta_speed_alignment": 0.13445425724637683,
-        "statistics": {
-          "creature_ratio": 0.3181818181818182,
-          "avg_cmc": 2.0,
-          "early_threat_ratio": 0.22727272727272727,
-          "interaction_ratio": 0.36363636363636365,
-          "card_advantage_ratio": 0.045454545454545456
-        }
-      },
-      "colors": {
-        "R": 0.5833333333333334,
-        "G": 0.4166666666666667
-      },
-      "mechanics": {
-        "removal": 8,
-        "damage": 14,
-        "delirium": 16,
-        "card_draw": 7,
-        "token_generation": 7,
-        "life_gain": 7,
-        "dies_trigger": 2,
-        "pump": 15,
-        "role token": 2,
-        "mill": 19,
-        "food": 1,
-        "offspring": 2,
-        "trample": 4,
-        "haste": 6,
-        "crew": 2,
-        "bargain": 2,
-        "scry": 4
-      },
-      "card_count": 28,
-      "missing_cards": [],
-      "verified_cards": [
-        "Abrade",
-        "Beastie Beatdown",
-        "Bitter Reunion",
-        "Break Out",
-        "Chandra, Spark Hunter",
-        "Copperline Gorge",
-        "Fear of Missing Out",
-        "Forest",
-        "Haywire Mite",
-        "Karplusan Forest",
-        "Keen-Eyed Curator",
-        "Monstrous Rage",
-        "Mountain",
-        "Obliterating Bolt",
-        "Patchwork Beastie",
-        "Pawpatch Formation",
-        "Pawpatch Recruit",
-        "Pyroclasm",
-        "Restless Ridgeline",
-        "Screaming Nemesis",
-        "Seed of Hope",
-        "Thornspire Verge",
-        "Thunderous Velocipede",
-        "Torch the Tower",
-        "Violent Urge",
-        "Wildfire Wickerfolk",
-        "Witchstalker Frenzy",
-        "Wrenn and Realmbreaker"
-      ]
-    },
-    "Deck - Gruul Midrange": {
-      "name": "Deck - Gruul Midrange",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "tempo",
-          "aggro"
-        ],
-        "scores": {
-          "aggro": 0.3454545454545454,
-          "midrange": 0.33939393939393925,
-          "control": 0.1090909090909091,
-          "combo": 0.11818181818181821,
-          "tempo": 0.4666666666666666
-        },
-        "meta_speed_alignment": 0.1405658143939394,
-        "statistics": {
-          "creature_ratio": 0.45454545454545453,
-          "avg_cmc": 2.090909090909091,
-          "early_threat_ratio": 0.2727272727272727,
-          "interaction_ratio": 0.4090909090909091,
-          "card_advantage_ratio": 0.09090909090909091
-        }
-      },
-      "colors": {
-        "R": 0.45454545454545453,
-        "G": 0.5454545454545454
-      },
-      "mechanics": {
-        "removal": 6,
-        "damage": 16,
-        "exhaust": 8,
-        "surveil": 2,
-        "token_generation": 8,
-        "mill": 26,
-        "life_gain": 10,
-        "delirium": 8,
-        "card_draw": 5,
-        "pump": 4,
-        "compleated": 1,
-        "food": 1,
-        "offspring": 2,
-        "trample": 2,
-        "haste": 2,
-        "bargain": 4,
-        "scry": 8
-      },
-      "card_count": 29,
-      "missing_cards": [],
-      "verified_cards": [
-        "Abrade",
-        "Afterburner Expert",
-        "Agatha's Soul Cauldron",
-        "Commercial District",
-        "Copperline Gorge",
-        "Draconautics Engineer",
-        "Dredger's Insight",
-        "Fear of Missing Out",
-        "Forest",
-        "Inti, Seneschal of the Sun",
-        "Karplusan Forest",
-        "Keen-Eyed Curator",
-        "Lukka, Bound to Ruin",
-        "Mountain",
-        "Obliterating Bolt",
-        "Patchwork Beastie",
-        "Pawpatch Formation",
-        "Pawpatch Recruit",
-        "Pick Your Poison",
-        "Pyroclasm",
-        "Questing Druid",
-        "Restless Ridgeline",
-        "Scorching Shot",
-        "Screaming Nemesis",
-        "Seed of Hope",
-        "Thornspire Verge",
-        "Torch the Tower",
-        "Tranquil Frillback",
-        "Wrenn and Realmbreaker"
-      ]
-    },
-    "Deck - Jeskai Convoke": {
-      "name": "Deck - Jeskai Convoke",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "tempo",
-          "aggro"
-        ],
-        "scores": {
-          "aggro": 0.3476190476190476,
-          "midrange": 0.21904761904761907,
-          "control": 0.05714285714285714,
-          "combo": 0.08571428571428578,
-          "tempo": 0.4095238095238095
-        },
-        "meta_speed_alignment": 0.13445425724637683,
-        "statistics": {
-          "creature_ratio": 0.5,
-          "avg_cmc": 2.0,
-          "early_threat_ratio": 0.0,
-          "interaction_ratio": 0.35714285714285715,
-          "card_advantage_ratio": 0.14285714285714285
-        }
-      },
-      "colors": {
-        "W": 0.6428571428571429,
-        "R": 0.21428571428571427,
-        "U": 0.14285714285714285
-      },
-      "mechanics": {
-        "damage": 16,
-        "pump": 14,
-        "removal": 12,
-        "convoke": 4,
-        "token_generation": 20,
-        "investigate": 4,
-        "card_draw": 4,
-        "kicker": 4,
-        "counter_spell": 4,
-        "flash": 4,
-        "board_wipe": 3,
-        "battle cry": 2,
-        "dies_trigger": 2,
-        "enchant": 4,
-        "flying": 4,
-        "explore": 4,
-        "bargain": 4,
-        "scry": 16
-      },
-      "card_count": 22,
-      "missing_cards": [],
-      "verified_cards": [
-        "Adarkar Wastes",
-        "Battlefield Forge",
-        "Case of the Gateway Express",
-        "Destroy Evil",
-        "Gleeful Demolition",
-        "Imodane's Recruiter",
-        "Inspiring Vantage",
-        "Knight-Errant of Eos",
-        "Mirrex",
-        "Novice Inspector",
-        "Plains",
-        "Protect the Negotiators",
-        "Resolute Reinforcements",
-        "Rest in Peace",
-        "Sanguine Evangelist",
-        "Seachrome Coast",
-        "Sheltered by Ghosts",
-        "Shivan Reef",
-        "Spirebluff Canal",
-        "Spyglass Siren",
-        "Torch the Tower",
-        "Warden of the Inner Sky"
-      ]
-    },
-    "Deck - Mono-Red Aggro": {
-      "name": "Deck - Mono-Red Aggro",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "aggro",
-          "midrange"
-        ],
-        "scores": {
-          "aggro": 0.3955555555555555,
-          "midrange": 0.31111111111111095,
-          "control": 0.13333333333333333,
-          "combo": 0.16666666666666657,
-          "tempo": 0.27111111111111114
-        },
-        "meta_speed_alignment": 0.12997244867149757,
-        "statistics": {
-          "creature_ratio": 0.4666666666666667,
-          "avg_cmc": 1.9333333333333333,
-          "early_threat_ratio": 0.06666666666666667,
-          "interaction_ratio": 0.26666666666666666,
-          "card_advantage_ratio": 0.06666666666666667
-        }
-      },
-      "colors": {
-        "R": 1.0
-      },
-      "mechanics": {
-        "kicker": 4,
-        "damage": 24,
-        "prowess": 8,
-        "valiant": 8,
-        "haste": 12,
-        "pump": 16,
-        "dies_trigger": 4,
-        "offspring": 4,
-        "token_generation": 8,
-        "role token": 4,
-        "bargain": 4,
-        "scry": 8
-      },
-      "card_count": 18,
-      "missing_cards": [],
-      "verified_cards": [
-        "Burst Lightning",
-        "Case of the Crimson Pulse",
-        "Emberheart Challenger",
-        "Heartfire Hero",
-        "Hired Claw",
-        "Lightning Strike",
-        "Lithomantic Barrage",
-        "Manifold Mouse",
-        "Monastery Swiftspear",
-        "Monstrous Rage",
-        "Mountain",
-        "Pyroclasm",
-        "Rockface Village",
-        "Screaming Nemesis",
-        "Soulstone Sanctuary",
-        "Sunspine Lynx",
-        "Torch the Tower",
-        "Witchstalker Frenzy"
-      ]
-    },
-    "Deck - Mono-White Caretaker": {
-      "name": "Deck - Mono-White Caretaker",
-      "archetype": {
-        "primary_archetype": "combo",
-        "scores": {
-          "aggro": 0.16190476190476188,
-          "midrange": 0.28571428571428553,
-          "control": 0.20952380952380953,
-          "combo": 0.5142857142857141,
-          "tempo": 0.17142857142857146
-        },
-        "meta_speed_alignment": 0.1872755725931677,
-        "statistics": {
-          "creature_ratio": 0.2857142857142857,
-          "avg_cmc": 2.7857142857142856,
-          "early_threat_ratio": 0.0,
-          "interaction_ratio": 0.2857142857142857,
-          "card_advantage_ratio": 0.07142857142857142
-        }
-      },
-      "colors": {
-        "W": 1.0
-      },
-      "mechanics": {
-        "life_gain": 10,
-        "treasure": 8,
-        "card_draw": 18,
-        "token_generation": 20,
-        "pump": 4,
-        "scry": 8,
-        "tutor": 2,
-        "removal": 14,
-        "ramp": 2,
-        "damage": 4,
-        "lifelink": 4,
-        "dies_trigger": 4,
-        "explore": 4,
-        "vigilance": 2,
-        "impending": 4,
-        "board_wipe": 10,
-        "incubate": 4,
-        "transform": 4
-      },
-      "card_count": 18,
-      "missing_cards": [],
-      "verified_cards": [
-        "Authority of the Consuls",
-        "Beza, the Bounding Spring",
-        "Caretaker's Talent",
-        "Carrot Cake",
-        "Demolition Field",
-        "Elspeth's Smite",
-        "Enduring Innocence",
-        "Exorcise",
-        "Fountainport",
-        "Get Lost",
-        "Lay Down Arms",
-        "Loran of the Third Path",
-        "Overlord of the Mistmoors",
-        "Plains",
-        "Rest in Peace",
-        "Split Up",
-        "Sunfall",
-        "Sunken Citadel"
-      ]
-    },
-    "Deck - Orzhov Aggro": {
-      "name": "Deck - Orzhov Aggro",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "combo",
-          "midrange"
-        ],
-        "scores": {
-          "aggro": 0.08421052631578951,
-          "midrange": 0.34736842105263166,
-          "control": 0.20350877192982458,
-          "combo": 0.4157894736842106,
-          "tempo": 0.2701754385964912
-        },
-        "meta_speed_alignment": 0.20521965579710147,
-        "statistics": {
-          "creature_ratio": 0.15789473684210525,
-          "avg_cmc": 3.0526315789473686,
-          "early_threat_ratio": 0.0,
-          "interaction_ratio": 0.3157894736842105,
-          "card_advantage_ratio": 0.15789473684210525
-        }
-      },
-      "colors": {
-        "W": 0.6818181818181818,
-        "B": 0.3181818181818182
-      },
-      "mechanics": {
-        "life_gain": 10,
-        "treasure": 6,
-        "card_draw": 17,
-        "token_generation": 20,
-        "pump": 4,
-        "scry": 10,
-        "damage": 2,
-        "removal": 16,
-        "board_wipe": 12,
-        "tutor": 2,
-        "ramp": 2,
-        "discard": 3,
-        "lifelink": 4,
-        "dies_trigger": 4,
-        "explore": 2,
-        "hexproof": 1,
-        "surveil": 8,
-        "impending": 2,
-        "cycling": 3,
-        "incubate": 4,
-        "transform": 4
-      },
-      "card_count": 28,
-      "missing_cards": [],
-      "verified_cards": [
-        "Authority of the Consuls",
-        "Beza, the Bounding Spring",
-        "Bleachbone Verge",
-        "Blot Out",
-        "Caretaker's Talent",
-        "Carrot Cake",
-        "Caves of Koilos",
-        "Concealed Courtyard",
-        "Cut Down",
-        "Day of Judgment",
-        "Demolition Field",
-        "Duress",
-        "Enduring Innocence",
-        "Exorcise",
-        "Fountainport",
-        "Get Lost",
-        "Go for the Throat",
-        "Kaya, Intangible Slayer",
-        "Kaya, Spirits' Justice",
-        "Overlord of the Mistmoors",
-        "Pest Control",
-        "Plains",
-        "Rest in Peace",
-        "Shadowy Backstreet",
-        "Split Up",
-        "Sunfall",
-        "Sunken Citadel",
-        "Swamp"
-      ]
-    },
-    "Deck - Orzhov Midrange": {
-      "name": "Deck - Orzhov Midrange",
-      "archetype": {
-        "primary_archetype": "hybrid",
-        "components": [
-          "tempo",
-          "combo"
-        ],
-        "scores": {
-          "aggro": 0.0,
-          "midrange": 0.2811594202898551,
-          "control": 0.2782608695652174,
-          "combo": 0.3956521739130436,
-          "tempo": 0.4579710144927536
-        },
-        "meta_speed_alignment": 0.21274238227146816,
-        "statistics": {
-          "creature_ratio": 0.34782608695652173,
-          "avg_cmc": 3.3043478260869565,
-          "early_threat_ratio": 0.0,
-          "interaction_ratio": 0.34782608695652173,
-          "card_advantage_ratio": 0.21739130434782608
-        }
-      },
-      "colors": {
-        "W": 0.48,
-        "B": 0.52
-      },
-      "mechanics": {
-        "life_gain": 11,
-        "treasure": 6,
-        "card_draw": 18,
-        "token_generation": 11,
-        "damage": 4,
-        "removal": 16,
-        "flying": 4,
-        "lifelink": 7,
-        "discard": 2,
-        "hexproof from": 1,
-        "hexproof": 3,
-        "pump": 2,
-        "dies_trigger": 4,
-        "tutor": 3,
-        "ramp": 3,
-        "explore": 3,
-        "scry": 4,
-        "vigilance": 4,
-        "impending": 2,
-        "cycling": 2,
-        "board_wipe": 2,
-        "deathtouch": 4,
-        "surveil": 8,
-        "equip": 1
-      },
-      "card_count": 31,
-      "missing_cards": [],
-      "verified_cards": [
-        "Authority of the Consuls",
-        "Beza, the Bounding Spring",
-        "Caves of Koilos",
-        "Concealed Courtyard",
-        "Cut Down",
-        "Deep-Cavern Bat",
-        "Duress",
-        "Elenda, Saint of Dusk",
-        "Enduring Innocence",
-        "Fabled Passage",
-        "Fountainport",
-        "Get Lost",
-        "Ghost Vacuum",
-        "Gix's Command",
-        "Go for the Throat",
-        "Kaya, Intangible Slayer",
-        "Loran of the Third Path",
-        "Overlord of the Mistmoors",
-        "Pest Control",
-        "Plains",
-        "Preacher of the Schism",
-        "Restless Fortress",
-        "Season of the Burrow",
-        "Shadowy Backstreet",
-        "Stab",
-        "Swamp",
-        "Sword of Once and Future",
-        "The End",
-        "Virtue of Loyalty",
-        "Virtue of Persistence",
-        "Zoraline, Cosmos Caller"
-      ]
-    },
-    "Deck - Selesnya Midrange": {
-      "name": "Deck - Selesnya Midrange",
-      "archetype": {
-        "primary_archetype": "combo",
-        "scores": {
-          "aggro": 0.2280701754385964,
-          "midrange": 0.18596491228070156,
-          "control": 0.10000000000000005,
-          "combo": 0.35789473684210515,
-          "tempo": 0.19649122807017544
-        },
-        "meta_speed_alignment": 0.1733752264492754,
-        "statistics": {
-          "creature_ratio": 0.5789473684210527,
-          "avg_cmc": 2.5789473684210527,
-          "early_threat_ratio": 0.15789473684210525,
-          "interaction_ratio": 0.2631578947368421,
-          "card_advantage_ratio": 0.0
-        }
-      },
-      "colors": {
-        "W": 0.6818181818181818,
-        "G": 0.3181818181818182
-      },
-      "mechanics": {
-        "flying": 3,
-        "plot": 3,
-        "flash": 3,
-        "removal": 10,
-        "damage": 6,
-        "hideaway": 4,
-        "explore": 2,
-        "transform": 2,
-        "token_generation": 15,
-        "life_gain": 2,
-        "impending": 4,
-        "offspring": 4,
-        "trample": 4,
-        "board_wipe": 4,
-        "pump": 13,
-        "battle cry": 3,
-        "dies_trigger": 3,
-        "lifelink": 2,
-        "saddle": 2,
-        "first strike": 2,
-        "enchant": 3
-      },
-      "card_count": 26,
-      "missing_cards": [],
-      "verified_cards": [
-        "Aven Interrupter",
-        "Brushland",
-        "Collector's Cage",
-        "Destroy Evil",
-        "Elspeth's Smite",
-        "Forest",
-        "Get Lost",
-        "Hushwood Verge",
-        "Invasion of Gobakhan",
-        "Llanowar Elves",
-        "Melira, the Living Cure",
-        "Mirrex",
-        "Obstinate Baloth",
-        "Overlord of the Mistmoors",
-        "Pawpatch Recruit",
-        "Plains",
-        "Razorverge Thicket",
-        "Rest in Peace",
-        "Restless Prairie",
-        "Sandstorm Salvager",
-        "Sanguine Evangelist",
-        "Seraphic Steed",
-        "Sheltered by Ghosts",
-        "Split Up",
-        "Toby, Beastie Befriender",
-        "Wilt-Leaf Liege"
-      ]
-    },
-    "Deck - Temur Otters ": {
-      "name": "Deck - Temur Otters ",
-      "archetype": {
-        "primary_archetype": "tempo",
-        "scores": {
-          "aggro": 0.17971014492753623,
-          "midrange": 0.09855072463768111,
-          "control": 0.15652173913043482,
-          "combo": 0.27391304347826084,
-          "tempo": 0.417391304347826
-        },
-        "meta_speed_alignment": 0.16368344360428483,
-        "statistics": {
-          "creature_ratio": 0.34782608695652173,
-          "avg_cmc": 2.4347826086956523,
-          "early_threat_ratio": 0.043478260869565216,
-          "interaction_ratio": 0.21739130434782608,
-          "card_advantage_ratio": 0.17391304347826086
-        }
-      },
-      "colors": {
-        "U": 0.3333333333333333,
-        "G": 0.3333333333333333,
-        "R": 0.3333333333333333
-      },
-      "mechanics": {
-        "collect evidence": 3,
-        "tutor": 8,
-        "ramp": 8,
-        "food": 3,
-        "trample": 1,
-        "mill": 1,
-        "life_gain": 5,
-        "kicker": 2,
-        "damage": 12,
-        "fight": 3,
-        "manifest": 2,
-        "manifest dread": 2,
-        "equip": 2,
-        "pump": 6,
-        "vigilance": 4,
-        "dies_trigger": 4,
-        "removal": 3,
-        "card_draw": 5,
-        "token_generation": 14,
-        "offspring": 4,
-        "bargain": 4,
-        "scry": 8,
-        "flash": 4,
-        "room": 2,
-        "unlock_mechanic": 2,
-        "door_mechanic": 2
-      },
-      "card_count": 32,
-      "missing_cards": [],
-      "verified_cards": [
-        "Aegis Turtle",
-        "Analyze the Pollen",
-        "Botanical Sanctum",
-        "Bristlebud Farmer",
-        "Burst Lightning",
-        "Bushwhack",
-        "Copperline Gorge",
-        "Dissection Tools",
-        "Enduring Vitality",
-        "Fabled Passage",
-        "Forest",
-        "Ghost Vacuum",
-        "Island",
-        "Karplusan Forest",
-        "Lithomantic Barrage",
-        "Mountain",
-        "Obstinate Baloth",
-        "Pawpatch Formation",
-        "Pyroclasm",
-        "Questing Druid",
-        "Ral, Crackling Wit",
-        "Song of Totentanz",
-        "Stormchaser's Talent",
-        "Third Path Iconoclast",
-        "This Town Ain't Big Enough",
-        "Thundertrap Trainer",
-        "Torch the Tower",
-        "Up the Beanstalk",
-        "Valley Floodcaller",
-        "Willowrush Verge",
-        "Yavimaya Coast",
-        "Roaring Furnace"
-      ]
-    },
-    "Deck - Zur Overlords": {
-      "name": "Deck - Zur Overlords",
-      "archetype": {
-        "primary_archetype": "control",
-        "scores": {
-          "aggro": 0.2,
-          "midrange": 0.08000000000000011,
-          "control": 0.3933333333333333,
-          "combo": 0.24000000000000007,
-          "tempo": 0.13333333333333322
-        },
-        "meta_speed_alignment": 0.21302267526523821,
-        "statistics": {
-          "creature_ratio": 0.2,
-          "avg_cmc": 3.3,
-          "early_threat_ratio": 0.0,
-          "interaction_ratio": 0.4,
-          "card_advantage_ratio": 0.1
-        }
-      },
-      "colors": {
-        "R": 0.17391304347826086,
-        "G": 0.30434782608695654,
-        "U": 0.08695652173913043,
-        "W": 0.391304347826087,
-        "B": 0.043478260869565216
-      },
-      "mechanics": {
-        "removal": 13,
-        "damage": 13,
-        "collect evidence": 4,
-        "tutor": 6,
-        "ramp": 6,
-        "surveil": 16,
-        "explore": 2,
-        "domain": 6,
-        "life_gain": 8,
-        "token_generation": 8,
-        "flash": 4,
-        "impending": 10,
-        "food": 2,
-        "card_draw": 6,
-        "board_wipe": 3,
-        "pump": 2,
-        "flying": 4,
-        "lifelink": 4
-      },
-      "card_count": 34,
-      "missing_cards": [],
-      "verified_cards": [
-        "Abrade",
-        "Analyze the Pollen",
-        "Cavern of Souls",
-        "Commercial District",
-        "Doppelgang",
-        "Elegant Parlor",
-        "Elspeth's Smite",
-        "Floodfarm Verge",
-        "Forest",
-        "Get Lost",
-        "Ghost Vacuum",
-        "Herd Migration",
-        "Hushwood Verge",
-        "Island",
-        "Leyline Binding",
-        "Lightning Helix",
-        "Lush Portico",
-        "Mountain",
-        "Overlord of the Boilerbilges",
-        "Overlord of the Hauntwoods",
-        "Overlord of the Mistmoors",
-        "Pawpatch Formation",
-        "Plains",
-        "Pyroclasm",
-        "Rest in Peace",
-        "Ride's End",
-        "Shadowy Backstreet",
-        "Split Up",
-        "Sunbillow Verge",
-        "Swamp",
-        "Underground Mortuary",
-        "Up the Beanstalk",
-        "Vivien Reid",
-        "Zur, Eternal Schemer"
-      ]
+    "references": {
+      "creature_reference": 342,
+      "artifact_reference": 42,
+      "spirit_reference": 4,
+      "enchantment_reference": 34,
+      "aura_reference": 4,
+      "land_reference": 98,
+      "cat_reference": 1,
+      "sorcery_reference": 42,
+      "treasure_reference": 2,
+      "fish_reference": 3,
+      "swamp_reference": 2,
+      "plains_reference": 5,
+      "planeswalker_reference": 10,
+      "vehicle_reference": 7,
+      "food_reference": 4,
+      "class_reference": 2,
+      "rabbit_reference": 2,
+      "case_reference": 2,
+      "horror_reference": 4,
+      "equipment_reference": 2,
+      "dragon_reference": 1,
+      "dinosaur_reference": 2,
+      "elspeth_reference": 1,
+      "island_reference": 3,
+      "instant_reference": 14,
+      "goblin_reference": 1,
+      "phyrexian_reference": 6,
+      "djinn_reference": 1,
+      "beast_reference": 3,
+      "soldier_reference": 4,
+      "forest_reference": 4,
+      "siege_reference": 2,
+      "ninja_reference": 1,
+      "kaito_reference": 1,
+      "rat_reference": 2,
+      "lukka_reference": 1,
+      "legendary_reference": 2,
+      "mouse_reference": 2,
+      "mite_reference": 1,
+      "bird_reference": 2,
+      "monk_reference": 1,
+      "adventure_reference": 1,
+      "nissa_reference": 1,
+      "clue_reference": 1,
+      "faerie_reference": 1,
+      "room_reference": 2,
+      "insect_reference": 1,
+      "vampire_reference": 1,
+      "otter_reference": 3,
+      "ral_reference": 1,
+      "nightmare_reference": 1,
+      "shark_reference": 1,
+      "lizard_reference": 1,
+      "raccoon_reference": 1,
+      "golem_reference": 1,
+      "bat_reference": 2,
+      "angel_reference": 1,
+      "mount_reference": 1,
+      "mountain_reference": 2,
+      "saga_reference": 1,
+      "toy_reference": 1,
+      "elemental_reference": 1
     }
   },
   "meta_statistics": {
     "total_decks": 23,
     "meta_speed": {
       "speed": "fast",
-      "avg_cmc": 2.365609348914858,
-      "early_game_ratio": 0.669449081803005,
-      "interaction_ratio": 0.29716193656093487
+      "avg_cmc": 2.3556485355648538,
+      "early_game_ratio": 0.6711297071129707,
+      "interaction_ratio": 0.0
     },
     "most_played_cards": [
       {
@@ -2352,13 +417,6 @@
       "Analyze the Pollen",
       "Up the Beanstalk"
     ]
-  },
-  "archetype_distribution": {
-    "aggro": 4.5,
-    "combo": 5.5,
-    "control": 5.0,
-    "tempo": 6.5,
-    "midrange": 1.5
   },
   "card_frequencies": {
     "Anoint with Affliction": 8,
