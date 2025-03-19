@@ -1440,7 +1440,7 @@ def main():
         )
         parser.add_argument(
             '--output',
-            default='meta_analysis_results.json',
+            default='parse_meta_analysis_results.json',
             help='Output file for detailed results'
         )
         parser.add_argument(
