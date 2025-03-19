@@ -1,29 +1,30 @@
-2 Adarkar Wastes
+3 Adarkar Wastes
 3 Caves of Koilos
 4 Concealed Courtyard
 4 Darkslick Shores
 1 Defiled Crypt/Cadaver Lab
+3 Entity Tracker
 4 Fear of Isolation
-2 Go for the Throat
 4 Hopeless Nightmare
-3 Kaito, Bane of Nightmares
-2 Mockingbird
+1 Mockingbird
 4 Nowhere to Run
 4 Nurturing Pixie
 4 Optimistic Scavenger
-2 Restless Anchorage
+1 Restless Anchorage
 4 Seachrome Coast
+1 Sheltered by Ghosts
+1 Spell Pierce
+2 Spiteful Hexmage
 4 Stormchaser's Talent
 1 Swamp
-1 The Witch's Vanity
 4 This Town Ain't Big Enough
 3 Underground River
 
 2 Destroy Evil
-2 Grim Bauble
-1 Loran of the Third Path
-2 No More Lies
+2 Kaito, Bane of Nightmares
+1 Momentum Breaker
+1 Negate
+3 No More Lies
 2 Pest Control
 2 Rest in Peace
-2 Spell Pierce
-2 Temporary Lockdown
+2 Sheltered by Ghosts

@@ -1,30 +1,26 @@
-4 Abuelo's Awakening
-3 Adarkar Wastes
-2 Blast Zone
-2 Chart a Course
-2 Conduit Pylons
-4 Confounding Riddle
-4 Ephara's Dispersal
-2 Fabled Passage
-4 Fallaji Archaeologist
-3 Floodfarm Verge
-4 Invasion of Arcavios
+2 Adarkar Wastes
+3 Beza, the Bounding Spring
+3 Deduce
+2 Demolition Field
+4 Elspeth's Smite
+4 Floodfarm Verge
+3 Fountainport
+4 Get Lost
+4 Horned Loch-Whale
 4 Island
-4 Meticulous Archive
-4 Moment of Truth
-4 Omniscience
-2 Oracle of Tragedy
-4 Picklock Prankster
-2 Plains
-2 Seachrome Coast
+4 No More Lies
+4 Plains
+4 Restless Anchorage
+3 Seachrome Coast
+2 Split Up
+2 Stock Up
+4 Sunfall
+4 Three Steps Ahead
 
-3 Grand Abolisher
-1 Heroic Reinforcements
-2 Into the Flood Maw
-1 Minor Misstep
-1 Negate
-1 Season of Weaving
-1 Sunfall
-3 Temporary Lockdown
-1 Unable to Scream
-1 Unnerving Grasp
+3 Authority of the Consuls
+1 Beza, the Bounding Spring
+2 Boon-Bringer Valkyrie
+2 Destroy Evil
+2 Negate
+2 Rest in Peace
+3 Tishana's Tidebinder
