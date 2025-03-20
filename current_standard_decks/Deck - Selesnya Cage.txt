@@ -1,29 +1,29 @@
-4 Brightglass Gearhulk
-4 Brushland
-4 Collector's Cage
-2 Dusk Rose Reliquary
-2 Forest
-1 Haywire Mite
-4 Hushwood Verge
-4 Llanowar Elves
-1 Market Gnome
-1 Nurturing Pixie
-1 Overgrown Zealot
-3 Overlord of the Mistmoors
-3 Parting Gust
-4 Pawpatch Recruit
-7 Plains
-4 Razorverge Thicket
-3 Restless Prairie
-4 Sandstorm Salvager
-3 Sanguine Evangelist
-1 Valgavoth's Lair
-
-4 Aven Interrupter
-3 Devout Decree
-1 Ghost Vacuum
-1 Haywire Mite
-1 Lavaspur Boots
-2 Obstinate Baloth
-2 Pawpatch Formation
-1 Soul-Guide Lantern
+4 Brightglass Gearhulk
+4 Brushland
+4 Collector's Cage
+2 Dusk Rose Reliquary
+2 Forest
+1 Haywire Mite
+4 Hushwood Verge
+4 Llanowar Elves
+1 Market Gnome
+1 Nurturing Pixie
+1 Overgrown Zealot
+3 Overlord of the Mistmoors
+3 Parting Gust
+4 Pawpatch Recruit
+7 Plains
+4 Razorverge Thicket
+3 Restless Prairie
+4 Sandstorm Salvager
+3 Sanguine Evangelist
+1 Valgavoth's Lair
+
+4 Aven Interrupter
+3 Devout Decree
+1 Ghost Vacuum
+1 Haywire Mite
+1 Lavaspur Boots
+2 Obstinate Baloth
+2 Pawpatch Formation
+1 Soul-Guide Lantern

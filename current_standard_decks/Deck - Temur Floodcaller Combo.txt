@@ -1,32 +1,32 @@
-3 Analyze the Pollen
-4 Botanical Sanctum
-2 Burst Lightning
-4 Bushwhack
-4 Copperline Gorge
-1 Dreamdew Entrancer
-4 Enduring Vitality
-2 Forest
-2 Island
-2 Karplusan Forest
-1 Mountain
-4 Questing Druid
-2 Roaring Furnace/Steaming Sauna
-2 Song of Totentanz
-4 Stormchaser's Talent
-4 This Town Ain't Big Enough
-1 Thornspire Verge
-4 Thundertrap Trainer
-4 Torch the Tower
-3 Valley Floodcaller
-1 Willowrush Verge
-2 Yavimaya Coast
-
-1 Ghost Vacuum
-1 Into the Flood Maw
-2 Obstinate Baloth
-2 Pawpatch Formation
-3 Pyroclasm
-2 Reclamation Sage
-1 Scavenging Ooze
-1 Song of Totentanz
-2 Spell Pierce
+3 Analyze the Pollen
+4 Botanical Sanctum
+2 Burst Lightning
+4 Bushwhack
+4 Copperline Gorge
+1 Dreamdew Entrancer
+4 Enduring Vitality
+2 Forest
+2 Island
+2 Karplusan Forest
+1 Mountain
+4 Questing Druid
+2 Roaring Furnace/Steaming Sauna
+2 Song of Totentanz
+4 Stormchaser's Talent
+4 This Town Ain't Big Enough
+1 Thornspire Verge
+4 Thundertrap Trainer
+4 Torch the Tower
+3 Valley Floodcaller
+1 Willowrush Verge
+2 Yavimaya Coast
+
+1 Ghost Vacuum
+1 Into the Flood Maw
+2 Obstinate Baloth
+2 Pawpatch Formation
+3 Pyroclasm
+2 Reclamation Sage
+1 Scavenging Ooze
+1 Song of Totentanz
+2 Spell Pierce

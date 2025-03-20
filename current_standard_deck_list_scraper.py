@@ -142,6 +142,8 @@ class MTGGoldfishScraper:
     def download_and_save_deck(self, download_url, deck_info):
         """
         Download the deck and save it with the correct archetype name.
+        Ensure the formatting is exactly like MTGGoldfish's standard: 
+        single-spaced lines with one blank line between mainboard and sideboard.
         """
         archetype_name = deck_info['archetype_name']
         
@@ -151,15 +153,44 @@ class MTGGoldfishScraper:
             # Download the deck list content
             response = self.session.get(download_url)
             response.raise_for_status()
+            
+            # Get the text content
             deck_content = response.text
             
-            # Create the filename with the archetype name - this is crucial
+            # Regular expression to correctly identify the mainboard and sideboard
+            # This is the most reliable approach to handle the deck list format
+            # Looking for consecutive non-empty lines (cards) with appropriate spacing
+            
+            # First, normalize all line breaks to \n
+            deck_content = deck_content.replace('\r\n', '\n').replace('\r', '\n')
+            
+            # Split the content into lines
+            lines = deck_content.split('\n')
+            
+            # Process to get cards only (no empty lines) and preserve mainboard/sideboard separation
+            processed_lines = []
+            is_first_section = True  # To track mainboard vs sideboard
+            
+            for line in lines:
+                stripped_line = line.strip()
+                if stripped_line:  # If line has content
+                    # Add the card with its count
+                    processed_lines.append(stripped_line)
+                elif processed_lines and is_first_section:
+                    # We found the gap between mainboard and sideboard
+                    is_first_section = False
+                    processed_lines.append('')  # Add a single blank line
+            
+            # Join all the lines with single line breaks
+            processed_content = '\n'.join(processed_lines)
+            
+            # Create the filename with the archetype name
             filename = f"Deck - {archetype_name}.txt"
             file_path = os.path.join(self.output_dir, filename)
             
-            # Save the deck list content directly to the file
+            # Save the processed deck list content to the file
             with open(file_path, 'w', encoding='utf-8') as f:
-                f.write(deck_content)
+                f.write(processed_content)
             
             logger.info(f"Successfully saved deck list to: {file_path}")
             

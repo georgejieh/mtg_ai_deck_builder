@@ -1,32 +1,32 @@
-4 Darkslick Shores
-2 Enduring Curiosity
-4 Fear of Isolation
-4 Floodpits Drowner
-4 Gloomlake Verge
-2 Go for the Throat
-4 Hopeless Nightmare
-4 Island
-3 Kaito, Bane of Nightmares
-4 Nowhere to Run
-2 Restless Reef
-2 Soulstone Sanctuary
-1 Spell Pierce
-4 Spyglass Siren
-4 Stormchaser's Talent
-4 Swamp
-4 This Town Ain't Big Enough
-4 Underground River
-
-1 Blot Out
-2 Cut Down
-1 Duress
-1 Get Out
-1 Ghost Vacuum
-1 Gix's Command
-1 Kaito, Bane of Nightmares
-1 Malicious Eclipse
-1 Negate
-1 Preacher of the Schism
-1 Sheoldred, the Apocalypse
-1 Spell Pierce
-2 Tishana's Tidebinder
+4 Darkslick Shores
+2 Enduring Curiosity
+4 Fear of Isolation
+4 Floodpits Drowner
+4 Gloomlake Verge
+2 Go for the Throat
+4 Hopeless Nightmare
+4 Island
+3 Kaito, Bane of Nightmares
+4 Nowhere to Run
+2 Restless Reef
+2 Soulstone Sanctuary
+1 Spell Pierce
+4 Spyglass Siren
+4 Stormchaser's Talent
+4 Swamp
+4 This Town Ain't Big Enough
+4 Underground River
+
+1 Blot Out
+2 Cut Down
+1 Duress
+1 Get Out
+1 Ghost Vacuum
+1 Gix's Command
+1 Kaito, Bane of Nightmares
+1 Malicious Eclipse
+1 Negate
+1 Preacher of the Schism
+1 Sheoldred, the Apocalypse
+1 Spell Pierce
+2 Tishana's Tidebinder

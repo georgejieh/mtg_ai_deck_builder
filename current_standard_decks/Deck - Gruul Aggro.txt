@@ -1,29 +1,29 @@
-2 Burst Lightning
-4 Copperline Gorge
-4 Emberheart Challenger
-1 Forest
-4 Heartfire Hero
-4 Hired Claw
-2 Innkeeper's Talent
-4 Karplusan Forest
-4 Manifold Mouse
-4 Monstrous Rage
-5 Mountain
-2 Pawpatch Recruit
-2 Questing Druid
-1 Restless Ridgeline
-2 Rockface Village
-4 Screaming Nemesis
-2 Soulstone Sanctuary
-4 Thornspire Verge
-3 Torch the Tower
-2 Witchstalker Frenzy
-
-2 Ghost Vacuum
-2 Lithomantic Barrage
-1 Obliterating Bolt
-2 Obstinate Baloth
-3 Pawpatch Formation
-1 Pawpatch Recruit
-3 Sunspine Lynx
-1 Torch the Tower
+2 Burst Lightning
+4 Copperline Gorge
+4 Emberheart Challenger
+1 Forest
+4 Heartfire Hero
+4 Hired Claw
+2 Innkeeper's Talent
+4 Karplusan Forest
+4 Manifold Mouse
+4 Monstrous Rage
+5 Mountain
+2 Pawpatch Recruit
+2 Questing Druid
+1 Restless Ridgeline
+2 Rockface Village
+4 Screaming Nemesis
+2 Soulstone Sanctuary
+4 Thornspire Verge
+3 Torch the Tower
+2 Witchstalker Frenzy
+
+2 Ghost Vacuum
+2 Lithomantic Barrage
+1 Obliterating Bolt
+2 Obstinate Baloth
+3 Pawpatch Formation
+1 Pawpatch Recruit
+3 Sunspine Lynx
+1 Torch the Tower

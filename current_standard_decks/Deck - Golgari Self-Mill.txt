@@ -1,26 +1,26 @@
-4 Blooming Marsh
-4 Cenote Scout
-2 Chitin Gravestalker
-1 Forest
-4 Gnawing Vermin
-2 Harvester of Misery
-4 Hollow Marauder
-4 Huskburster Swarm
-3 Llanowar Wastes
-4 Molt Tender
-4 Overlord of the Balemurk
-4 Overwhelming Remorse
-4 Souls of the Lost
-4 Swamp
-4 Underground Mortuary
-4 Up the Beanstalk
-4 Wastewood Verge
-
-1 Cut Down
-1 Duress
-1 Harvester of Misery
-2 Haywire Mite
-2 Obstinate Baloth
-4 Scrapshooter
-1 Starving Revenant
-3 Terror Tide
+4 Blooming Marsh
+4 Cenote Scout
+2 Chitin Gravestalker
+1 Forest
+4 Gnawing Vermin
+2 Harvester of Misery
+4 Hollow Marauder
+4 Huskburster Swarm
+3 Llanowar Wastes
+4 Molt Tender
+4 Overlord of the Balemurk
+4 Overwhelming Remorse
+4 Souls of the Lost
+4 Swamp
+4 Underground Mortuary
+4 Up the Beanstalk
+4 Wastewood Verge
+
+1 Cut Down
+1 Duress
+1 Harvester of Misery
+2 Haywire Mite
+2 Obstinate Baloth
+4 Scrapshooter
+1 Starving Revenant
+3 Terror Tide

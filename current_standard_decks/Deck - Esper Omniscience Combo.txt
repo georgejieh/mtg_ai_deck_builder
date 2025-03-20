@@ -1,29 +1,29 @@
-4 Abuelo's Awakening
-2 Adarkar Wastes
-1 Blast Zone
-1 Cavern of Souls
-3 Chart a Course
-3 Confounding Riddle
-3 Ephara's Dispersal
-4 Fallaji Archaeologist
-4 Floodfarm Verge
-3 Invasion of Arcavios
-5 Island
-4 Meticulous Archive
-4 Moment of Truth
-4 Omniscience
-1 Oracle of Tragedy
-3 Plains
-4 Seachrome Coast
-4 Stock Up
-3 Temporary Lockdown
-
-2 Get Lost
-3 Grand Abolisher
-1 Haunt the Network
-1 Johann's Stopgap
-2 Negate
-3 Riptide Gearhulk
-1 Spell Pierce
-1 Temporary Lockdown
-1 This Town Ain't Big Enough
+4 Abuelo's Awakening
+2 Adarkar Wastes
+1 Blast Zone
+1 Cavern of Souls
+3 Chart a Course
+3 Confounding Riddle
+3 Ephara's Dispersal
+4 Fallaji Archaeologist
+4 Floodfarm Verge
+3 Invasion of Arcavios
+5 Island
+4 Meticulous Archive
+4 Moment of Truth
+4 Omniscience
+1 Oracle of Tragedy
+3 Plains
+4 Seachrome Coast
+4 Stock Up
+3 Temporary Lockdown
+
+2 Get Lost
+3 Grand Abolisher
+1 Haunt the Network
+1 Johann's Stopgap
+2 Negate
+3 Riptide Gearhulk
+1 Spell Pierce
+1 Temporary Lockdown
+1 This Town Ain't Big Enough
