@@ -35,10 +35,20 @@ _Unleash the power of **Machine Learning** to forge next-level **Magic: The Gath
 - **[`semantics_meta_analysis.py`]**  
   The newest script that implements machine learning and semantic analysis. It uses a pre-trained sentence transformer model to generate embeddings for cards based on their oracle text. It then applies clustering techniques to identify similar cards and decks without relying on predefined patterns. This approach can discover nuanced relationships and emergent themes that might be missed by rule-based systems, though the identified similarities may sometimes lack clear explanation since the model isn't specifically trained on Magic terminology.
 
+- **[`integrated_deck_name_analyzer.py`]**  
+  A sophisticated module that enhances meta analysis by extracting meaningful information from deck names. It dynamically identifies color identities, archetypes, card types, subtypes, and mechanics referenced in deck names without relying on hardcoded patterns. The analyzer can:
+  - Extract and normalize card-related terminology from deck names
+  - Process compound terms (like "self-bounce") as semantic units
+  - Match terms against actual cards in the deck for more precise analysis
+  - Perform cross-deck analysis to identify shared themes and synergies
+  - Enhance archetype detection by incorporating deck name insights
+  - Use TF-IDF to extract relevant terms from oracle texts of common cards
+  This analysis adds another layer of insight to understand how the community names and categorizes decks, revealing conceptual connections between different archetypes and strategies.
+
 - **[`consolidated_meta_analysis.py`]**  
   Combines the outputs from all three meta analysis approaches (pattern-based, keyword-based, and semantic) to generate a comprehensive meta report. It reconciles potentially conflicting information from different analysis methods, extracts the most reliable insights from each, and produces a unified view of the metagame including archetype distributions, card type trends, color combinations, and synergy clusters.
 
-All three meta analysis scripts are maintained in the repository as they provide complementary insights for different purposes. Use the pattern-matching approach for detailed mechanic breakdowns, the keyword-based approach for reliable statistical analysis, and the semantic approach for discovering unexpected card relationships.
+All meta analysis scripts are maintained in the repository as they provide complementary insights for different purposes. Use the pattern-matching approach for detailed mechanic breakdowns, the keyword-based approach for reliable statistical analysis, the semantic approach for discovering unexpected card relationships, and the deck name analyzer for understanding deck conceptualization and community categorization.
 
 ## Key Features
 1. **Scryfall Integration**  
@@ -48,11 +58,13 @@ All three meta analysis scripts are maintained in the repository as they provide
    - Statistical analysis of card distributions
    - Pattern matching on card mechanics
    - Semantic similarity clustering
+   - Deck name terminology analysis
 3. **Meta Analysis**  
    Multiple approaches to analyze the metagame:
    - Pattern-based mechanic and synergy detection
    - Statistical keyword and type analysis
    - Machine learning-based semantic analysis
+   - Community naming convention analysis
 4. **Unsupervised Learning Potential**  
    Plans to integrate an AI model that **auto-generates** decklists—unconstrained by conventional archetype thinking.
 
@@ -61,13 +73,14 @@ Since this project is still under active development, an official list of depend
 - **Python 3.x**
 - Common data libraries like **pandas**, **numpy**, **requests**, etc.
 - For semantic analysis: **sentence-transformers**, **scikit-learn**
+- For deck name analysis: **inflect**
 
 Clone the repo:
 ```bash
 git clone https://github.com/georgejieh/mtg_ai_deck_builder.git
 cd mtg_ai_deck_builder
 ```
-Then install any libraries that come up as you test the scripts (e.g., `pip install pandas requests sentence-transformers scikit-learn`).
+Then install any libraries that come up as you test the scripts (e.g., `pip install pandas requests sentence-transformers scikit-learn inflect`).
 
 ## Usage Example
 
@@ -90,7 +103,7 @@ python deck_analysis.py /path/to/decklist.txt
 ```
 
 ### 4. Analyze the Meta
-You can use any of the three meta analysis scripts based on your needs:
+You can use any of the meta analysis scripts based on your needs:
 ```bash
 # For rule-based pattern matching (comprehensive but potentially less accurate):
 python analyze_meta_old_try_to_parse.py --cards data/standard_cards.csv --decks current_standard_decks
@@ -100,10 +113,13 @@ python analyze_meta_using_keywords.py --cards data/standard_cards.csv --decks cu
 
 # For semantic analysis using machine learning (discovers nuanced relationships):
 python semantics_meta_analysis.py --cards data/standard_cards.csv --decks current_standard_decks
+
+# For enhanced semantic analysis with deck name analysis:
+python integrated_deck_name_analyzer.py --cards data/standard_cards.csv --decks current_standard_decks
 ```
 
 ### 5. Generate Consolidated Meta Report
-Combine insights from all three meta analysis approaches:
+Combine insights from all meta analysis approaches:
 ```bash
 python consolidated_meta_analysis.py
 ```
@@ -153,12 +169,12 @@ The **blank line** between `4 Underground River` and `4 Duress` indicates where 
 
 ## Comparison of Meta Analysis Approaches
 
-| Feature | Pattern-Based | Keyword-Based | Semantic Analysis |
-|---------|--------------|---------------|-------------------|
-| **Approach** | Rule-based with regex patterns | Statistical analysis of card data | Machine learning with text embeddings |
-| **Strengths** | Detailed mechanic breakdown<br>Synergy identification<br>Room card handling | Reliable with changing card pools<br>Objective meta statistics<br>No assumptions needed | Discovers nuanced relationships<br>Finds emergent themes<br>Not limited by predefined patterns |
-| **Limitations** | May miss new mechanics<br>Pattern accuracy depends on rules<br>Less adaptable | Less insight into card interactions<br>Limited synergy detection<br>More descriptive than analytical | Less interpretable results<br>Model not trained on Magic terminology<br>Requires additional dependencies |
-| **Best For** | Mechanic & synergy analysis<br>Room card interactions<br>Detailed breakdown | Objective meta statistics<br>Format speed analysis<br>Reliable archetype detection | Discovering unexpected relationships<br>Deck clustering<br>Finding hidden patterns |
+| Feature | Pattern-Based | Keyword-Based | Semantic Analysis | Deck Name Analysis |
+|---------|--------------|---------------|-------------------|-------------------|
+| **Approach** | Rule-based with regex patterns | Statistical analysis of card data | Machine learning with text embeddings | NLP-based terminology extraction |
+| **Strengths** | Detailed mechanic breakdown<br>Synergy identification<br>Room card handling | Reliable with changing card pools<br>Objective meta statistics<br>No assumptions needed | Discovers nuanced relationships<br>Finds emergent themes<br>Not limited by predefined patterns | Reveals community categorization<br>Cross-deck theme identification<br>Enhances archetype detection |
+| **Limitations** | May miss new mechanics<br>Pattern accuracy depends on rules<br>Less adaptable | Less insight into card interactions<br>Limited synergy detection<br>More descriptive than analytical | Less interpretable results<br>Model not trained on Magic terminology<br>Requires additional dependencies | Depends on naming conventions<br>May miss concepts not in names<br>Requires accurate card data matching |
+| **Best For** | Mechanic & synergy analysis<br>Room card interactions<br>Detailed breakdown | Objective meta statistics<br>Format speed analysis<br>Reliable archetype detection | Discovering unexpected relationships<br>Deck clustering<br>Finding hidden patterns | Understanding meta conceptualization<br>Cross-archetype connections<br>Community terminology analysis |
 
 ## Roadmap
 - **Enhance Archetype Logic**  
@@ -173,6 +189,8 @@ The **blank line** between `4 Underground River` and `4 Duress` indicates where 
   Explore a simple web-based front-end for deck analysis and meta breakdown.
 - **Train Custom Embeddings**  
   Develop Magic-specific word embeddings to improve the semantic analysis accuracy.
+- **Expand Deck Name Analysis**  
+  Further refine deck name parsing to extract strategy nuances and detect emerging terminology.
 
 ## License
 This project is available under the [MIT License](LICENSE). Since this is a solo project, no external contributions are expected—but feel free to fork and experiment.
