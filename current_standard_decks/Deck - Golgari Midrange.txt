@@ -1,30 +1,29 @@
-2 Anoint with Affliction
-4 Blooming Marsh
-3 Cut Down
-4 Forest
-2 Gix's Command
-4 Go for the Throat
-4 Llanowar Elves
-4 Llanowar Wastes
-2 Maelstrom Pulse
-4 Mishra's Foundry
-4 Mosswood Dreadknight
-4 Preacher of the Schism
-4 Restless Cottage
-1 Scavenging Ooze
-4 Sentinel of the Nameless City
-2 Sheoldred, the Apocalypse
-5 Swamp
-1 The End
-1 Thrun, Breaker of Silence
-1 Tranquil Frillback
-
-3 Duress
-2 Ghost Vacuum
-3 Harvester of Misery
-1 Maelstrom Pulse
-2 Nissa, Ascended Animist
-1 Tear Asunder
-1 The End
-1 Thrun, Breaker of Silence
-1 Tranquil Frillback
+2 Anoint with Affliction
+4 Blooming Marsh
+4 Bushwhack
+1 Caustic Bronco
+4 Cut Down
+3 Duress
+1 Gix's Command
+3 Go for the Throat
+1 Harvester of Misery
+4 Llanowar Wastes
+3 Maelstrom Pulse
+4 Mosswood Dreadknight
+1 Obstinate Baloth
+4 Phyrexian Obliterator
+2 Preacher of the Schism
+4 Restless Cottage
+4 Sentinel of the Nameless City
+7 Swamp
+4 Wastewood Verge
+
+2 Archfiend of the Dross
+1 Choking Miasma
+1 Duress
+1 Gix's Command
+1 Obstinate Baloth
+2 Tear Asunder
+2 The Stone Brain
+1 Tranquil Frillback
+4 Unholy Annex/Ritual Chamber

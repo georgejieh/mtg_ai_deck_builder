@@ -1,33 +1,33 @@
-2 Anoint with Affliction
-3 Cut Down
-4 Darkslick Shores
-4 Deep-Cavern Bat
-4 Enduring Curiosity
-1 Faebloom Trick
-4 Floodpits Drowner
-2 Gix's Command
-4 Gloomlake Verge
-2 Go for the Throat
-2 Island
-3 Kaito, Bane of Nightmares
-1 Mockingbird
-1 Oildeep Gearhulk
-3 Preacher of the Schism
-4 Restless Reef
-1 Shoot the Sheriff
-2 Soulstone Sanctuary
-4 Spyglass Siren
-4 Swamp
-1 Undercity Sewers
-4 Underground River
-
-1 Aclazotz, Deepest Betrayal
-1 Cut Down
-2 Duress
-2 Ghost Vacuum
-1 Malicious Eclipse
-1 Sheoldred, the Apocalypse
-2 Spell Pierce
-1 The End
-3 The Filigree Sylex
-1 Tishana's Tidebinder
+2 Anoint with Affliction
+3 Cut Down
+4 Darkslick Shores
+4 Deep-Cavern Bat
+4 Enduring Curiosity
+1 Faebloom Trick
+4 Floodpits Drowner
+2 Gix's Command
+4 Gloomlake Verge
+2 Go for the Throat
+2 Island
+3 Kaito, Bane of Nightmares
+1 Mockingbird
+1 Oildeep Gearhulk
+3 Preacher of the Schism
+4 Restless Reef
+1 Shoot the Sheriff
+2 Soulstone Sanctuary
+4 Spyglass Siren
+4 Swamp
+1 Undercity Sewers
+4 Underground River
+
+1 Aclazotz, Deepest Betrayal
+1 Cut Down
+2 Duress
+2 Ghost Vacuum
+1 Malicious Eclipse
+1 Sheoldred, the Apocalypse
+2 Spell Pierce
+1 The End
+3 The Filigree Sylex
+1 Tishana's Tidebinder

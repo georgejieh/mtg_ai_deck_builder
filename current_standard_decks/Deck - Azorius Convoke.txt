@@ -1,30 +1,29 @@
-4 Adarkar Wastes
-3 Enduring Curiosity
-4 Floodfarm Verge
-4 Floodpits Drowner
-4 Island
-4 Mockingbird
-4 Novice Inspector
-3 Plains
-1 Raise the Past
-4 Regal Bunnicorn
-2 Restless Anchorage
-1 Sanguine Evangelist
-4 Seachrome Coast
-4 Sheltered by Ghosts
-1 Soulstone Sanctuary
-4 Spyglass Siren
-1 Steel Seraph
-2 Subterranean Schooner
-1 Tishana's Tidebinder
-1 Voyager Glidecar
-4 Warden of the Inner Sky
-
-1 Ajani, Caller of the Pride
-3 Destroy Evil
-1 Glass Casket
-3 Protect the Negotiators
-2 Raise the Past
-1 Rest in Peace
-2 Split Up
-2 Tishana's Tidebinder
+4 Adarkar Wastes
+3 Enduring Curiosity
+4 Floodfarm Verge
+4 Floodpits Drowner
+4 Island
+4 Mockingbird
+2 No More Lies
+4 Novice Inspector
+3 Plains
+1 Raise the Past
+4 Regal Bunnicorn
+2 Restless Anchorage
+4 Seachrome Coast
+4 Sheltered by Ghosts
+1 Soulstone Sanctuary
+4 Spyglass Siren
+1 Steel Seraph
+2 Subterranean Schooner
+1 Tishana's Tidebinder
+4 Warden of the Inner Sky
+
+1 Ajani, Caller of the Pride
+3 Destroy Evil
+1 Elspeth's Smite
+2 Protect the Negotiators
+2 Raise the Past
+2 Rest in Peace
+2 Split Up
+2 Tishana's Tidebinder

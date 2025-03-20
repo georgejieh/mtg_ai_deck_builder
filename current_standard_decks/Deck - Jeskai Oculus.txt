@@ -1,28 +1,28 @@
-4 Abhorrent Oculus
-2 Adarkar Wastes
-2 Battlefield Forge
-2 Bitter Reunion
-1 Bounce Off
-4 Fear of Missing Out
-4 Helping Hand
-4 Inspiring Vantage
-3 Inti, Seneschal of the Sun
-1 Into the Flood Maw
-3 Proft's Eidetic Memory
-2 Recommission
-4 Seachrome Coast
-4 Shivan Reef
-2 Spell Pierce
-4 Spirebluff Canal
-4 Spyglass Siren
-4 Steamcore Scholar
-2 Thundering Falls
-4 Torch the Tower
-
-2 Brotherhood's End
-3 Chandra, Spark Hunter
-3 Destroy Evil
-1 Ghost Vacuum
-2 Negate
-2 Pyroclasm
-2 The Filigree Sylex
+4 Abhorrent Oculus
+2 Adarkar Wastes
+2 Battlefield Forge
+2 Bitter Reunion
+1 Bounce Off
+4 Fear of Missing Out
+4 Helping Hand
+4 Inspiring Vantage
+3 Inti, Seneschal of the Sun
+1 Into the Flood Maw
+3 Proft's Eidetic Memory
+2 Recommission
+4 Seachrome Coast
+4 Shivan Reef
+2 Spell Pierce
+4 Spirebluff Canal
+4 Spyglass Siren
+4 Steamcore Scholar
+2 Thundering Falls
+4 Torch the Tower
+
+2 Brotherhood's End
+3 Chandra, Spark Hunter
+3 Destroy Evil
+1 Ghost Vacuum
+2 Negate
+2 Pyroclasm
+2 The Filigree Sylex
