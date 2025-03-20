@@ -18,15 +18,25 @@ _Unleash the power of **Machine Learning** to forge next-level **Magic: The Gath
 > :warning: **Work in progress**: The project features multiple analysis approaches with varying degrees of sophistication.
 
 - **[`fetch_standard_legal_cards.py`]**  
-  Fetches all Standard-legal cards from the Scryfall API and outputs them as a CSV dataset.
+  Fetches all Standard-legal cards from the Scryfall API and outputs them as a CSV dataset. Handles various card layouts including split cards and Room cards, and extracts comprehensive card data including types, colors, keywords, and mechanics.
+
 - **[`deck_analysis.py`]**  
-  Analyzes an input deck list to produce baseline archetype insights. Uses very simplified guidelines, so suggestions may not be fully accurate yet.
+  Analyzes an input deck list to produce baseline archetype insights. Uses statistical analysis to determine if a deck fits Aggro, Midrange, Control, Tempo, or Combo archetypes, and provides detailed breakdowns of mana curve, card compositions, and mechanic distributions.
+
+- **[`current_standard_deck_list_scraper.py`]**  
+  Scrapes the latest Standard deck lists from MTGGoldfish's metagame page. Allows filtering by minimum meta percentage and saves deck lists as text files for analysis. Also exports meta representation data as JSON.
+
 - **[`analyze_meta_old_try_to_parse.py`]**  
   The first meta analysis script that uses rule-based pattern matching to identify mechanics and synergies. It parses oracle text using predefined regex patterns to detect card interactions, with special handling for Room-type enchantments. While comprehensive, its accuracy depends on the quality of the predefined patterns. It can misclassify complex interactions or miss new mechanics that don't match its patterns.
+
 - **[`analyze_meta_using_keywords.py`]**  
   A statistical approach that analyzes card data directly without assumptions about interactions. It dynamically extracts types, subtypes, keywords, and references from the card pool to identify patterns. This approach offers more reliable results when the card pool changes, as it doesn't rely on hardcoded patterns. It excels at providing objective meta statistics but offers less insight into complex card interactions.
+
 - **[`semantics_meta_analysis.py`]**  
   The newest script that implements machine learning and semantic analysis. It uses a pre-trained sentence transformer model to generate embeddings for cards based on their oracle text. It then applies clustering techniques to identify similar cards and decks without relying on predefined patterns. This approach can discover nuanced relationships and emergent themes that might be missed by rule-based systems, though the identified similarities may sometimes lack clear explanation since the model isn't specifically trained on Magic terminology.
+
+- **[`consolidated_meta_analysis.py`]**  
+  Combines the outputs from all three meta analysis approaches (pattern-based, keyword-based, and semantic) to generate a comprehensive meta report. It reconciles potentially conflicting information from different analysis methods, extracts the most reliable insights from each, and produces a unified view of the metagame including archetype distributions, card type trends, color combinations, and synergy clusters.
 
 All three meta analysis scripts are maintained in the repository as they provide complementary insights for different purposes. Use the pattern-matching approach for detailed mechanic breakdowns, the keyword-based approach for reliable statistical analysis, and the semantic approach for discovering unexpected card relationships.
 
@@ -67,13 +77,19 @@ Pull down all Standard-legal cards (saves `standard_cards.csv` to `./data`):
 python fetch_standard_legal_cards.py
 ```
 
-### 2. Analyze a Deck
+### 2. Scrape Current Meta Decks
+Scrape the latest Standard deck lists from MTGGoldfish:
+```bash
+python current_standard_deck_list_scraper.py
+```
+
+### 3. Analyze a Deck
 To analyze a single deck list, place your deck in a `.txt` file and run:
 ```bash
 python deck_analysis.py /path/to/decklist.txt
 ```
 
-### 3. Analyze the Meta
+### 4. Analyze the Meta
 You can use any of the three meta analysis scripts based on your needs:
 ```bash
 # For rule-based pattern matching (comprehensive but potentially less accurate):
@@ -84,6 +100,12 @@ python analyze_meta_using_keywords.py --cards data/standard_cards.csv --decks cu
 
 # For semantic analysis using machine learning (discovers nuanced relationships):
 python semantics_meta_analysis.py --cards data/standard_cards.csv --decks current_standard_decks
+```
+
+### 5. Generate Consolidated Meta Report
+Combine insights from all three meta analysis approaches:
+```bash
+python consolidated_meta_analysis.py
 ```
 
 Each script will generate its own analysis output file and display a summary report in the console.
