@@ -177,15 +177,19 @@ class MTGGoldfishScraper:
             return False
     
     def export_meta_json(self):
-        """Export the meta data to a JSON file."""
-        json_path = os.path.join(self.output_dir, "meta_data.json")
-        
+        """Export the meta data to a JSON file in the json_outputs directory."""
+        # Create json_outputs directory if it doesn't exist
+        json_dir = "json_outputs"
+        os.makedirs(json_dir, exist_ok=True)
+    
+        json_path = os.path.join(json_dir, "deck_meta_representation.json")
+    
         # Sort decks by meta percentage (descending)
         sorted_data = sorted(self.meta_data, key=lambda x: x["meta_percentage"], reverse=True)
-        
+    
         with open(json_path, 'w', encoding='utf-8') as f:
             json.dump(sorted_data, f, indent=2)
-            
+        
         logger.info(f"Exported meta data to: {json_path}")
         return json_path
     

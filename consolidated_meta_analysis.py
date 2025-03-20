@@ -560,9 +560,9 @@ def main():
     """Main function to process the JSON files and generate a report."""
     try:
         # Load the JSON files
-        parse_meta = load_json_file('parse_meta_analysis_results.json')
-        semantic_meta = load_json_file('semantic_meta_analysis_results.json')
-        keyword_meta = load_json_file('meta_keyword_analysis_results.json')
+        parse_meta = load_json_file('json_outputs/parse_meta_analysis_results.json')
+        semantic_meta = load_json_file('json_outputs/semantic_meta_analysis_results.json')
+        keyword_meta = load_json_file('json_outputs/meta_keyword_analysis_results.json')
         
         json_files = {
             'parse_meta': parse_meta,
@@ -574,7 +574,7 @@ def main():
         meta_report = generate_meta_report(json_files)
         
         # Write the report to a JSON file
-        with open('consolidated_meta_report.json', 'w') as file:
+        with open('json_outputs/consolidated_meta_report.json', 'w') as file:
             json.dump(meta_report, file, indent=2)
         
         print("Meta analysis complete! Report written to consolidated_meta_report.json")

@@ -1,0 +1,2549 @@
+{
+  "meta_speed": {
+    "speed": "medium",
+    "avg_cmc": 2.585348997926745,
+    "early_game_ratio": 0.6053904630269523,
+    "interaction_ratio": 0.29094678645473393,
+    "speed_characteristics": {
+      "description": "Medium-speed metas favor balanced decks with a mix of threats and answers",
+      "recommended_cmc_range": [
+        2.5,
+        3.5
+      ],
+      "recommended_curve_peak": [
+        2,
+        3
+      ],
+      "recommended_land_count": [
+        23,
+        26
+      ]
+    }
+  },
+  "mana_curve_patterns": {
+    "control": {
+      "average_distribution": {
+        "1": 0.030101697244554387,
+        "2": 0.33462760671799696,
+        "3": 0.21429741432134658,
+        "4": 0.15590595448842873,
+        "5": 0.13345062988748554,
+        "6": 0.03357531500572738,
+        "7": 0.056938775510204084,
+        "10": 0.04110260682425631
+      },
+      "peak_cmc": "2",
+      "sample_size": 6
+    },
+    "control-tempo": {
+      "average_distribution": {
+        "1": 0.21569534381745298,
+        "2": 0.3162195497995683,
+        "3": 0.23080481036077707,
+        "4": 0.12981806968855997,
+        "5": 0.08603145235892691,
+        "6": 0.014184397163120567,
+        "7": 0.007246376811594203
+      },
+      "peak_cmc": "2",
+      "sample_size": 3
+    },
+    "aggro": {
+      "average_distribution": {
+        "1": 0.3875550753353195,
+        "2": 0.3299813283276103,
+        "3": 0.11721499366338435,
+        "4": 0.06559876675303979,
+        "5": 0.06240896358543418,
+        "6": 0.007890222984562607,
+        "7": 0.018961038961038963,
+        "8": 0.01038961038961039
+      },
+      "peak_cmc": "1",
+      "sample_size": 7
+    },
+    "aggro-control": {
+      "average_distribution": {
+        "1": 0.35691823899371067,
+        "2": 0.36901306240928883,
+        "3": 0.21032897919690371,
+        "4": 0.038098693759071114,
+        "5": 0.025641025641025644
+      },
+      "peak_cmc": "2",
+      "sample_size": 3
+    },
+    "aggro-tempo": {
+      "average_distribution": {
+        "1": 0.418534961154273,
+        "2": 0.3134233567640893,
+        "3": 0.1452953508447404,
+        "4": 0.09823652731532866,
+        "5": 0.024509803921568627
+      },
+      "peak_cmc": "1",
+      "sample_size": 4
+    },
+    "aggro-midrange": {
+      "average_distribution": {
+        "1": 0.39815926370548216,
+        "2": 0.31032412965186074,
+        "3": 0.10044017607042817,
+        "4": 0.17066826730692278,
+        "5": 0.02040816326530612
+      },
+      "peak_cmc": "1",
+      "sample_size": 2
+    },
+    "tempo": {
+      "average_distribution": {
+        "1": 0.2984126984126984,
+        "2": 0.2733333333333333,
+        "3": 0.1653968253968254,
+        "4": 0.2161904761904762,
+        "5": 0.04666666666666667
+      },
+      "peak_cmc": "1",
+      "sample_size": 3
+    }
+  },
+  "card_type_distributions": {
+    "control": {
+      "average_counts": {
+        "spell": 47.666666666666664,
+        "creature": 27.166666666666668,
+        "land": 49.333333333333336,
+        "other": 23.5
+      },
+      "average_ratios": {
+        "spell": 0.3238151927437642,
+        "creature": 0.18344107566398207,
+        "land": 0.3340386269450309,
+        "other": 0.15870510464722287
+      },
+      "sample_size": 6
+    },
+    "control-tempo": {
+      "average_counts": {
+        "land": 49.333333333333336,
+        "other": 15.333333333333334,
+        "creature": 24,
+        "spell": 53.333333333333336
+      },
+      "average_ratios": {
+        "land": 0.347203464317105,
+        "other": 0.10761025686912155,
+        "creature": 0.17018476420031672,
+        "spell": 0.37500151461345665
+      },
+      "sample_size": 3
+    },
+    "aggro": {
+      "average_counts": {
+        "land": 44.285714285714285,
+        "other": 17.142857142857142,
+        "spell": 24.857142857142858,
+        "creature": 61.42857142857143
+      },
+      "average_ratios": {
+        "land": 0.2998201136557301,
+        "other": 0.11601164765548327,
+        "spell": 0.16861685560315698,
+        "creature": 0.41555138308562967
+      },
+      "sample_size": 7
+    },
+    "aggro-control": {
+      "average_counts": {
+        "creature": 34,
+        "land": 41.333333333333336,
+        "spell": 54,
+        "other": 16.666666666666668
+      },
+      "average_ratios": {
+        "creature": 0.23300705297232405,
+        "land": 0.28287006667095416,
+        "spell": 0.3706639226531181,
+        "other": 0.11345895770360366
+      },
+      "sample_size": 3
+    },
+    "aggro-tempo": {
+      "average_counts": {
+        "land": 47,
+        "spell": 33.5,
+        "other": 26,
+        "creature": 40.5
+      },
+      "average_ratios": {
+        "land": 0.3202250948614059,
+        "spell": 0.22638304714129526,
+        "other": 0.17856582416875683,
+        "creature": 0.27482603382854204
+      },
+      "sample_size": 4
+    },
+    "aggro-midrange": {
+      "average_counts": {
+        "creature": 52.5,
+        "spell": 36,
+        "land": 48,
+        "other": 12
+      },
+      "average_ratios": {
+        "creature": 0.35366406675131506,
+        "spell": 0.24242699074913843,
+        "land": 0.32319064030473427,
+        "other": 0.08071830219481227
+      },
+      "sample_size": 2
+    },
+    "tempo": {
+      "average_counts": {
+        "spell": 38,
+        "creature": 39.666666666666664,
+        "land": 47.333333333333336,
+        "other": 24
+      },
+      "average_ratios": {
+        "spell": 0.25505668934240366,
+        "creature": 0.26675736961451246,
+        "land": 0.31746031746031744,
+        "other": 0.16072562358276643
+      },
+      "sample_size": 3
+    }
+  },
+  "color_combinations": [
+    {
+      "combination": "UW",
+      "count": 7,
+      "percentage": 25.0,
+      "dominant_archetype": "control",
+      "archetype_diversity": 0.5714285714285714
+    },
+    {
+      "combination": "GW",
+      "count": 3,
+      "percentage": 10.714285714285714,
+      "dominant_archetype": "control",
+      "archetype_diversity": 0.6666666666666666
+    },
+    {
+      "combination": "BW",
+      "count": 3,
+      "percentage": 10.714285714285714,
+      "dominant_archetype": "tempo",
+      "archetype_diversity": 1.0
+    },
+    {
+      "combination": "RW",
+      "count": 2,
+      "percentage": 7.142857142857142,
+      "dominant_archetype": "aggro-tempo",
+      "archetype_diversity": 1.0
+    },
+    {
+      "combination": "BU",
+      "count": 2,
+      "percentage": 7.142857142857142,
+      "dominant_archetype": "aggro-midrange",
+      "archetype_diversity": 1.0
+    },
+    {
+      "combination": "BG",
+      "count": 2,
+      "percentage": 7.142857142857142,
+      "dominant_archetype": "control-tempo",
+      "archetype_diversity": 1.0
+    },
+    {
+      "combination": "GR",
+      "count": 2,
+      "percentage": 7.142857142857142,
+      "dominant_archetype": "aggro-midrange",
+      "archetype_diversity": 1.0
+    },
+    {
+      "combination": "W",
+      "count": 2,
+      "percentage": 7.142857142857142,
+      "dominant_archetype": "aggro",
+      "archetype_diversity": 1.0
+    },
+    {
+      "combination": "R",
+      "count": 2,
+      "percentage": 7.142857142857142,
+      "dominant_archetype": "aggro-tempo",
+      "archetype_diversity": 1.0
+    },
+    {
+      "combination": "BUW",
+      "count": 1,
+      "percentage": 3.571428571428571,
+      "dominant_archetype": "aggro",
+      "archetype_diversity": 1.0
+    },
+    {
+      "combination": "RU",
+      "count": 1,
+      "percentage": 3.571428571428571,
+      "dominant_archetype": "aggro-control",
+      "archetype_diversity": 1.0
+    },
+    {
+      "combination": "GRU",
+      "count": 1,
+      "percentage": 3.571428571428571,
+      "dominant_archetype": "aggro-control",
+      "archetype_diversity": 1.0
+    }
+  ],
+  "defining_cards": {
+    "control": [
+      {
+        "name": "Blast Zone",
+        "count": 4,
+        "percentage": 66.66666666666666,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Ride's End",
+        "count": 3,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Abuelo's Awakening",
+        "count": 3,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Confounding Riddle",
+        "count": 3,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Ephara's Dispersal",
+        "count": 3,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Fallaji Archaeologist",
+        "count": 3,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Grand Abolisher",
+        "count": 3,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Invasion of Arcavios",
+        "count": 3,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Johann's Stopgap",
+        "count": 3,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Omniscience",
+        "count": 3,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      }
+    ],
+    "control-tempo": [
+      {
+        "name": "Unholy Annex",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 6.222222222222222
+      },
+      {
+        "name": "Authority of the Consuls",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Demolition Field",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Anoint with Affliction",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Beza, the Bounding Spring",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 2.3333333333333335
+      },
+      {
+        "name": "Swamp",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 1.8666666666666665
+      },
+      {
+        "name": "Plains",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 1.0980392156862746
+      }
+    ],
+    "aggro": [
+      {
+        "name": "Sheltered by Ghosts",
+        "count": 4,
+        "percentage": 57.14285714285714,
+        "relevance": 3.1999999999999997
+      },
+      {
+        "name": "Destroy Evil",
+        "count": 4,
+        "percentage": 57.14285714285714,
+        "relevance": 1.7777777777777775
+      },
+      {
+        "name": "Plains",
+        "count": 4,
+        "percentage": 57.14285714285714,
+        "relevance": 0.9411764705882353
+      }
+    ],
+    "aggro-control": [
+      {
+        "name": "Abhorrent Oculus",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 9.333333333333334
+      },
+      {
+        "name": "Bounce Off",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 9.333333333333334
+      },
+      {
+        "name": "Helping Hand",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 9.333333333333334
+      },
+      {
+        "name": "Recommission",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 9.333333333333334
+      },
+      {
+        "name": "Thundering Falls",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 9.333333333333334
+      },
+      {
+        "name": "Into the Flood Maw",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 9.333333333333334
+      },
+      {
+        "name": "Pyroclasm",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 6.222222222222222
+      },
+      {
+        "name": "Spell Pierce",
+        "count": 3,
+        "percentage": 100.0,
+        "relevance": 4.0
+      },
+      {
+        "name": "Ghost Vacuum",
+        "count": 3,
+        "percentage": 100.0,
+        "relevance": 3.1111111111111107
+      },
+      {
+        "name": "Torch the Tower",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 2.3333333333333335
+      }
+    ],
+    "aggro-tempo": [
+      {
+        "name": "Hopeless Nightmare",
+        "count": 2,
+        "percentage": 50.0,
+        "relevance": 4.666666666666667
+      },
+      {
+        "name": "Soulstone Sanctuary",
+        "count": 3,
+        "percentage": 75.0,
+        "relevance": 3.5
+      },
+      {
+        "name": "Burst Lightning",
+        "count": 2,
+        "percentage": 50.0,
+        "relevance": 3.5
+      },
+      {
+        "name": "Sunspine Lynx",
+        "count": 2,
+        "percentage": 50.0,
+        "relevance": 3.5
+      },
+      {
+        "name": "Emberheart Challenger",
+        "count": 2,
+        "percentage": 50.0,
+        "relevance": 2.8
+      },
+      {
+        "name": "Heartfire Hero",
+        "count": 2,
+        "percentage": 50.0,
+        "relevance": 2.8
+      },
+      {
+        "name": "Manifold Mouse",
+        "count": 2,
+        "percentage": 50.0,
+        "relevance": 2.8
+      },
+      {
+        "name": "Monstrous Rage",
+        "count": 2,
+        "percentage": 50.0,
+        "relevance": 2.8
+      },
+      {
+        "name": "Cut Down",
+        "count": 2,
+        "percentage": 50.0,
+        "relevance": 2.8
+      },
+      {
+        "name": "Mountain",
+        "count": 2,
+        "percentage": 50.0,
+        "relevance": 2.0
+      }
+    ],
+    "aggro-midrange": [
+      {
+        "name": "Aclazotz, Deepest Betrayal",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 14.0
+      },
+      {
+        "name": "Deep-Cavern Bat",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 14.0
+      },
+      {
+        "name": "Faebloom Trick",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 14.0
+      },
+      {
+        "name": "Oildeep Gearhulk",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 14.0
+      },
+      {
+        "name": "Shoot the Sheriff",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 14.0
+      },
+      {
+        "name": "Undercity Sewers",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 14.0
+      },
+      {
+        "name": "Obliterating Bolt",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 14.0
+      },
+      {
+        "name": "Gloomlake Verge",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 7.0
+      },
+      {
+        "name": "Malicious Eclipse",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 7.0
+      },
+      {
+        "name": "Restless Reef",
+        "count": 1,
+        "percentage": 50.0,
+        "relevance": 7.0
+      }
+    ],
+    "tempo": [
+      {
+        "name": "Day of Judgment",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 3.111111111111111
+      },
+      {
+        "name": "Duress",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 3.111111111111111
+      },
+      {
+        "name": "Beza, the Bounding Spring",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 2.3333333333333335
+      },
+      {
+        "name": "Get Lost",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 1.8666666666666665
+      },
+      {
+        "name": "Plains",
+        "count": 2,
+        "percentage": 66.66666666666666,
+        "relevance": 1.0980392156862746
+      }
+    ]
+  },
+  "cluster_patterns": [
+    {
+      "id": 2,
+      "size": 6,
+      "decks": [
+        "Deck - Azorius Control",
+        "Deck - Azorius Convoke",
+        "Deck - Boros Tokens",
+        "Deck - Dimir Midrange",
+        "Deck - Dimir Self-Bounce",
+        "Deck - Jeskai Convoke"
+      ],
+      "centroid_deck": "Deck - Azorius Convoke",
+      "dominant_strategy": "aggro",
+      "sample_proportion": 21.428571428571427,
+      "note": "This proportion represents prevalence in our sample only, not actual meta share"
+    },
+    {
+      "id": 4,
+      "size": 6,
+      "decks": [
+        "Deck - Bant Control",
+        "Deck - Esper Control",
+        "Deck - Esper Self-Bounce",
+        "Deck - Golgari Midrange",
+        "Deck - Jeskai Oculus",
+        "Deck - Orzhov Control"
+      ],
+      "centroid_deck": "Deck - Esper Control",
+      "dominant_strategy": "tempo",
+      "sample_proportion": 21.428571428571427,
+      "note": "This proportion represents prevalence in our sample only, not actual meta share"
+    },
+    {
+      "id": 0,
+      "size": 4,
+      "decks": [
+        "Deck - 4c Zur",
+        "Deck - Domain",
+        "Deck - Selesnya Cage",
+        "Deck - Temur Floodcaller Combo"
+      ],
+      "centroid_deck": "Deck - Domain",
+      "dominant_strategy": "control",
+      "sample_proportion": 14.285714285714285,
+      "note": "This proportion represents prevalence in our sample only, not actual meta share"
+    },
+    {
+      "id": 6,
+      "size": 4,
+      "decks": [
+        "Deck - Azorius Omniscience Combo",
+        "Deck - Azorius Tempo",
+        "Deck - Esper Omniscience Combo",
+        "Deck - Jeskai Omniscience Combo"
+      ],
+      "centroid_deck": "Deck - Azorius Omniscience Combo",
+      "dominant_strategy": "control",
+      "sample_proportion": 14.285714285714285,
+      "note": "This proportion represents prevalence in our sample only, not actual meta share"
+    },
+    {
+      "id": 5,
+      "size": 4,
+      "decks": [
+        "Deck - Gruul Aggro",
+        "Deck - Gruul Prowess",
+        "Deck - Mono-Red Prowess",
+        "Deck - Rakdos Aggro"
+      ],
+      "centroid_deck": "Deck - Gruul Aggro",
+      "dominant_strategy": "aggro",
+      "sample_proportion": 14.285714285714285,
+      "note": "This proportion represents prevalence in our sample only, not actual meta share"
+    }
+  ],
+  "card_clusters": [
+    {
+      "cards": [
+        "Restless Cottage",
+        "Restless Fortress",
+        "Spirebluff Canal",
+        "Razorverge Thicket",
+        "Restless Vents",
+        "Blooming Marsh",
+        "Restless Reef",
+        "Seachrome Coast",
+        "Botanical Sanctum",
+        "Darkslick Shores",
+        "Concealed Courtyard",
+        "Copperline Gorge",
+        "Blackcleave Cliffs",
+        "Inspiring Vantage"
+      ],
+      "themes": [],
+      "frequency": 11,
+      "source": "semantic"
+    },
+    {
+      "cards": [
+        "Plains",
+        "Get Lost"
+      ],
+      "themes": [
+        "add",
+        "target creature",
+        "creature",
+        "target",
+        "enchantment"
+      ],
+      "frequency": 10,
+      "support": 0.35714285714285715,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Floodfarm Verge",
+        "Island"
+      ],
+      "themes": [
+        "add",
+        "plains island",
+        "plains",
+        "island",
+        "control"
+      ],
+      "frequency": 10,
+      "support": 0.35714285714285715,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Island",
+        "Plains"
+      ],
+      "themes": [
+        "add"
+      ],
+      "frequency": 10,
+      "support": 0.35714285714285715,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Floodfarm Verge",
+        "Plains"
+      ],
+      "themes": [
+        "add",
+        "plains island",
+        "plains",
+        "island",
+        "control"
+      ],
+      "frequency": 10,
+      "support": 0.35714285714285715,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Seachrome Coast",
+        "Adarkar Wastes"
+      ],
+      "themes": [
+        "add",
+        "land",
+        "land deals",
+        "add land",
+        "deals"
+      ],
+      "frequency": 10,
+      "support": 0.35714285714285715,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Floodfarm Verge",
+        "Island",
+        "Plains"
+      ],
+      "themes": [
+        "add",
+        "plains island",
+        "plains",
+        "island",
+        "control"
+      ],
+      "frequency": 10,
+      "support": 0.35714285714285715,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Negate",
+        "Island"
+      ],
+      "themes": [
+        "add",
+        "target noncreature",
+        "spell",
+        "target",
+        "noncreature spell"
+      ],
+      "frequency": 9,
+      "support": 0.32142857142857145,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Temporary Lockdown",
+        "Plains"
+      ],
+      "themes": [
+        "add",
+        "enchantment",
+        "value enchantment",
+        "permanent mana",
+        "value"
+      ],
+      "frequency": 9,
+      "support": 0.32142857142857145,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Island",
+        "Get Lost"
+      ],
+      "themes": [
+        "add",
+        "target creature",
+        "creature",
+        "target",
+        "enchantment"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Floodfarm Verge",
+        "Get Lost"
+      ],
+      "themes": [
+        "add",
+        "target creature",
+        "creature",
+        "target",
+        "activate"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Beza, the Bounding Spring",
+        "Plains"
+      ],
+      "themes": [
+        "add",
+        "opponent",
+        "life",
+        "opponent controls",
+        "create"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Negate",
+        "Floodfarm Verge"
+      ],
+      "themes": [
+        "add",
+        "target noncreature",
+        "target",
+        "noncreature",
+        "spell"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Negate",
+        "Plains"
+      ],
+      "themes": [
+        "add",
+        "target noncreature",
+        "spell",
+        "target",
+        "noncreature spell"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Rest in Peace",
+        "Plains"
+      ],
+      "themes": [
+        "add",
+        "exile",
+        "token graveyard",
+        "token",
+        "instead"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Negate",
+        "Adarkar Wastes"
+      ],
+      "themes": [
+        "add",
+        "target",
+        "target noncreature",
+        "noncreature spell",
+        "noncreature"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Adarkar Wastes",
+        "Plains"
+      ],
+      "themes": [
+        "add",
+        "land deals",
+        "deals damage",
+        "land",
+        "deals"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Negate",
+        "Seachrome Coast"
+      ],
+      "themes": [
+        "target noncreature",
+        "target",
+        "noncreature spell",
+        "spell",
+        "counter"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Seachrome Coast",
+        "Plains"
+      ],
+      "themes": [
+        "add",
+        "unless",
+        "unless control",
+        "tapped",
+        "lands add"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Floodfarm Verge",
+        "Island",
+        "Get Lost"
+      ],
+      "themes": [
+        "add",
+        "control",
+        "activate",
+        "target creature",
+        "target"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Plains",
+        "Island",
+        "Get Lost"
+      ],
+      "themes": [
+        "add",
+        "target creature",
+        "creature",
+        "target",
+        "enchantment"
+      ],
+      "frequency": 8,
+      "support": 0.2857142857142857,
+      "source": "frequent_combinations"
+    },
+    {
+      "cards": [
+        "Shadowy Backstreet",
+        "Meticulous Archive",
+        "Lush Portico",
+        "Thundering Falls",
+        "Hedge Maze",
+        "Underground Mortuary",
+        "Undercity Sewers"
+      ],
+      "themes": [],
+      "frequency": 4,
+      "source": "semantic"
+    },
+    {
+      "cards": [
+        "Thornspire Verge",
+        "Wastewood Verge",
+        "Bleachbone Verge",
+        "Hushwood Verge",
+        "Floodfarm Verge",
+        "Willowrush Verge",
+        "Gloomlake Verge",
+        "Sunbillow Verge"
+      ],
+      "themes": [],
+      "frequency": 4,
+      "source": "semantic"
+    }
+  ],
+  "card_type_trends": {
+    "main_types": [
+      {
+        "type": "creature",
+        "count": 97,
+        "percentage": 30.50314465408805
+      },
+      {
+        "type": "land",
+        "count": 59,
+        "percentage": 18.553459119496853
+      },
+      {
+        "type": "sorcery",
+        "count": 48,
+        "percentage": 15.09433962264151
+      },
+      {
+        "type": "instant",
+        "count": 47,
+        "percentage": 14.779874213836477
+      },
+      {
+        "type": "enchantment",
+        "count": 36,
+        "percentage": 11.320754716981133
+      },
+      {
+        "type": "artifact",
+        "count": 22,
+        "percentage": 6.918238993710692
+      },
+      {
+        "type": "planeswalker",
+        "count": 7,
+        "percentage": 2.20125786163522
+      },
+      {
+        "type": "battle",
+        "count": 2,
+        "percentage": 0.628930817610063
+      }
+    ],
+    "subtypes": [
+      {
+        "subtype": "human",
+        "count": 20,
+        "percentage": 8.968609865470851
+      },
+      {
+        "subtype": "soldier",
+        "count": 8,
+        "percentage": 3.587443946188341
+      },
+      {
+        "subtype": "adventure",
+        "count": 7,
+        "percentage": 3.1390134529147984
+      },
+      {
+        "subtype": "wizard",
+        "count": 7,
+        "percentage": 3.1390134529147984
+      },
+      {
+        "subtype": "phyrexian",
+        "count": 6,
+        "percentage": 2.690582959641256
+      },
+      {
+        "subtype": "warrior",
+        "count": 6,
+        "percentage": 2.690582959641256
+      },
+      {
+        "subtype": "mouse",
+        "count": 6,
+        "percentage": 2.690582959641256
+      },
+      {
+        "subtype": "rogue",
+        "count": 5,
+        "percentage": 2.242152466367713
+      },
+      {
+        "subtype": "scout",
+        "count": 5,
+        "percentage": 2.242152466367713
+      },
+      {
+        "subtype": "island",
+        "count": 5,
+        "percentage": 2.242152466367713
+      },
+      {
+        "subtype": "knight",
+        "count": 5,
+        "percentage": 2.242152466367713
+      },
+      {
+        "subtype": "horror",
+        "count": 5,
+        "percentage": 2.242152466367713
+      },
+      {
+        "subtype": "angel",
+        "count": 4,
+        "percentage": 1.7937219730941705
+      },
+      {
+        "subtype": "merfolk",
+        "count": 4,
+        "percentage": 1.7937219730941705
+      },
+      {
+        "subtype": "insect",
+        "count": 4,
+        "percentage": 1.7937219730941705
+      },
+      {
+        "subtype": "forest",
+        "count": 4,
+        "percentage": 1.7937219730941705
+      },
+      {
+        "subtype": "spirit",
+        "count": 4,
+        "percentage": 1.7937219730941705
+      },
+      {
+        "subtype": "elf",
+        "count": 4,
+        "percentage": 1.7937219730941705
+      },
+      {
+        "subtype": "druid",
+        "count": 4,
+        "percentage": 1.7937219730941705
+      },
+      {
+        "subtype": "plains",
+        "count": 4,
+        "percentage": 1.7937219730941705
+      },
+      {
+        "subtype": "swamp",
+        "count": 4,
+        "percentage": 1.7937219730941705
+      },
+      {
+        "subtype": "bird",
+        "count": 3,
+        "percentage": 1.345291479820628
+      },
+      {
+        "subtype": "elemental",
+        "count": 3,
+        "percentage": 1.345291479820628
+      },
+      {
+        "subtype": "construct",
+        "count": 3,
+        "percentage": 1.345291479820628
+      },
+      {
+        "subtype": "class",
+        "count": 3,
+        "percentage": 1.345291479820628
+      },
+      {
+        "subtype": "room",
+        "count": 3,
+        "percentage": 1.345291479820628
+      },
+      {
+        "subtype": "glimmer",
+        "count": 3,
+        "percentage": 1.345291479820628
+      },
+      {
+        "subtype": "cat",
+        "count": 3,
+        "percentage": 1.345291479820628
+      },
+      {
+        "subtype": "cleric",
+        "count": 3,
+        "percentage": 1.345291479820628
+      },
+      {
+        "subtype": "avatar",
+        "count": 3,
+        "percentage": 1.345291479820628
+      }
+    ],
+    "type_references": [
+      {
+        "reference": "creature_reference",
+        "count": 180,
+        "percentage": 38.8768898488121
+      },
+      {
+        "reference": "land_reference",
+        "count": 53,
+        "percentage": 11.447084233261338
+      },
+      {
+        "reference": "artifact_reference",
+        "count": 41,
+        "percentage": 8.855291576673865
+      },
+      {
+        "reference": "enchantment_reference",
+        "count": 36,
+        "percentage": 7.775377969762419
+      },
+      {
+        "reference": "sorcery_reference",
+        "count": 24,
+        "percentage": 5.183585313174946
+      },
+      {
+        "reference": "planeswalker_reference",
+        "count": 17,
+        "percentage": 3.6717062634989204
+      },
+      {
+        "reference": "instant_reference",
+        "count": 8,
+        "percentage": 1.7278617710583155
+      },
+      {
+        "reference": "plains_reference",
+        "count": 5,
+        "percentage": 1.079913606911447
+      },
+      {
+        "reference": "vehicle_reference",
+        "count": 5,
+        "percentage": 1.079913606911447
+      },
+      {
+        "reference": "phyrexian_reference",
+        "count": 5,
+        "percentage": 1.079913606911447
+      },
+      {
+        "reference": "forest_reference",
+        "count": 5,
+        "percentage": 1.079913606911447
+      },
+      {
+        "reference": "aura_reference",
+        "count": 4,
+        "percentage": 0.8639308855291578
+      },
+      {
+        "reference": "spirit_reference",
+        "count": 4,
+        "percentage": 0.8639308855291578
+      },
+      {
+        "reference": "fish_reference",
+        "count": 4,
+        "percentage": 0.8639308855291578
+      },
+      {
+        "reference": "swamp_reference",
+        "count": 3,
+        "percentage": 0.6479481641468683
+      },
+      {
+        "reference": "horror_reference",
+        "count": 3,
+        "percentage": 0.6479481641468683
+      },
+      {
+        "reference": "room_reference",
+        "count": 3,
+        "percentage": 0.6479481641468683
+      },
+      {
+        "reference": "island_reference",
+        "count": 3,
+        "percentage": 0.6479481641468683
+      },
+      {
+        "reference": "soldier_reference",
+        "count": 3,
+        "percentage": 0.6479481641468683
+      },
+      {
+        "reference": "mouse_reference",
+        "count": 3,
+        "percentage": 0.6479481641468683
+      }
+    ]
+  },
+  "archetype_interactions": {
+    "sample_distribution": {
+      "sample_prevalent": [
+        {
+          "name": "aggro",
+          "count_in_sample": 7,
+          "sample_percentage": 25.0,
+          "note": "This percentage represents prevalence in our sample only, not actual meta share"
+        },
+        {
+          "name": "control",
+          "count_in_sample": 6,
+          "sample_percentage": 21.428571428571427,
+          "note": "This percentage represents prevalence in our sample only, not actual meta share"
+        }
+      ],
+      "sample_common": [
+        {
+          "name": "aggro-tempo",
+          "count_in_sample": 4,
+          "sample_percentage": 14.285714285714285,
+          "note": "This percentage represents prevalence in our sample only, not actual meta share"
+        },
+        {
+          "name": "control-tempo",
+          "count_in_sample": 3,
+          "sample_percentage": 10.714285714285714,
+          "note": "This percentage represents prevalence in our sample only, not actual meta share"
+        },
+        {
+          "name": "aggro-control",
+          "count_in_sample": 3,
+          "sample_percentage": 10.714285714285714,
+          "note": "This percentage represents prevalence in our sample only, not actual meta share"
+        },
+        {
+          "name": "tempo",
+          "count_in_sample": 3,
+          "sample_percentage": 10.714285714285714,
+          "note": "This percentage represents prevalence in our sample only, not actual meta share"
+        },
+        {
+          "name": "aggro-midrange",
+          "count_in_sample": 2,
+          "sample_percentage": 7.142857142857142,
+          "note": "This percentage represents prevalence in our sample only, not actual meta share"
+        }
+      ],
+      "sample_uncommon": []
+    },
+    "characteristics": {
+      "aggro": {
+        "creature_ratio": [
+          0.4,
+          0.8
+        ],
+        "avg_cmc": [
+          1.0,
+          2.5
+        ],
+        "early_threat_ratio": [
+          0.3,
+          1.0
+        ],
+        "interaction_ratio": [
+          0.0,
+          0.3
+        ],
+        "card_advantage_ratio": [
+          0.0,
+          0.2
+        ]
+      },
+      "midrange": {
+        "creature_ratio": [
+          0.3,
+          0.6
+        ],
+        "avg_cmc": [
+          2.5,
+          3.5
+        ],
+        "early_threat_ratio": [
+          0.2,
+          0.4
+        ],
+        "interaction_ratio": [
+          0.2,
+          0.4
+        ],
+        "card_advantage_ratio": [
+          0.2,
+          0.4
+        ]
+      },
+      "control": {
+        "creature_ratio": [
+          0.1,
+          0.4
+        ],
+        "avg_cmc": [
+          2.5,
+          4.5
+        ],
+        "early_threat_ratio": [
+          0.0,
+          0.2
+        ],
+        "interaction_ratio": [
+          0.3,
+          0.7
+        ],
+        "card_advantage_ratio": [
+          0.3,
+          0.6
+        ]
+      },
+      "combo": {
+        "creature_ratio": [
+          0.1,
+          0.5
+        ],
+        "avg_cmc": [
+          2.0,
+          4.0
+        ],
+        "early_threat_ratio": [
+          0.1,
+          0.3
+        ],
+        "interaction_ratio": [
+          0.2,
+          0.4
+        ],
+        "card_advantage_ratio": [
+          0.3,
+          0.6
+        ]
+      },
+      "tempo": {
+        "creature_ratio": [
+          0.3,
+          0.5
+        ],
+        "avg_cmc": [
+          1.5,
+          3.0
+        ],
+        "early_threat_ratio": [
+          0.2,
+          0.5
+        ],
+        "interaction_ratio": [
+          0.2,
+          0.5
+        ],
+        "card_advantage_ratio": [
+          0.1,
+          0.3
+        ]
+      }
+    },
+    "disclaimer": "Note: The archetype distribution shown here is based only on our sample decks and does not reflect the actual meta share. For accurate meta share data, refer to sources like MTGGoldfish or tournament results."
+  },
+  "themes": {
+    "unigrams": [
+      {
+        "term": "add",
+        "score": 430.207525531389
+      },
+      {
+        "term": "creature",
+        "score": 343.3982779615744
+      },
+      {
+        "term": "target",
+        "score": 242.29444480457911
+      },
+      {
+        "term": "control",
+        "score": 242.20654127441605
+      },
+      {
+        "term": "enters",
+        "score": 209.32110093521663
+      },
+      {
+        "term": "land",
+        "score": 204.8539848861334
+      },
+      {
+        "term": "card",
+        "score": 197.81295713291445
+      },
+      {
+        "term": "spell",
+        "score": 167.36341571483086
+      },
+      {
+        "term": "turn",
+        "score": 155.6963869231179
+      },
+      {
+        "term": "cast",
+        "score": 141.00709650811035
+      },
+      {
+        "term": "damage",
+        "score": 140.65297933827256
+      },
+      {
+        "term": "token",
+        "score": 129.87836182087833
+      },
+      {
+        "term": "enchantment",
+        "score": 128.18363379300567
+      },
+      {
+        "term": "tapped",
+        "score": 125.89484905927152
+      },
+      {
+        "term": "exile",
+        "score": 121.54713647494896
+      }
+    ],
+    "bigrams": [
+      {
+        "term": "deals damage",
+        "score": 190.83448104329696
+      },
+      {
+        "term": "target creature",
+        "score": 185.52366928416026
+      },
+      {
+        "term": "creature enters",
+        "score": 172.44245491992854
+      },
+      {
+        "term": "add add",
+        "score": 160.0152061731055
+      },
+      {
+        "term": "end turn",
+        "score": 154.4864168772844
+      },
+      {
+        "term": "cast spell",
+        "score": 133.6364819533474
+      },
+      {
+        "term": "draw card",
+        "score": 132.07335825739312
+      },
+      {
+        "term": "land enters",
+        "score": 119.99070864185242
+      },
+      {
+        "term": "mana value",
+        "score": 118.0776407421153
+      },
+      {
+        "term": "add land",
+        "score": 98.99045237887641
+      }
+    ],
+    "emergent": [
+      {
+        "id": 6,
+        "theme_name": "creature",
+        "cards": [
+          "Overlord of the Balemurk",
+          "Dissection Tools",
+          "Omniscience",
+          "Overlord of the Mistmoors",
+          "Picklock Prankster",
+          "Tishana's Tidebinder",
+          "Entity Tracker",
+          "Roaring Furnace/Steaming Sauna",
+          "The Filigree Sylex",
+          "Serra Paragon",
+          "Defiled Crypt/Cadaver Lab",
+          "Haughty Djinn",
+          "Johann's Stopgap",
+          "Souls of the Lost",
+          "Pawpatch Recruit",
+          "Protect the Negotiators",
+          "Aven Interrupter",
+          "This Town Ain't Big Enough",
+          "Scrapshooter",
+          "Tear Asunder",
+          "Regal Bunnicorn",
+          "Season of Weaving",
+          "Questing Druid",
+          "Urza's Sylex",
+          "Horned Loch-Whale",
+          "Shoot the Sheriff",
+          "Ride's End",
+          "Overlord of the Hauntwoods",
+          "No More Lies",
+          "Founding the Third Path",
+          "Spell Pierce",
+          "Huskburster Swarm",
+          "Optimistic Scavenger",
+          "Soul Partition",
+          "Into the Flood Maw",
+          "Fear of Isolation",
+          "Invasion of Gobakhan",
+          "Tinybones, the Pickpocket",
+          "Maelstrom Pulse",
+          "Parting Gust",
+          "Elesh Norn, Mother of Machines",
+          "Sheltered by Ghosts",
+          "Leyline Binding",
+          "Overwhelming Remorse",
+          "Resolute Reinforcements",
+          "Lavaspur Boots",
+          "Leyline of Resonance",
+          "Unholy Annex/Ritual Chamber",
+          "Negate",
+          "Nurturing Pixie",
+          "Legions to Ashes",
+          "Doppelgang"
+        ],
+        "size": 52,
+        "keywords": [
+          "creature",
+          "spell",
+          "target",
+          "permanent",
+          "cast",
+          "enters",
+          "control",
+          "counter",
+          "exile",
+          "nonland"
+        ],
+        "deck_count": 22,
+        "decks": [
+          "Deck - 4c Zur",
+          "Deck - Azorius Control",
+          "Deck - Azorius Convoke",
+          "Deck - Azorius Omniscience Combo",
+          "Deck - Azorius Tempo",
+          "Deck - Bant Control",
+          "Deck - Boros Tokens",
+          "Deck - Dimir Midrange",
+          "Deck - Dimir Self-Bounce",
+          "Deck - Domain",
+          "Deck - Esper Control",
+          "Deck - Esper Omniscience Combo",
+          "Deck - Esper Self-Bounce",
+          "Deck - Golgari Midrange",
+          "Deck - Golgari Self-Mill",
+          "Deck - Jeskai Convoke",
+          "Deck - Jeskai Oculus",
+          "Deck - Jeskai Omniscience Combo",
+          "Deck - Orzhov Control",
+          "Deck - Orzhov Self-Bounce",
+          "Deck - Selesnya Cage",
+          "Deck - Temur Floodcaller Combo"
+        ]
+      },
+      {
+        "id": 4,
+        "theme_name": "add",
+        "cards": [
+          "Island",
+          "Brushland",
+          "Underground River",
+          "Yavimaya Coast",
+          "Swamp",
+          "Karplusan Forest",
+          "Plains",
+          "Battlefield Forge",
+          "Sulfurous Springs",
+          "Shivan Reef",
+          "Llanowar Elves",
+          "Forest",
+          "Adarkar Wastes",
+          "Llanowar Wastes",
+          "Caves of Koilos",
+          "Mountain"
+        ],
+        "size": 16,
+        "keywords": [
+          "add",
+          "land deals",
+          "deals damage",
+          "land",
+          "deals",
+          "damage",
+          "add land",
+          "add add"
+        ],
+        "deck_count": 22,
+        "decks": [
+          "Deck - 4c Zur",
+          "Deck - Azorius Control",
+          "Deck - Azorius Convoke",
+          "Deck - Azorius Omniscience Combo",
+          "Deck - Azorius Tempo",
+          "Deck - Bant Control",
+          "Deck - Boros Mice",
+          "Deck - Boros Tokens",
+          "Deck - Dimir Midrange",
+          "Deck - Dimir Self-Bounce",
+          "Deck - Domain",
+          "Deck - Esper Control",
+          "Deck - Esper Omniscience Combo",
+          "Deck - Esper Self-Bounce",
+          "Deck - Golgari Self-Mill",
+          "Deck - Gruul Aggro",
+          "Deck - Jeskai Convoke",
+          "Deck - Jeskai Oculus",
+          "Deck - Jeskai Omniscience Combo",
+          "Deck - Orzhov Self-Bounce",
+          "Deck - Selesnya Cage",
+          "Deck - Temur Floodcaller Combo"
+        ]
+      },
+      {
+        "id": 3,
+        "theme_name": "creature",
+        "cards": [
+          "Zur, Eternal Schemer",
+          "Abuelo's Awakening",
+          "Raise the Past",
+          "Wilt-Leaf Liege",
+          "Temporary Lockdown",
+          "Anoint with Affliction",
+          "Get Out",
+          "Loran of the Third Path",
+          "Exorcise",
+          "Gix's Command",
+          "Scrollshift",
+          "Destroy Evil",
+          "Go for the Throat",
+          "Recommission",
+          "Bitter Reunion",
+          "Cut Down",
+          "Mockingbird",
+          "Enduring Innocence",
+          "Helping Hand",
+          "Brightglass Gearhulk",
+          "Split Up",
+          "Lay Down Arms",
+          "Day of Judgment",
+          "Reclamation Sage",
+          "Dewdrop Cure",
+          "Enduring Vitality",
+          "Blot Out",
+          "Up the Beanstalk"
+        ],
+        "size": 28,
+        "keywords": [
+          "creature",
+          "target",
+          "enchantment",
+          "destroy",
+          "control",
+          "creatures",
+          "mana",
+          "value",
+          "mana value",
+          "battlefield"
+        ],
+        "deck_count": 15,
+        "decks": [
+          "Deck - 4c Zur",
+          "Deck - Azorius Convoke",
+          "Deck - Azorius Omniscience Combo",
+          "Deck - Azorius Tempo",
+          "Deck - Bant Control",
+          "Deck - Dimir Midrange",
+          "Deck - Dimir Self-Bounce",
+          "Deck - Domain",
+          "Deck - Esper Control",
+          "Deck - Golgari Midrange",
+          "Deck - Jeskai Convoke",
+          "Deck - Jeskai Oculus",
+          "Deck - Mono-White Token Control",
+          "Deck - Orzhov Control",
+          "Deck - Orzhov Self-Bounce"
+        ]
+      },
+      {
+        "id": 8,
+        "theme_name": "life",
+        "cards": [
+          "Haunt the Network",
+          "Beza, the Bounding Spring",
+          "Preacher of the Schism",
+          "Kaya, Intangible Slayer",
+          "Mazemind Tome",
+          "Scavenging Ooze",
+          "Tinybones Joins Up",
+          "Haywire Mite",
+          "Nesting Bot",
+          "Authority of the Consuls",
+          "Ketramose, the New Dawn",
+          "Cease/Desist",
+          "Starving Revenant",
+          "Tranquil Frillback",
+          "Momentum Breaker",
+          "Jace, the Perfected Mind",
+          "Sheoldred, the Apocalypse",
+          "Hopeless Nightmare",
+          "Nissa, Ascended Animist",
+          "Obstinate Baloth",
+          "Caustic Bronco",
+          "Market Gnome"
+        ],
+        "size": 22,
+        "keywords": [
+          "life",
+          "creature",
+          "card",
+          "opponent",
+          "target",
+          "gain",
+          "gain life",
+          "enters",
+          "enchantment",
+          "draw"
+        ],
+        "deck_count": 10,
+        "decks": [
+          "Deck - 4c Zur",
+          "Deck - Bant Control",
+          "Deck - Dimir Self-Bounce",
+          "Deck - Domain",
+          "Deck - Esper Control",
+          "Deck - Golgari Midrange",
+          "Deck - Golgari Self-Mill",
+          "Deck - Orzhov Control",
+          "Deck - Orzhov Self-Bounce",
+          "Deck - Selesnya Cage"
+        ]
+      },
+      {
+        "id": 10,
+        "theme_name": "card",
+        "cards": [
+          "Oildeep Gearhulk",
+          "The Stone Brain",
+          "Deep-Cavern Bat",
+          "Case of the Crimson Pulse",
+          "Binding Negotiation",
+          "Chitin Gravestalker",
+          "Invasion of Arcavios",
+          "Molt Tender",
+          "Ancient Vendetta",
+          "Duress",
+          "Analyze the Pollen",
+          "Oracle of Tragedy",
+          "Cenote Scout",
+          "Inti, Seneschal of the Sun",
+          "Helpful Hunter",
+          "Rest in Peace",
+          "Soul Search",
+          "Subterranean Schooner",
+          "Steamcore Scholar",
+          "Hollow Marauder",
+          "Aclazotz, Deepest Betrayal",
+          "The End",
+          "Intimidation Tactics",
+          "Leyline of the Void",
+          "Chart a Course",
+          "Devout Decree",
+          "Fallaji Archaeologist",
+          "Pest Control",
+          "Fear of Missing Out",
+          "Deadly Cover-Up"
+        ],
+        "size": 30,
+        "keywords": [
+          "card",
+          "creature",
+          "exile",
+          "hand",
+          "graveyard",
+          "discard",
+          "library",
+          "cards",
+          "target",
+          "opponent"
+        ],
+        "deck_count": 9,
+        "decks": [
+          "Deck - Azorius Omniscience Combo",
+          "Deck - Dimir Midrange",
+          "Deck - Domain",
+          "Deck - Esper Control",
+          "Deck - Esper Omniscience Combo",
+          "Deck - Golgari Self-Mill",
+          "Deck - Jeskai Oculus",
+          "Deck - Jeskai Omniscience Combo",
+          "Deck - Orzhov Control"
+        ]
+      },
+      {
+        "id": 0,
+        "theme_name": "creature",
+        "cards": [
+          "Sheoldred's Edict",
+          "Case of the Gateway Express",
+          "Screaming Nemesis",
+          "Brotherhood's End",
+          "Bushwhack",
+          "Cacophony Scamp",
+          "Burst Lightning",
+          "Boros Charm",
+          "Hired Claw",
+          "Witchstalker Frenzy",
+          "Lithomantic Barrage",
+          "Obliterating Bolt",
+          "Phyrexian Obliterator",
+          "Pyroclasm",
+          "Lightning Strike",
+          "Torch the Tower",
+          "Heartfire Hero",
+          "Liliana of the Veil",
+          "Warleader's Call",
+          "Sunspine Lynx",
+          "Enduring Curiosity",
+          "Elspeth's Smite"
+        ],
+        "size": 22,
+        "keywords": [
+          "creature",
+          "damage",
+          "deals",
+          "deals damage",
+          "target",
+          "control",
+          "player",
+          "damage target",
+          "turn",
+          "spell"
+        ],
+        "deck_count": 8,
+        "decks": [
+          "Deck - Boros Mice",
+          "Deck - Boros Tokens",
+          "Deck - Gruul Aggro",
+          "Deck - Gruul Prowess",
+          "Deck - Jeskai Oculus",
+          "Deck - Mono-Red Prowess",
+          "Deck - Rakdos Aggro",
+          "Deck - Temur Floodcaller Combo"
+        ]
+      },
+      {
+        "id": 9,
+        "theme_name": "creature",
+        "cards": [
+          "Monastery Swiftspear",
+          "Malicious Eclipse",
+          "Might of the Meek",
+          "Become Brutes",
+          "Monstrous Rage",
+          "Heroic Reinforcements",
+          "Emberheart Challenger",
+          "Spiteful Hexmage",
+          "Slickshot Show-Off",
+          "Final Showdown",
+          "Boon-Bringer Valkyrie",
+          "Rockface Village",
+          "Nowhere to Run",
+          "Imodane's Recruiter",
+          "Steel Seraph",
+          "Valley Floodcaller",
+          "Grand Abolisher",
+          "Giant Growth",
+          "Ajani, Caller of the Pride",
+          "Riptide Gearhulk",
+          "Surge of Salvation",
+          "Terror Tide",
+          "Monastery Mentor",
+          "Choking Miasma",
+          "Gnawing Vermin",
+          "Snakeskin Veil",
+          "Song of Totentanz",
+          "Flowerfoot Swordmaster",
+          "Harvester of Misery",
+          "Manifold Mouse",
+          "Mosswood Dreadknight",
+          "Sanguine Evangelist",
+          "Yotian Frontliner",
+          "Turn Inside Out"
+        ],
+        "size": 34,
+        "keywords": [
+          "creature",
+          "turn",
+          "end",
+          "end turn",
+          "creatures",
+          "control",
+          "target",
+          "cast",
+          "gets",
+          "target creature"
+        ],
+        "deck_count": 8,
+        "decks": [
+          "Deck - Boros Mice",
+          "Deck - Golgari Midrange",
+          "Deck - Golgari Self-Mill",
+          "Deck - Gruul Aggro",
+          "Deck - Gruul Prowess",
+          "Deck - Jeskai Omniscience Combo",
+          "Deck - Mono-Red Prowess",
+          "Deck - Rakdos Aggro"
+        ]
+      },
+      {
+        "id": 12,
+        "theme_name": "token",
+        "cards": [
+          "Get Lost",
+          "Ghost Vacuum",
+          "Three Steps Ahead",
+          "Novice Inspector",
+          "Sunder the Gateway",
+          "Chandra, Spark Hunter",
+          "Mabel, Heir to Cragflame",
+          "Sentinel of the Nameless City",
+          "Dusk Rose Reliquary",
+          "Soul-Guide Lantern",
+          "Deduce",
+          "Carrot Cake",
+          "Pawpatch Formation",
+          "Fountainport",
+          "Sandstorm Salvager",
+          "Gleeful Demolition",
+          "Spyglass Siren",
+          "Sunfall"
+        ],
+        "size": 18,
+        "keywords": [
+          "token",
+          "artifact",
+          "creature",
+          "card",
+          "create",
+          "target",
+          "control",
+          "sacrifice",
+          "artifact creature",
+          "enters"
+        ],
+        "deck_count": 7,
+        "decks": [
+          "Deck - 4c Zur",
+          "Deck - Azorius Control",
+          "Deck - Bant Control",
+          "Deck - Jeskai Convoke",
+          "Deck - Jeskai Oculus",
+          "Deck - Mono-White Token Control",
+          "Deck - Selesnya Cage"
+        ]
+      },
+      {
+        "id": 11,
+        "theme_name": "cards",
+        "cards": [
+          "Confounding Riddle",
+          "Stock Up",
+          "Knight-Errant of Eos",
+          "Ephara's Dispersal",
+          "Collector's Cage",
+          "Thundertrap Trainer",
+          "Riverchurn Monument",
+          "Abhorrent Oculus",
+          "Atraxa, Grand Unifier",
+          "Moment of Truth",
+          "Grim Bauble"
+        ],
+        "size": 11,
+        "keywords": [
+          "cards",
+          "library",
+          "creature",
+          "graveyard",
+          "look",
+          "look cards",
+          "cards library",
+          "hand",
+          "rest",
+          "card"
+        ],
+        "deck_count": 3,
+        "decks": [
+          "Deck - Azorius Omniscience Combo",
+          "Deck - Esper Omniscience Combo",
+          "Deck - Jeskai Omniscience Combo"
+        ]
+      },
+      {
+        "id": 1,
+        "theme_name": "unless control",
+        "cards": [
+          "Spirebluff Canal",
+          "Razorverge Thicket",
+          "Blooming Marsh",
+          "Seachrome Coast",
+          "Botanical Sanctum",
+          "Darkslick Shores",
+          "Concealed Courtyard",
+          "Copperline Gorge",
+          "Blackcleave Cliffs",
+          "Inspiring Vantage"
+        ],
+        "size": 10,
+        "keywords": [
+          "unless control",
+          "unless",
+          "tapped unless",
+          "tapped",
+          "lands add",
+          "lands",
+          "land enters",
+          "land",
+          "fewer lands",
+          "fewer"
+        ],
+        "deck_count": 3,
+        "decks": [
+          "Deck - Esper Self-Bounce",
+          "Deck - Jeskai Convoke",
+          "Deck - Jeskai Oculus"
+        ]
+      },
+      {
+        "id": 7,
+        "theme_name": "land",
+        "cards": [
+          "Shadowy Backstreet",
+          "Meticulous Archive",
+          "Lush Portico",
+          "Thundering Falls",
+          "Hedge Maze",
+          "Underground Mortuary",
+          "Undercity Sewers"
+        ],
+        "size": 7,
+        "keywords": [
+          "land",
+          "land enters",
+          "enters",
+          "tapped land",
+          "tapped",
+          "surveil look",
+          "look",
+          "look card",
+          "library",
+          "surveil"
+        ],
+        "deck_count": 2,
+        "decks": [
+          "Deck - 4c Zur",
+          "Deck - Domain"
+        ]
+      },
+      {
+        "id": 2,
+        "theme_name": "creature",
+        "cards": [
+          "Warden of the Inner Sky",
+          "Kaito, Bane of Nightmares",
+          "Dragon Fodder",
+          "Floodpits Drowner",
+          "Archfiend of the Dross",
+          "Callous Sell-Sword",
+          "Bounce Off",
+          "Faebloom Trick",
+          "Caretaker's Talent",
+          "Proft's Eidetic Memory",
+          "Dreamdew Entrancer",
+          "Stormchaser's Talent",
+          "Innkeeper's Talent"
+        ],
+        "size": 13,
+        "keywords": [
+          "creature",
+          "counters",
+          "control",
+          "level",
+          "target creature",
+          "target",
+          "turn",
+          "counter",
+          "hand",
+          "create"
+        ],
+        "deck_count": 2,
+        "decks": [
+          "Deck - Dimir Midrange",
+          "Deck - Dimir Self-Bounce"
+        ]
+      },
+      {
+        "id": 14,
+        "theme_name": "add",
+        "cards": [
+          "Thornspire Verge",
+          "Wastewood Verge",
+          "Bleachbone Verge",
+          "Hushwood Verge",
+          "Floodfarm Verge",
+          "Willowrush Verge",
+          "Gloomlake Verge",
+          "Sunbillow Verge"
+        ],
+        "size": 8,
+        "keywords": [
+          "add",
+          "add activate",
+          "control",
+          "activate",
+          "add add",
+          "activate control",
+          "plains",
+          "forest",
+          "swamp",
+          "island"
+        ],
+        "deck_count": 2,
+        "decks": [
+          "Deck - 4c Zur",
+          "Deck - Domain"
+        ]
+      },
+      {
+        "id": 5,
+        "theme_name": "land",
+        "cards": [
+          "Restless Cottage",
+          "Restless Fortress",
+          "Herd Migration",
+          "Restless Vents",
+          "Restless Prairie",
+          "Restless Reef",
+          "Fabled Passage",
+          "Restless Ridgeline",
+          "Restless Anchorage",
+          "Thran Portal",
+          "Demolition Field",
+          "Soulstone Sanctuary",
+          "Blast Zone"
+        ],
+        "size": 13,
+        "keywords": [
+          "land",
+          "creature",
+          "card",
+          "land enters",
+          "enters",
+          "add",
+          "end",
+          "turn",
+          "end turn",
+          "tapped"
+        ],
+        "deck_count": 1,
+        "decks": [
+          "Deck - Bant Control"
+        ]
+      },
+      {
+        "id": 13,
+        "theme_name": "mana",
+        "cards": [
+          "Cavern of Souls",
+          "Valgavoth's Lair",
+          "Overgrown Zealot",
+          "Sunken Citadel",
+          "Mirrex"
+        ],
+        "size": 5,
+        "keywords": [
+          "mana",
+          "add",
+          "color",
+          "add mana",
+          "mana color",
+          "enters",
+          "creature",
+          "land",
+          "color add",
+          "chosen"
+        ],
+        "deck_count": 0,
+        "decks": []
+      }
+    ]
+  },
+  "mechanics": [
+    {
+      "name": "creature",
+      "count": 2009
+    },
+    {
+      "name": "small_creature",
+      "count": 1020
+    },
+    {
+      "name": "pump",
+      "count": 524
+    },
+    {
+      "name": "big_creature",
+      "count": 517
+    },
+    {
+      "name": "token_generation",
+      "count": 515
+    },
+    {
+      "name": "card_draw",
+      "count": 447
+    },
+    {
+      "name": "flying",
+      "count": 369
+    },
+    {
+      "name": "life_gain",
+      "count": 214
+    },
+    {
+      "name": "removal",
+      "count": 213
+    },
+    {
+      "name": "damage",
+      "count": 195
+    },
+    {
+      "name": "trample",
+      "count": 140
+    },
+    {
+      "name": "vigilance",
+      "count": 138
+    },
+    {
+      "name": "transform",
+      "count": 127
+    },
+    {
+      "name": "dies_trigger",
+      "count": 115
+    },
+    {
+      "name": "tutor",
+      "count": 105
+    },
+    {
+      "name": "flash",
+      "count": 99
+    },
+    {
+      "name": "scry",
+      "count": 93
+    },
+    {
+      "name": "haste",
+      "count": 88
+    },
+    {
+      "name": "mill",
+      "count": 86
+    },
+    {
+      "name": "reach",
+      "count": 84
+    }
+  ],
+  "popular_cards": [
+    {
+      "name": "Seachrome Coast",
+      "count": 74
+    },
+    {
+      "name": "Floodfarm Verge",
+      "count": 70
+    },
+    {
+      "name": "Temporary Lockdown",
+      "count": 62
+    },
+    {
+      "name": "Get Lost",
+      "count": 54
+    },
+    {
+      "name": "Adarkar Wastes",
+      "count": 52
+    },
+    {
+      "name": "Torch the Tower",
+      "count": 52
+    },
+    {
+      "name": "Beza, the Bounding Spring",
+      "count": 42
+    },
+    {
+      "name": "Destroy Evil",
+      "count": 42
+    },
+    {
+      "name": "Negate",
+      "count": 40
+    },
+    {
+      "name": "Rest in Peace",
+      "count": 40
+    },
+    {
+      "name": "Spyglass Siren",
+      "count": 40
+    },
+    {
+      "name": "Meticulous Archive",
+      "count": 40
+    },
+    {
+      "name": "Emberheart Challenger",
+      "count": 40
+    },
+    {
+      "name": "Heartfire Hero",
+      "count": 40
+    },
+    {
+      "name": "Manifold Mouse",
+      "count": 40
+    }
+  ],
+  "type_distribution": {
+    "creature_count": 97,
+    "instant_count": 47,
+    "sorcery_count": 48,
+    "enchantment_count": 36,
+    "artifact_count": 22,
+    "planeswalker_count": 7,
+    "land_count": 59
+  }
+}

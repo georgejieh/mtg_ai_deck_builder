@@ -1534,7 +1534,7 @@ def main():
     parser = argparse.ArgumentParser(description='MTG Meta Analyzer')
     parser.add_argument('--cards', default='data/standard_cards.csv', help='Path to card database CSV')
     parser.add_argument('--decks', default='current_standard_decks', help='Directory containing decklists')
-    parser.add_argument('--output', default='semantic_meta_analysis_results.json', help='Output file for analysis results')
+    parser.add_argument('--output', default='json_outputs/semantic_meta_analysis_results.json', help='Output file for analysis results')
     parser.add_argument('--debug', action='store_true', help='Enable debug mode')
     
     args = parser.parse_args()
